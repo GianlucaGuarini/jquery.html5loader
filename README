@@ -1,0 +1,9 @@
+This plug-in creates a nice preloader useing html5 canvas API to draw the percentage during the page loading. Now it works just with images but I hope soon it will work also with audio and video objects.
+
+TODO
+
+- testing the plug in and find all the bugs
+- branching to extend the preload with AUDIO and VIDEO elements
+- create more graphic feature with canvas
+- try to get the percentage even in the browser that don't support ajax
+- fix the bugs with mobile devices 
