@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Gianluca Guarini- html5 loader jQuery plug-in</title>
+<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+<meta name="Keywords"  content="JavaScript,HTML5,CSS" />
+<style type="text/css">
+body {
+	margin: 0;
+	padding: 0;
+	background: #000;
+	color:#999;
+}
+#html5Loader {
+	width:400px;
+	height:400px;
+	background-color:rgba(0,0,0,0.7);
+	margin:0;
+	position:absolute;
+}
+#wrapper img {
+	opacity:0;
+	display:none;
+}
+</style>
+<script src="js/jquery.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/jQuery.html5Loader.js"></script>
+
+
+<script>
+//init
+
+$(window).load(function(){
+	$('#html5Loader').html5Loader({
+		glowColor: '#00D5FF',
+		lineWidth: 10,
+		onComplete: function(){
+			
+			$('#wrapper img').css({display:'block'}).animate({opacity:1});
+		}
+	})	
+});
+</script>
+</head>
+<body>
+<div id="html5Loader"></div>
+<h1>Remember to load this page on a server!</h1>
+<div id="wrapper"> <img src="files/Hydrangeas.jpg"><img src="files/Koala.jpg"><img src="files/Lighthouse.jpg"><img src="files/Penguins.jpg"><img src="files/Tulips.jpg"><img src="files/Chrysanthemum.jpg"><img src="files/Desert.jpg"></div>
+
+</body>
+</html>
