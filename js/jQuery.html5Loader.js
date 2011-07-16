@@ -78,6 +78,7 @@
                 startAngle: 1.5 * Math.PI,
                 endAngle: 0
             }
+			var _allFilesWeightLoaded = false;
 			var _media;
 			var _lastMediaID = 0;
 			var _mediaID = 0;
@@ -89,13 +90,13 @@
             var _sizeArray = [];
             var _sourceArray = [];
             var _typeArray = [];
-            var getFileSize = function filesize(url) {
+            var getFileSize = function filesize(url,readyToLoad) {
 
                     var req = new XMLHttpRequest();
 
-
                     if (!req) {
                         throw new Error('XMLHttpRequest not supported');
+						
 						return 0;
                     }
 
@@ -104,7 +105,7 @@
                     req.send(null);
 
                     if (!req.getResponseHeader) {
-
+						
                         try {
                             debugMode == true ? console.log('No getResponseHeader!') : '';
                             throw new Error('No getResponseHeader!');
@@ -122,8 +123,14 @@
                         }
                     } else {
                         debugMode == true ? console.log('I can get the file size!') : '';
+						if(readyToLoad == true){
+							_allFilesWeightLoaded = true;
+							
+							}
                         return req.getResponseHeader('Content-Length');
+						
                     }
+					
             }
             function preloadPageFunc() {
                 debugMode == true ? console.log('Start preload Page') : '';
@@ -155,22 +162,27 @@
                         type = 'SCRIPT';
                     }
 					
+					
                     var source = $(ele).prop('src');
-					
-					
-					
-                    var size = getFileSize(source);
-					
-					
-                    feelFilesArray(ele, size, source, type);
-                   
 					
 					var is_last_item = (index == (ElementsArr.length - 1));
 
-                    if (is_last_item == true) {
-						
-                        startLoadElements();
-                    }
+					
+                    var size = getFileSize(source,is_last_item);
+					
+					
+                    feelFilesArray(ele, size, source, type);
+					if(is_last_item == true){
+                   
+				   	var _allRightTimer = setTimeout(function(){
+							if(_allFilesWeightLoaded == true){
+								startLoadElements();
+								console.log('timeout');
+								this.clearTimeout();
+							}
+						},1);
+					
+					}
                 });
 
             }
@@ -380,7 +392,7 @@
                 }).animate({
                     perc: to
                 }, {
-                    duration: 3000,
+                    duration: 1000,
                     step: function () {
 
                         var context = canvas.getContext('2d');
@@ -406,7 +418,6 @@
                     },
                     complete: function () {
                         _lastPercentage = Math.round(to);
-						
                         if (_lastPercentage >= 100) {
                             if (onComplete != null) {
                                 var _onComplete = new onComplete;
@@ -433,7 +444,7 @@
                 }).animate({
                     perc: to
                 }, {
-                    duration: 3000,
+                    duration: 1000,
                     step: function () {
 
                         var context = canvas.getContext('2d');
