@@ -170,7 +170,7 @@
 				   	var _allRightTimer = setTimeout(function(){
 							if(_allFilesWeightLoaded == true){
 								console.log('timeout');
-								this.clearTimeout();
+								clearTimeout(_allRightTimer);
 								startLoadElements();
 							}
 						},1);
