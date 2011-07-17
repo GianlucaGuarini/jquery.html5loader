@@ -49,7 +49,7 @@
 				onItemLoaded: function (obj) {},
                 pathToFallbackGif: 'preloaderFallback.gif',
                 radius: 40,
-                debugMode: true,
+                debugMode: false,
 				glowColor: null
             };
             var options = $.extend(defaults, options);
