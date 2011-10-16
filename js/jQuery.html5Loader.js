@@ -1,10 +1,10 @@
 /**
  *
- * Version: 	0.2.1
- * Author:		Gianluca Guarini
- * Contact: 	gianluca.guarini@gmail.com
- * Website:		http://www.gianlucaguarini.com/
- * Twitter:		@gianlucaguarini
+ * Version:     1.0
+ * Author:      Gianluca Guarini
+ * Contact:     gianluca.guarini@gmail.com
+ * Website:     http://www.gianlucaguarini.com/
+ * Twitter:     @gianlucaguarini
  *
  * Copyright (c) 2011 Gianluca Guarini
  *
@@ -33,158 +33,151 @@
 
     $.fn.extend({
         html5Loader: function (options) {
-            var container = this;
+            var container =         this;
             var defaults = {
-				preloaderType: 'circular',
-                currPercentage: 0,
-                getFilesToLoadJSON: null,
-                positionX: container.width() / 2,
-                positionY: container.height() / 2,
-                lineWidth: 5,
-                color: "#ffffff",
-                font: "normal 11px Arial",
-                preloadPage: true,
-                fullScreen: true,
-                onComplete: function () {},
-				onItemLoaded: function (obj) {},
-                pathToFallbackGif: 'preloaderFallback.gif',
-                radius: 40,
-                debugMode: false,
-				glowColor: null
+                preloaderType:      'circular',                 /* set the type of preload you need */
+                currPercentage:     0,                          /* set the starting percentage */
+                getFilesToLoadJSON: null,                       /* set the path of JSON */
+                positionX:          container.width() / 2,      /* set x position of the preloader on the canvas */
+                positionY:          container.height() / 2,     /* set y position of the preloader on the canvas */
+                lineWidth:          5,                          /* set preloader's line width */
+                color:              "#ffffff",                  /* set preloader color */
+                font:               "normal 11px Arial",        /* set preloader font (you can embed a font by css and use it here) */
+                fullScreen:         true,                       /* chose if you want to overlay the page or just use the preloader in a box */
+                onComplete:         function () {},             /* set onComplete Callback */
+                onItemLoaded:       function (src,elm) {},      /* this Callback fire everytime an object is loaded */
+                pathToFallbackGif:  'preloaderFallback.gif',    /* set the fallback gif for browsers that suck */
+                radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
+                glowColor:          null,                       /* set shadow color */
+                debugMode:          false                       /* debugger */
             };
+
             var options = $.extend(defaults, options);
-            //@public vars
-			var preloaderType = options.preloaderType;
-            var currPercentage = options.currPercentage;
-            var positionX = options.positionX;
-            var positionY = options.positionY;
-            var lineWidth = options.lineWidth;
-            var color = options.color;
-            var font = options.font;
-            var getFilesToLoadJSON = options.getFilesToLoadJSON;
+
+            /*
+
+            @public vars
+            Configuration
+
+            */
+            var preloaderType       = options.preloaderType,
+                currPercentage      = options.currPercentage,
+                positionX           = options.positionX,
+                positionY           = options.positionY,
+                lineWidth           = options.lineWidth,
+                color               = options.color,
+                font                = options.font,
+                getFilesToLoadJSON  = options.getFilesToLoadJSON,
+                onComplete          = options.onComplete,
+                onItemLoaded        = options.onItemLoaded,
+                pathToFallbackGif   = options.pathToFallbackGif,
+                radius              = options.radius,
+                fullScreen          = options.fullScreen,
+                glowColor           = options.glowColor;
+                debugMode           = options.debugMode;
+
+            /*
             
-			var glowColor = options.glowColor;
-            var onComplete = options.onComplete;
-			var onItemLoaded = options.onItemLoaded;
-            var pathToFallbackGif = options.pathToFallbackGif;
-            var radius = options.radius;
-            var preloadPage = options.preloadPage;
-            var fullScreen = options.fullScreen;
-            var debugMode = options.debugMode;
+            @private var
+            Configuration
 
-            //@private var
-            var canvas = null;
-            var _CircularPreloader = {
-                startAngle: 1.5 * Math.PI,
-                endAngle: 0
+            */
+            var canvas              = null,
+                PI                  = Math.PI,
+                _CircularPreloader  = {
+                                          startAngle: 1.5 * PI,
+                                          endAngle: 0
+                                      },
+                CanvasID            = $(container).attr('id') == undefined ? $(container).attr('class') : $(container).attr('id'),
+                _lastPercentage     = 0,
+                _bytesTotal         = 0,
+                _bytesLoaded        = 0,
+                _firstInit          = false,
+                _elementsArray      = [],
+                _sizeArray          = [],
+                _sourceArray        = [],
+                _typeArray          = [],
+                _videoArray         = [],
+                _audioArray         = [],
+                _videoSupportMp4    = Modernizr.video.h264,
+                _videoSupportOgg    = Modernizr.video.ogg,
+                _videoSupportWebm   = Modernizr.video.webm,
+                _audioSupportMp3    = Modernizr.audio.mp3,
+                _audioSupportOgg    = Modernizr.audio.ogg,
+                //_that point to the global object
+                _that               = this;
+                        
+            /* 
+
+            Utils Objects
+
+            */
+            _that.fileExtension = function (fname) {
+                var pos = fname.lastIndexOf(".");
+                var strlen = fname.length;
+                if (pos != -1 && strlen != pos + 1) {
+                    var ext = fname.split(".");
+                    var len = ext.length;
+                    var extension = ext[len - 1].toLowerCase();
+                } else {
+                    extension = "No extension found";
+                }
+                return extension;
+            };
+            
+            _that.setFullscreen = function () {
+                debugMode == true ? console.log('Setting Full screen') : '';
+                container.css({
+                    position: 'fixed',
+                    height: $(window).height(),
+                    width: $(window).width(),
+                    'z-index': 98,
+                    top: 0
+                })
+                positionX = container.width() / 2;
+                positionY = container.height() / 2;
+                
+                $(container).html('<canvas id="html5Canvas' + CanvasID + '" width="' + $(container).width() + 'px "height="' + $(container).height() + 'px"></canvas>');
+                canvas = document.getElementById('html5Canvas' + CanvasID);
+
+                //create background
+                $(canvas).css({
+                    position: 'fixed',
+                    top: ($(window).height() / 2) - ($(canvas).height() / 2),
+                    left: ($(window).width() / 2) - ($(canvas).width() / 2),
+                    'z-index': 99
+                })
+
+                $(window).bind('resize.CenterCanvas', function () {
+                    $(canvas).css({
+                        top: ($(window).height() / 2) - ($(canvas).height() / 2),
+                        left: ($(window).width() / 2) - ($(canvas).width() / 2)
+
+                    })
+                    container.css({
+                        position: 'fixed',
+                        height: $(window).height(),
+                        width: $(window).width(),
+                        'z-index': 98
+                    })
+
+                })
             }
-			var _allFilesWeightLoaded = false;
-			var _media;
-			var _lastMediaID = 0;
-			var _mediaID = 0;
-            var CanvasID = 0;
-            var _lastPercentage = 0;
-            var _bytesTotal = 0;
-            var _bytesLoaded = 0;
-            var _elementsArray = [];
-            var _sizeArray = [];
-            var _sourceArray = [];
-            var _typeArray = [];
-            var getFileSize = function filesize(url,readyToLoad) {
+            /* 
+            
+            END Utils Objects
 
-                    var req = new XMLHttpRequest();
+            */
 
-                    if (!req) {
-                        throw new Error('XMLHttpRequest not supported');
-						
-						return 0;
-                    }
+            /* 
+            
+            CORE FUNCTIONS
 
-                    req.open('HEAD', url, false);
+            */
 
-                    req.send(null);
+            _that.fillFilesArray = function (currEle, currSize, currSource, currType) {
 
-                    if (!req.getResponseHeader) {
-						
-                        try {
-                            debugMode == true ? console.log('No getResponseHeader!') : '';
-                            throw new Error('No getResponseHeader!');
-                        } catch (e) {
-                            return 0;
-                        }
-                    } else if (!req.getResponseHeader('Content-Length')) {
-                        try {
-                            debugMode == true ? console.log('No Content-Length!') : '';
-                            throw new Error('No Content-Length!');
-							return 0;
-                        } catch (e2) {
-                            debugMode == true ? console.log('I can\'t get the file size! You can use this feature loading files on a server from the same domain in wich page is loaded.') : '';
-                            return 0;
-                        }
-                    } else {
-                        debugMode == true ? console.log('I can get the file size!') : '';
-						if(readyToLoad == true){
-							_allFilesWeightLoaded = true;
-							
-							}
-                        return req.getResponseHeader('Content-Length');
-						
-                    }
-					
-            }
-            function preloadPageFunc() {
-                debugMode == true ? console.log('Start preload Page') : '';
-                var ElementsArr = $('img');
-                currPercentage = 0;
-				draw(currPercentage);
-               
-                $('img').each(function (index, ele) {
-                    var type = null;
-
-                    if ($(ele).is('img') == true) {
-                        type = 'IMAGE';
-                    }
-                    if ($(ele)[0].tagName === 'VIDEO') {
-                        type = 'VIDEO';
-                    }
-					
-                    if ($(ele)[0].tagName === 'AUDIO') {
-                        type = 'AUDIO';
-                    }
-					if ($(ele).is('script') == true) {
-                        type = 'SCRIPT';
-                    }
-					
-					
-                    var source = $(ele).prop('src');
-					
-					var is_last_item = (index == (ElementsArr.length - 1));
-
-					
-                    var size = getFileSize(source,is_last_item);
-					
-					
-                    feelFilesArray(ele, size, source, type);
-					if(is_last_item == true){
-                   
-				   	var _allRightTimer = setTimeout(function(){
-							if(_allFilesWeightLoaded == true){
-								console.log('timeout');
-								clearTimeout(_allRightTimer);
-								startLoadElements();
-							}
-						},1);
-					
-					}
-                });
-
-            }
-
-            function feelFilesArray(currEle, currSize, currSource, currType) {
-
-				
-				
-                _bytesTotal = _bytesTotal + parseInt(currSize);
+                _bytesTotal += currSize;
 
                 debugMode == true ? console.log('Getting file:' + currSource + ' Size: ' + currSize) : '';
 
@@ -193,109 +186,350 @@
                 _sourceArray.push(currSource);
                 _typeArray.push(currType);
 
+            };
+            
+            _that.startLoadElements = function () {
 
-            }
-			
-            this.init = function (options) {
-				
-                debugMode == true ? console.log('Start application!') : '';
-				
-				if( getFilesToLoadJSON){
-                 $.getJSON(getFilesToLoadJSON, function (data) {
-                            var ElementsArr = data.files;
+                $(_elementsArray).each(function (index, element) {
+                    if(_sizeArray[index] > 0){
+                        if (_typeArray[index] == 'IMAGE') {
+                            
 
-                            $.each(data.files, function (key, val) {
-								
-								var _elm = $('img').attr('src',val.source) ? $('img').attr('src',val.source) : '';
-								
-                                feelFilesArray(_elm, val.size, val.source, val.type)
-                                var is_last_item = (key == (ElementsArr.length - 1));
 
-                                if (is_last_item == true) {
-                                    startLoadElements();
+                            $(_elementsArray[index]).load(function () {
+
+                                if ($(_elementsArray[index])) {
+                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],element);
                                 }
+                                _bytesLoaded += _sizeArray[index];
+                                _that.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
                             });
-                        })
-				}
-					if (Modernizr.canvas && (preloadPage == true || getFilesToLoadJSON != null) ) {
-					
-                    if (fullScreen == true) {
-                        debugMode == true ? console.log('Setting Full screen') : '';
-                        container.css({
-                            position: 'fixed',
-                            height: $(window).height(),
-                            width: $(window).width(),
-                            'z-index': 98,
-							top:0
-                        })
-                        positionX = container.width() / 2;
-                        positionY = container.height() / 2;
-                        $(container).html('<canvas width="' + $(container).width() + 'px "height="' + $(container).height() + 'px"></canvas>');
-                        canvas = $(container).find('canvas')[0];
-                        CanvasID++;
+                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                        }
+
+                        if (_typeArray[index] == 'SCRIPT') {
+
+                            $.getScript(_elementsArray[index],function () {
+
+                                if ($(_elementsArray[index])) {
+                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],element);
+                                }
+                                _bytesLoaded += _sizeArray[index];
+                                _that.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+                            });
+                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                        }
+
+                        if (_typeArray[index] == 'VIDEO') {
+
+                            var video = document.getElementById(_elementsArray[index]);
+
+                            // on video loaded
+                            video.addEventListener('canplaythrough', _that.onMediaLoaded = function (event) {
+                                if ($(_elementsArray[index])) {
+                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],video);
+                                }
+                               
+                                _bytesLoaded += _sizeArray[index];
+                                _that.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+                            }, true);
+                           debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            
+                        }
+                        if (_typeArray[index] == 'AUDIO') {
+
+                            var audio = document.getElementById(_elementsArray[index]);
+
+                            audio.addEventListener('canplaythrough', _that.onMediaLoaded = function (event) {
+                                if ($(_elementsArray[index])) {
+                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],audio);
+                                }
+                                
+                                _bytesLoaded += _sizeArray[index];
+                                _that.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+
+                            }, true);
+                           debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            
+                        }
+                    }
+                });
+            };
+
+            _that.updatePercentage = function (_bytesLoaded) {
 
 
-                        //create background
-                        $(canvas).css({
-                            position: 'fixed',
-                            top: ($(window).height() / 2) - ($(canvas).height() / 2),
-                            left: ($(window).width() / 2) - ($(canvas).width() / 2),
-                            'z-index': 99
-                        })
+                currPercentage = ~~ (((_bytesLoaded / _bytesTotal) * 100) | 0) + 1; /* +1 force math round to get full 100% percentage*/
 
-                        $(window).bind('resize.CenterCanvas', function () {
-                            $(canvas).css({
-                                top: ($(window).height() / 2) - ($(canvas).height() / 2),
-                                left: ($(window).width() / 2) - ($(canvas).width() / 2)
+                debugMode == true ? console.log('Percentage: ' + ~~ (currPercentage) + '%') : '';
 
-                            })
-                            container.css({
-                                position: 'fixed',
-                                height: $(window).height(),
-                                width: $(window).width(),
-                                'z-index': 98
-                            })
+           
 
-                        })
-                    } else {
-						CanvasID++;
-                        $(container).html('<canvas width="' + $(container).width() + 'px "height="' + $(container).height() + 'px"></canvas>');
-                        canvas = $(container).find('canvas')[0];
+                if (options.preloaderType == 'line' && Modernizr.canvas) {
+                    _that.drawLinePreloader(currPercentage);
+                }
+                if ((options.preloaderType == 'circular' && Modernizr.canvas)) {
+                    _that.draw_CircularPreloader(currPercentage);
+                }
+
+            };
+            _that.onComplete = function(){
+
+                if (_lastPercentage >= 100) {
+                    if (onComplete != null) {
+                        var _onComplete = new onComplete;
+                    }
+                    //remove canvas from the stage
+                    container.delay(1000).fadeOut(function () {
+                            $(window).unbind('CenterCanvas');
+                            $(this).remove()
+                    });
+                }
+            }
+            /* 
+            preloader TYPE
+            you can delete some of this function if you dont use it
+            */
+
+            // 'line' preloader
+            _that.drawLinePreloader = function (to) {
+                debugMode == true ? console.log('Drawing line') : '';
+                $({
+                    perc: _lastPercentage
+                }).animate({
+                    perc: to
+                }, {
+                    duration: 1000,
+                    step: function () {
+                        if(this.perc <= 101){
+                            _lastPercentage = to;
+                            var context = canvas.getContext('2d');
+                            // calculating percentage to load
+                            var alphaPercentage = (container.width() / 100) * this.perc;
+                            //clearing canvas from everithing
+                            context.clearRect(0, 0, container.width(), container.height());
+                            //let's start drawning
+                            
+                            context.beginPath();
+                            //draw percentage text
+                            context.font = font;
+                            context.fillStyle = color;
+                            context.fillText((this.perc | 0) + "%", positionX - 8, positionY - 15);
+                            //width of the preloader line
+                            context.lineWidth = lineWidth;
+                            //color of preloader line
+                            context.strokeStyle = color;
+                            if(glowColor != null){
+                                context.shadowOffsetX = 0;
+                                context.shadowOffsetY = 0;
+                                context.shadowBlur = 10;
+                                context.shadowColor = glowColor;
+                            }
+                            context.moveTo(positionX - (container.width() / 2), positionY)
+                            context.lineTo(alphaPercentage, positionY)
+                            context.stroke();
+                           
+                            
+                        }
+                    },
+                    complete: _that.onComplete 
+                });
+
+            };
+
+            //'circular' preloader
+            _that.draw_CircularPreloader = function (to) {
+                debugMode == true ? console.log('Drawing circle') : '';
+                debugMode == true ? console.log(to) : '';
+                $({
+                    perc: _lastPercentage
+                }).animate({
+                    perc: to
+                }, {
+                    queque: false,
+                    duration: 1000,
+                    step: function () {
+                        if(this.perc <= 101){
+                            _lastPercentage = to;
+                            var context = canvas.getContext('2d');
+                            // calculating percentage to load
+                            var alphaPercentage = (2 / 100) * this.perc;
+
+                            // calculating end angle of preloader
+                            _CircularPreloader.endAngle = (alphaPercentage * PI) + _CircularPreloader.startAngle;
+                      
+                            //clearing canvas from everithing
+                            context.clearRect(0, 0, container.width(), container.height());
+                            //let's start drawning
+                            context.beginPath();
+                            //draw percentage text
+                            context.font = font;
+                            context.fillStyle = color;
+                            context.fillText((this.perc | 0) + "%", positionX - 10, positionY + 3);
+
+                            //width of the preloader line
+                            context.lineWidth = lineWidth;
+                            //color of preloader line
+                            context.strokeStyle = color;
+                            if(glowColor != null){
+                                context.shadowOffsetX = 0;
+                                context.shadowOffsetY = 0;
+                                context.shadowBlur = 10;
+                                context.shadowColor = glowColor;
+                            }
+                            context.arc(positionX, positionY, radius, _CircularPreloader.startAngle, _CircularPreloader.endAngle, false);
+
+                            context.stroke();
+                            
                         
-                    }
-                    if (preloadPage == true && getFilesToLoadJSON == null && currPercentage == 0) {
+                        }
+                    },
+                    complete: _that.onComplete
+                       
+                });
 
-                        preloadPageFunc();
+            };
 
+            //lest's start this party
+
+            _that.init = function (options) {
+
+                debugMode == true ? console.log('Start application!') : '';
+                if(!getFilesToLoadJSON && currPercentage == 0){
+                    alert('plese insert a path to json file');
+                }
+                //parsing json getting every sources to load
+                if (getFilesToLoadJSON && (Modernizr.audio && Modernizr.video)) {
+
+                    $.getJSON(getFilesToLoadJSON, function (data) {
+                        var ElementsArr = data.files;
+
+                        $.each(data.files, function (key, val) {
+
+                            var _type   = null,
+                                _source = null,
+                                _size   = null,
+                                _elm    = null;
+                            
+                            _type = val.type;
+
+                            switch (_type) {
+                                case 'IMAGE':
+                                var _source = val.source,
+                                    _size   = val.size,
+                                    _elm    = $('img[src="'+ _source +'"]');
+
+                                    //fix image caching
+                                    var randomString = String((new Date()).getTime()).replace(/\D/gi, '');
+                                    $(_elm).attr('src',_source+'?'+randomString)
+                                    
+                                break;
+                                
+                                case 'VIDEO':
+                                    var videoId = val.videoId,
+                                        _elm    = videoId;
+                                        //force preload
+                                        $('#'+_elm).attr('preload','auto');
+                                    if (_videoSupportMp4){
+                                        _source = val.mp4.source;
+                                        _size   = val.mp4.size;
+                                        
+                                    } if (_videoSupportOgg) {
+                                        _source = val.ogg.source;
+                                        _size   = val.ogg.size;
+
+                                    } if (_videoSupportWebm) {
+                                        _source = val.webm.source;
+                                        _size   = val.webm.size;
+                                    }
+                                break;
+                                case 'AUDIO':
+                                    var audioId = val.audioId,
+                                        _elm    = audioId;
+                                        //force preload
+                                        $('#'+_elm).attr('preload','auto');
+                                    if (Modernizr.audio.mp3 != '' && Modernizr.audio.mp3 != false ){
+                                        _source = val.mp3.source;
+                                        _size   = val.mp3.size;
+                                        
+                                        
+                                    } if (Modernizr.audio.ogg != '' && Modernizr.audio.ogg != false ) {
+                                        _source = val.ogg.source;
+                                        _size   = val.ogg.size; 
+                               
+                                    } else {
+                                        _source = 'we can\'t detect preferred browser audio format';
+                                        _size   = 0; 
+                                    }
+                                break;
+                                case 'SCRIPT':
+                                var _source = val.source,
+                                    _size   = val.size,
+                                    _elm    = _source;
+                                break;
+                                default:
+                                console.log('something was wrong during json loading!');
+                                break;
+        
+                            }
+                            
+                            _that.fillFilesArray(_elm, _size,_source,_type)
+                            
+                            var is_last_item = (key == (ElementsArr.length - 1));
+
+                            if (is_last_item == true) {
+                                _that.startLoadElements();
+                            }
+                        });
+                    })
+                }
+                //checking if browser support canvas element 
+                if (Modernizr.canvas) {
+                    
+
+                    // checking if the preloader should be full screen or not
+                    if (fullScreen == true) {
+                        //setting fullscreen
+                        _that.setFullscreen();
+                    } else {
+                        $(container).html('<canvas id="html5Canvas' + CanvasID + '" width="' + $(container).width() + 'px "height="' + $(container).height() + 'px"></canvas>');
+                        canvas = document.getElementById('html5Canvas' + CanvasID);
                     }
-                    if (getFilesToLoadJSON) {
-						draw(currPercentage);
-   
-                    } if (currPercentage != 0){
-						
-						draw(currPercentage);
-						}
+                    
+        
+                    if(getFilesToLoadJSON){
+                        _that.updatePercentage(0);
+                    }
+
+                    
+
+                    if (options.preloaderType == 'line') {
+                        _that.drawLinePreloader(currPercentage);
+                    }
+                    if (options.preloaderType == 'circular') {
+                        _that.draw_CircularPreloader(currPercentage);
+                    }
 
                 } else {
-					 
+
                     debugMode == true ? console.log('Fallback') : '';
-					if (preloadPage == true && getFilesToLoadJSON == null) {
-
-                        preloadPageFunc();
-
-                    }
+                   
                     if (fullScreen == true) {
-						
+
                         var fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
-                        var fallbackImg = container.find('img').attr('src',pathToFallbackGif);
-						
+                        var fallbackImg = container.find('img').attr('src', pathToFallbackGif);
+
                         fallbackImg.css({
                             position: 'fixed',
                             top: ($(window).height() / 2) - (fallbackImg.height() / 2),
                             left: ($(window).width() / 2) - (fallbackImg.width() / 2),
                             'z-index': 99
                         });
-						
+
                         container.css({
                             position: 'fixed',
                             height: $(window).height(),
@@ -303,13 +537,13 @@
                             'z-index': 98
                         })
                         $(window).bind('resize.CenterCanvas', function () {
-							var fallbackImg = container.find('img').attr('src',pathToFallbackGif);
+                            var fallbackImg = container.find('img').attr('src', pathToFallbackGif);
                             fallbackImg.css({
                                 top: ($(window).height() / 2) - (fallbackImg.height() / 2),
                                 left: ($(window).width() / 2) - (fallbackImg.width() / 2)
 
                             })
-							
+
                             container.css({
                                 position: 'fixed',
                                 height: $(window).height(),
@@ -317,10 +551,10 @@
 
                             })
                         });
-						
+
                     } else {
                         var fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
-						
+
                         fallbackCanvas.css({
                             float: 'left',
                             marginLeft: positionX,
@@ -328,179 +562,16 @@
 
                         });
                     }
-					
+
                     $(window).ready(function () {
                         fallbackCanvas.delay(1000).fadeOut(function () {
-							if (onComplete != null) {
-                                var _onComplete = new onComplete;
-                            }
                             $(this).remove();
                         });
                     });
                 }
-            }
-			
-            function startLoadElements() {
-               
-                $(_elementsArray).each(function (index, element) {
-					 debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
-                    if (_typeArray[index] == 'IMAGE') {
-                        $(_sourceArray[index]).ready( function () {
-							if($(_elementsArray[index])){
-								var _onItemLoaded = new onItemLoaded(_sourceArray[index]);
-								
-							}
-                            _bytesLoaded = _bytesLoaded + parseInt(_sizeArray[index]);
-							
-                            updatePercentage(_bytesLoaded);
-                        })
-                    }	
-                    
-                    
-                    
-                });
-            }
-			function draw(perc){
-				if (preloaderType == 'line' && Modernizr.canvas) {
-                    drawLinePreloader(perc);
-                }
-                if ((preloaderType == 'circular' && Modernizr.canvas)) {
-                    draw_CircularPreloader(perc);
-                }
-			}
-            function updatePercentage(_bytesLoaded) {
-				
-                currPercentage = Math.round((_bytesLoaded / _bytesTotal) * 100);
-                debugMode == true ? console.log('Percentage: ' + parseInt(currPercentage) + '%') : '';
-               
-				draw(currPercentage);
-                
+            };
 
-            }
-			
-            function drawLinePreloader(to) {
-                debugMode == true ? console.log('Drawning line') : '';
-                $({
-                    perc: _lastPercentage
-                }).animate({
-                    perc: to
-                }, {
-                    duration: 1000,
-                    step: function () {
-
-                        var context = canvas.getContext('2d');
-                        // calculating percentage to load
-                        var alphaPercentage = (container.width() / 100) * this.perc;
-                        //clearing canvas from everithing
-                        context.clearRect(0, 0, container.width(), container.height());
-                        //let's start drawning
-                        context.beginPath();
-                        //draw percentage text
-                        context.font = font;
-                        context.fillStyle = color;
-                        context.fillText(Math.round(this.perc) + "%", positionX - 8, positionY - 15);
-                        //width of the preloader line
-                        context.lineWidth = lineWidth;
-						if(glowColor != null){
-							context.shadowOffsetX = 0;
-							context.shadowOffsetY = 0;
-							context.shadowBlur    = 10;
-							context.shadowColor   = glowColor;
-							}
-                        //color of preloader line
-                        context.strokeStyle = color;
-                        context.moveTo(0, positionY)
-                        context.lineTo(alphaPercentage, positionY)
-                        context.stroke();
-
-                        context.save();
-                    },
-                    complete: function () {
-                        _lastPercentage = Math.round(to);
-                        if (_lastPercentage >= 100) {
-                            if (onComplete != null) {
-                                var _onComplete = new onComplete;
-                            }
-
-                            //remove canvas from the stage
-                            container.delay(1000).fadeOut(function () {
-                                $(window).unbind('CenterCanvas');
-                                $(this).remove()
-                            });
-                        }
-
-
-                    }
-
-                })
-
-            }
-
-            function draw_CircularPreloader(to) {
-                debugMode == true ? console.log('Drawning circle') : '';
-                $({
-                    perc: _lastPercentage
-                }).animate({
-                    perc: to
-                }, {
-                    duration: 1000,
-                    step: function () {
-
-                        var context = canvas.getContext('2d');
-                        // calculating percentage to load
-                        var alphaPercentage = (2 / 100) * this.perc;
-
-                        // calculating end angle of preloader
-                        _CircularPreloader.endAngle = (alphaPercentage * Math.PI) + _CircularPreloader.startAngle;
-
-                        //clearing canvas from everithing
-                        context.clearRect(0, 0, container.width(), container.height());
-                        //let's start drawning
-                        context.beginPath();
-                        //draw percentage text
-                        context.font = font;
-                        context.fillStyle = color;
-                        context.fillText(Math.round(this.perc) + "%", positionX - 10, positionY + 3);
-
-                        //width of the preloader line
-                        context.lineWidth = lineWidth;
-                        //color of preloader line
-						if(glowColor != null){
-							context.shadowOffsetX = 0;
-							context.shadowOffsetY = 0;
-							context.shadowBlur    = 10;
-							context.shadowColor   = glowColor;
-							}
-                        context.strokeStyle = color;
-                        context.arc(positionX, positionY, radius, _CircularPreloader.startAngle, _CircularPreloader.endAngle, false);
-
-                        context.stroke();
-
-                        context.save();
-                    },
-                    complete: function () {
-                        _lastPercentage = Math.round(to);
-
-                        if (_lastPercentage >= 100) {
-                            if (onComplete != null) {
-                                debugMode == true ? console.log('Loading Complete') : '';
-                                var _onComplete = new onComplete;
-                            }
-
-                            //remove canvas from the stage
-                           container.delay(1000).fadeOut(function () {
-                                $(window).unbind('CenterCanvas');
-                                $(this).remove()
-                            });
-                        }
-
-
-                    }
-
-                })
-
-            }
-            return this.init(options);
+            return _that.init(options);
         }
 
     });

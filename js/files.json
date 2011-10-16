@@ -1,39 +1,72 @@
 {
 		"files": [
 			{
-				"source":"files/Chrysanthemum.jpg",
-				"type":"IMAGE",
-				"size":"858"
+				"source":"../files/test.js",
+				"type":"SCRIPT",
+				"size":4.096
 			},
 			{
-				"source":"files/Desert.jpg",
+				"source":"../files/Chrysanthemum.jpg",
 				"type":"IMAGE",
-				"size":"845"
+				"size":858
 			},
 			{
-				"source":"files/Hydrangeas.jpg",
+				"source":"../files/Desert.jpg",
 				"type":"IMAGE",
-				"size":"595"
+				"size":845
 			},
 			{
-				"source":"files/Koala.jpg",
+				"source":"../files/Hydrangeas.jpg",
 				"type":"IMAGE",
-				"size":"780"
+				"size":595
 			},
 			{
-				"source":"files/Lighthouse.jpg",
+				"source":"../files/Koala.jpg",
 				"type":"IMAGE",
-				"size":"561"
+				"size":780
 			},
 			{
-				"source":"files/Penguins.jpg",
+				"source":"../files/Lighthouse.jpg",
 				"type":"IMAGE",
-				"size":"777"
+				"size":561
 			},
 			{
-				"source":"files/Tulips.jpg",
+				"source":"../files/Penguins.jpg",
 				"type":"IMAGE",
-				"size":"620"
+				"size":777
+			},
+			{
+				"source":"../files/Tulips.jpg",
+				"type":"IMAGE",
+				"size":620
+			},
+			{
+				"type":"VIDEO",
+				"videoId":"myVideo",
+				"webm":{
+					"source":"http://www.gianlucaguarini.com/video_banner.webm",
+					"size":5054.976
+				},
+				"ogg":{
+					"source":"http://www.gianlucaguarini.com/video_banner.ogg",
+					"size":2932.736
+				},
+				"mp4":{
+					"source":"http://www.gianlucaguarini.com/video_banner.mp4",
+					"size":9285.632
+				}
+			},
+			{
+				"type":"AUDIO",
+				"audioId":"myAudio",
+				"mp3":{
+					"source":"../files/creep.mp3",
+					"size":9285.632
+				},
+				"ogg":{
+					"source":"../files/creep.ogg",
+					"size":2089.688
+				}
 			}
 		]
 	}
