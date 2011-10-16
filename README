@@ -3,10 +3,15 @@ This plug-in creates a nice preloader using html5 canvas API to draw the percent
 TODO
 
 - testing the plug in and find all the bugs
-- branching to extend the preload with AUDIO and VIDEO elements
 - create more graphic feature with canvas
-- try to get the percentage even in the browser that don't support ajax
+
+
+
+DONE 
+
+- branching to extend the preload with AUDIO and VIDEO elements
 - fix the bugs with mobile devices 
+- try to get the percentage even in the browser that don't support ajax (AJAX REMOVED)
 
 THANKS
 
