@@ -1,5 +1,7 @@
 Now you can preload your HTML 5 page with this nice plug in, passing data via JSON. You can customize it changing colors and style. It can preload video, audio, images and js
 
+TODO
+
 - testing the plug in and find all the bugs
 - create more graphic feature with canvas
 
