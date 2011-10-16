@@ -46,7 +46,7 @@
                 fullScreen:         true,                       /* chose if you want to overlay the page or just use the preloader in a box */
                 onComplete:         function () {},             /* set onComplete Callback */
                 onItemLoaded:       function (src,elm) {},      /* this Callback fire everytime an object is loaded */
-                pathToFallbackGif:  'preloaderFallback.gif',    /* set the fallback gif for browsers that suck */
+                pathToFallbackGif:  '../preloaderFallback.gif',    /* set the fallback gif for browsers that suck */
                 radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
                 glowColor:          null,                       /* set shadow color */
                 debugMode:          false                       /* debugger */
