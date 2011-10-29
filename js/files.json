@@ -1,7 +1,7 @@
 {
 		"files": [
 			{
-				"source":"../files/test.js",
+				"source":"http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/files/test.js",
 				"type":"SCRIPT",
 				"size":4.096
 			},
@@ -44,16 +44,32 @@
 				"type":"VIDEO",
 				"videoId":"myVideo",
 				"webm":{
-					"source":"http://www.gianlucaguarini.com/video_banner.webm",
-					"size":5054.976
+					"source":"http://video-js.zencoder.com/oceans-clip.webm",
+					"size":14625011
 				},
 				"ogg":{
-					"source":"http://www.gianlucaguarini.com/video_banner.ogg",
-					"size":2932.736
+					"source":"http://video-js.zencoder.com/oceans-clip.ogv",
+					"size":13235468
 				},
 				"mp4":{
-					"source":"http://www.gianlucaguarini.com/video_banner.mp4",
-					"size":9285.632
+					"source":"http://video-js.zencoder.com/oceans-clip.mp4",
+					"size":19448241
+				}
+			},
+			{
+				"type":"VIDEO",
+				"videoId":"myVideo2",
+				"webm":{
+					"source":"http://clips.vorwaerts-gmbh.de/VfE.webm",
+					"size":7901210
+				},
+				"ogg":{
+					"source":"http://clips.vorwaerts-gmbh.de/VfE.ogv",
+					"size":4964107
+				},
+				"mp4":{
+					"source":"http://clips.vorwaerts-gmbh.de/VfE_html5.mp4",
+					"size":5251725
 				}
 			},
 			{

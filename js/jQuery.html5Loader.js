@@ -104,6 +104,10 @@
                 _videoSupportWebm   = Modernizr.video.webm,
                 _audioSupportMp3    = Modernizr.audio.mp3,
                 _audioSupportOgg    = Modernizr.audio.ogg,
+                _media              = [],
+                _mediaI             = 0,
+                _progressLS         = [],
+                _canplaythroughLS   = [],
                 //_that point to the global object
                 _that               = this;
                         
@@ -222,46 +226,77 @@
                             debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
                         }
 
-                        if (_typeArray[index] == 'VIDEO') {
+                        if (_typeArray[index] == 'VIDEO' || _typeArray[index] == 'AUDIO') {
 
-                            var video = document.getElementById(_elementsArray[index]);
+                            var i = _mediaI;
 
-                            // on video loaded
-                            video.addEventListener('canplaythrough', _that.onMediaLoaded = function (event) {
-                                if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],video);
-                                }
-                               
-                                _bytesLoaded += _sizeArray[index];
-                                _that.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
-                            }, true);
-                           debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            _media[i] = document.getElementById(_elementsArray[index]);
+
                             
-                        }
-                        if (_typeArray[index] == 'AUDIO') {
+                            // on video loading
+                           
+                           
+                            var alphaLoading     = _sizeArray[index],
+                                tmpLoaded        = 0,
+                                realLoaded       = 0;
+                                    
+                            _media[i].addEventListener('progress', _progressLS[i] = function (event) {
 
-                            var audio = document.getElementById(_elementsArray[index]);
+                               if (_media[i].buffered != undefined) {// Firefox 3.6 doesn't suppport
+                                    
 
-                            audio.addEventListener('canplaythrough', _that.onMediaLoaded = function (event) {
-                                if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],audio);
+                                    if (_media[i].buffered.length > 0) {
+                                        tmpLoaded = (alphaLoading / _media[i].duration) * _media[i].buffered.end(0)
+                                    }
+                                    
+                                    realLoaded = tmpLoaded - realLoaded;
+
+                                    _sizeArray[index] -= realLoaded;
+
+                                    _bytesLoaded += realLoaded;
+
+                                   
+
+                                    _that.updatePercentage(_bytesLoaded);
+
+                                    
+
+                                    realLoaded = tmpLoaded;
+                                    debugMode == true ? console.log('File Loading in progress:' + _sourceArray[index]) : '';
                                 }
                                 
+                            }, true);
+                            
+                            // on video loaded
+                            _media[i].addEventListener('canplaythrough',  _canplaythroughLS[i] = function (event) {
+                                if ($(_elementsArray[index])) {
+                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],_media[i]);
+                                }
+                                _media[i].removeEventListener('progress',_progressLS[i],true);
+                                _media[i].removeEventListener('canplaythrough',_canplaythroughLS[i],true);
+
                                 _bytesLoaded += _sizeArray[index];
+
+                                
+
                                 _that.updatePercentage(_bytesLoaded);
                                 debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
-
+                               
                             }, true);
-                           debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            
+                            _mediaI ++;
+
+                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
                             
                         }
+                        
                     }
                 });
             };
 
             _that.updatePercentage = function (_bytesLoaded) {
 
+                
 
                 currPercentage = ~~ (((_bytesLoaded / _bytesTotal) * 100) | 0) + 1; /* +1 force math round to get full 100% percentage*/
 
@@ -306,14 +341,16 @@
                     duration: 1000,
                     step: function () {
                         if(this.perc <= 101){
+
                             _lastPercentage = to;
+
                             var context = canvas.getContext('2d');
                             // calculating percentage to load
                             var alphaPercentage = (container.width() / 100) * this.perc;
                             //clearing canvas from everithing
                             context.clearRect(0, 0, container.width(), container.height());
                             //let's start drawning
-                            
+                            context.restore();
                             context.beginPath();
                             //draw percentage text
                             context.font = font;
@@ -332,7 +369,8 @@
                             context.moveTo(positionX - (container.width() / 2), positionY)
                             context.lineTo(alphaPercentage, positionY)
                             context.stroke();
-                           
+                            
+                            context.save();
                             
                         }
                     },
@@ -364,6 +402,7 @@
                       
                             //clearing canvas from everithing
                             context.clearRect(0, 0, container.width(), container.height());
+                            context.restore();
                             //let's start drawning
                             context.beginPath();
                             //draw percentage text
@@ -384,8 +423,9 @@
                             context.arc(positionX, positionY, radius, _CircularPreloader.startAngle, _CircularPreloader.endAngle, false);
 
                             context.stroke();
+                            context.save();
                             
-                        
+                            
                         }
                     },
                     complete: _that.onComplete
@@ -416,15 +456,15 @@
                                 _elm    = null;
                             
                             _type = val.type;
-
+                            //fix image caching
+                            var randomString = String((new Date()).getTime()).replace(/\D/gi, '');
                             switch (_type) {
                                 case 'IMAGE':
                                 var _source = val.source,
                                     _size   = val.size,
                                     _elm    = $('img[src="'+ _source +'"]');
 
-                                    //fix image caching
-                                    var randomString = String((new Date()).getTime()).replace(/\D/gi, '');
+                                    
                                     $(_elm).attr('src',_source+'?'+randomString)
                                     
                                 break;
@@ -434,6 +474,7 @@
                                         _elm    = videoId;
                                         //force preload
                                         $('#'+_elm).attr('preload','auto');
+
                                     if (_videoSupportMp4){
                                         _source = val.mp4.source;
                                         _size   = val.mp4.size;

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" /><title>Gianluca Guarini- html5 loader jQuery plug-in</title>
+<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+<meta name="Keywords"  content="JavaScript,HTML5,CSS" />
+
+<style type="text/css">
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color:#999;
+}
+#html5Loader{
+	width:600px;
+	height:600px;
+	background-color:rgba(0,0,0,0.7);
+	margin:0;
+	position:absolute;
+	}
+</style>
+<script src="js/jquery.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/jQuery.html5Loader.js"></script>
+
+</head>
+<body>
+
+<div id="html5Loader"></div>
+
+<h1>Remember to load this page on a server!</h1>
+<div id="wrapper">
+<video width="960" height="400" id="myVideo" controls="controls" >
+	<source src="http://www.gianlucaguarini.com/video_banner.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+	<source src="http://www.gianlucaguarini.com/video_banner.webm" type='video/webm; codecs="vp8, vorbis"' />
+	<source src="http://www.gianlucaguarini.com/video_banner.ogg" type='video/ogg; codecs="theora, vorbis"' />
+</video>
+<audio id="myAudio" controls="controls">
+	<source src="http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/files/creep.mp3" />
+	<source src="http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/files/creep.ogg" />
+</audio>
+<img src="../files/Hydrangeas.jpg"><img src="../files/Koala.jpg"><img src="../files/Lighthouse.jpg"><img src="../files/Penguins.jpg"><img src="../files/Tulips.jpg"><img src="../files/Chrysanthemum.jpg"><img src="../files/Desert.jpg">
+<video width="960" height="400" id="myVideo2" controls="controls" >
+	<source src="http://www.gianlucaguarini.com/video_banner.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+	<source src="http://www.gianlucaguarini.com/video_banner.webm" type='video/webm; codecs="vp8, vorbis"' />
+	<source src="http://www.gianlucaguarini.com/video_banner.ogg" type='video/ogg; codecs="theora, vorbis"' />
+</video>
+</div>
+
+
+<script type="text/javascript">
+//init
+$('#html5Loader').html5Loader({
+		getFilesToLoadJSON:'js/files.json'
+})	
+</script>
+</body>
+</html>
