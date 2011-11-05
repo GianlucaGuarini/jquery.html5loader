@@ -53,14 +53,16 @@ USAGE
 	}
 </code></pre>
 
-#2 Add the scripts inside the <code><head></code> of your document:
+#2 Add the scripts inside the __head__ of your document:
 
-<pre><code><script src="js/jquery.min.js"></script>
-<script src="js/modernizr.js"></script>
-<script src="js/jQuery.html5Loader.js"></script>
+
+<pre><code>
+js/jquery.min.js
+js/modernizr.js
+js/jQuery.html5Loader.js
 </code></pre>
 
-#3 and then Initialize the plug in before <code></body></code> using JSON file 
+#3 and then Initialize the plug in before the end of __body__ using JSON file 
 
 <pre><code>
 $('#html5Loader').html5Loader({
@@ -83,14 +85,14 @@ $('#html5Loader').html5Loader({
 
 </code></pre>
 
-#5 append html5Loader div container to the <code><body></code>
+#5 append html5Loader div container to the __body__
 
 <pre><code>
-<body>
+body
 <div id="html5Loader"></div>
 
 [.........]
-</body>
+/body
 </code></pre>
 
 ===========================================
@@ -101,7 +103,6 @@ Preloader options
 
 ----------
 <pre><code>
-
 $('#html5Loader').html5Loader({
 	option Name: 'setting'
 })	
