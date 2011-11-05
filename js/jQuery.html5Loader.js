@@ -340,7 +340,7 @@
                 }, {
                     duration: 1000,
                     step: function () {
-                        if(this.perc <= 101){
+                        if(this.perc < 101){
 
                             _lastPercentage = to;
 
@@ -391,7 +391,7 @@
                     queque: false,
                     duration: 1000,
                     step: function () {
-                        if(this.perc <= 101){
+                        if(this.perc < 101){
                             _lastPercentage = to;
                             var context = canvas.getContext('2d');
                             // calculating percentage to load
@@ -597,7 +597,7 @@
                         var fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
 
                         fallbackCanvas.css({
-                            float: 'left',
+                            'float': 'left',
                             marginLeft: positionX,
                             marginTop: positionY
 
