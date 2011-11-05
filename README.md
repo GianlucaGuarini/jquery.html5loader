@@ -57,14 +57,17 @@ USAGE
 
 
 <pre><code>
+
 js/jquery.min.js
 js/modernizr.js
 js/jQuery.html5Loader.js
+
 </code></pre>
 
 #3 and then Initialize the plug in before the end of __body__ using JSON file 
 
 <pre><code>
+
 $('#html5Loader').html5Loader({
 		getFilesToLoadJSON:'path to /files.json'
 })	
@@ -89,7 +92,7 @@ $('#html5Loader').html5Loader({
 
 <pre><code>
 body
-<div id="html5Loader"></div>
+div id="html5Loader" 
 
 [.........]
 /body
@@ -103,9 +106,11 @@ Preloader options
 
 ----------
 <pre><code>
+
 $('#html5Loader').html5Loader({
 	option Name: 'setting'
 })	
+
 </code></pre>
 
 **preloaderType** ( __'circular'__ default)
