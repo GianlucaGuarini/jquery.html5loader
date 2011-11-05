@@ -7,9 +7,8 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index.html
 USAGE
 ----------
 
-You need to create a JSON file like this:
 
-
+<pre><code>
 {
 		"files": [
 			{
@@ -52,28 +51,27 @@ You need to create a JSON file like this:
 			}
 		]
 	}
+</code></pre>
 
+#2 Add the scripts inside the <code><head></code> of your document:
 
-2 Add the scripts inside the <head> of your document:
-
-
-<script src="js/jquery.min.js"></script>
+<pre><code><script src="js/jquery.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="js/jQuery.html5Loader.js"></script>
+</code></pre>
 
+#3 and then Initialize the plug in before <code></body></code> using JSON file 
 
-3 and then Initialize the plug in before </body> using JSON file 
-
-
+<pre><code>
 $('#html5Loader').html5Loader({
 		getFilesToLoadJSON:'path to /files.json'
 })	
 
+</code></pre>
 
+#4 customize plugin via css:
 
-4 customize plugin via css:
-
-
+<pre><code>
 
 #html5Loader {
 	width:400px;
@@ -83,16 +81,17 @@ $('#html5Loader').html5Loader({
 	position:absolute;
 }
 
-
+</code></pre>
 
 #5 append html5Loader div container to the <code><body></code>
 
-
+<pre><code>
 <body>
 <div id="html5Loader"></div>
 
 [.........]
 </body>
+</code></pre>
 
 ===========================================
 
@@ -101,48 +100,51 @@ Preloader options
 **You can set the plug in options in this way**:
 
 ----------
-
+<pre><code>
 
 $('#html5Loader').html5Loader({
 	option Name: 'setting'
 })	
+</code></pre>
 
+**preloaderType** ( __'circular'__ default)
 
-preloaderType ( __'circular'__ default)
-
-'line'
-'circular'
+* 'line'
+* 'circular'
 soon i will add some other kinds of preloader type
 
-getFilesToLoadJSON** ( __null__ default)
+**getFilesToLoadJSON** ( __null__ default)
 
-lineWidth ( __5__ default)
+**lineWidth** ( __5__ default)
 you can set the line width
 
-color ( __"#ffffff"__ default)
+**color** ( __"#ffffff"__ default)
 you can set the color
 
-glowColor ( __null__ default)
+**glowColor** ( __null__ default)
 you can add a golow color to everything
 
-radius ( __40__ default)
+**radius** ( __40__ default)
 set radius of the circular preloader
 
-fullScreen ( __true__ default)
+**preloadPage** ( __true__ default) REMOVED!
+automatically detect every img on the page and load the src paths 
+
+**fullScreen** ( __true__ default)
 expand the canvas loader on the entire window
 
-onComplete ( __function () {}__ default)
+**onComplete** ( __function () {}__ default)
 you can add an event to the end of loading
 
-onItemLoaded ( __function (src,elm) {}__ default)
+**onItemLoaded** ( __function (src,elm) {}__ default)
 you can do something when every object is loaded;
 @src is the path of the object loaded.
 @elm is the tag loaded.
  
-pathToFallbackGif ( __preloaderFallback.gif'__ default)
+**pathToFallbackGif** ( __preloaderFallback.gif'__ default)
 set the path for the fallback gif for the browsers that not support the canvas API
                 
-debugMode ( __true__ default)
+**debugMode** ( __true__ default)
 you can follow the plug in events on the javascript console
 				
 
