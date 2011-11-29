@@ -7,7 +7,7 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index.html
 USAGE
 ----------
 
-#1 You need to create a JSON file like this:
+#1 You need to create a JSON file like this containing all the files you need to preload:
 
 <pre><code>
 {
