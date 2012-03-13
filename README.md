@@ -118,6 +118,7 @@ $('#html5Loader').html5Loader({
 
 * 'line'
 * 'circular'
+* 'big-counter'
 soon i will add some other kinds of preloader type
 
 **getFilesToLoadJSON** ( __null__ default)
