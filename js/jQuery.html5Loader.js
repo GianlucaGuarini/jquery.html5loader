@@ -1,6 +1,6 @@
 /**
  *
- * Version:     1.1
+ * Version:     1.2
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -310,6 +310,9 @@
                 if ((options.preloaderType == 'circular' && Modernizr.canvas)) {
                     _that.draw_CircularPreloader(currPercentage);
                 }
+                if ((options.preloaderType == 'big-counter' && Modernizr.canvas)) {
+                    _that.draw_BigCounterPreloader(currPercentage);
+                }
 
             };
             _that.onComplete = function(){
@@ -343,12 +346,13 @@
                         if(this.perc < 101){
 
                             _lastPercentage = to;
-
+                            var width = container.innerWidth(),
+                                height= container.innerHeight();
                             var context = canvas.getContext('2d');
                             // calculating percentage to load
-                            var alphaPercentage = (container.width() / 100) * this.perc;
+                            var alphaPercentage = (width / 100) * this.perc;
                             //clearing canvas from everithing
-                            context.clearRect(0, 0, container.width(), container.height());
+                            context.clearRect(0, 0, width, height);
                             //let's start drawning
                             context.restore();
                             context.beginPath();
@@ -366,7 +370,7 @@
                                 context.shadowBlur = 10;
                                 context.shadowColor = glowColor;
                             }
-                            context.moveTo(positionX - (container.width() / 2), positionY)
+                            context.moveTo(positionX - (width / 2), positionY)
                             context.lineTo(alphaPercentage, positionY)
                             context.stroke();
                             
@@ -424,6 +428,65 @@
 
                             context.stroke();
                             context.save();
+                            
+                            
+                        }
+                    },
+                    complete: _that.onComplete
+                       
+                });
+
+            };
+            //'big-counter' preloader
+            _that.draw_BigCounterPreloader = function (to) {
+                debugMode == true ? console.log('Drawing circle') : '';
+                debugMode == true ? console.log(to) : '';
+                $({
+                    perc: _lastPercentage
+                }).animate({
+                    perc: to
+                }, {
+                    queque: false,
+                    duration: 1000,
+                    step: function () {
+                        if(this.perc < 101){
+
+                            
+
+                            _lastPercentage = to;
+                            var width = container.innerWidth(),
+                                height= container.innerHeight();
+                            var context = canvas.getContext('2d');
+                            context.save();
+                            // calculating percentage to load
+                            var alphaPercentage = (width / 100) * this.perc;
+                            //clearing canvas from everithing
+                            context.clearRect(0, 0, width, height);
+                            //let's start drawning
+                            context.restore();
+                            context.beginPath();
+                            //draw percentage text
+                            context.font = font;
+                            context.fillStyle = color;
+                            context.fillText((this.perc | 0) + "%", positionX - 8, positionY - 15);
+                            //width of the preloader line
+                            context.lineWidth = height;
+                            //color of preloader line
+                            context.strokeStyle = color;
+                            if(glowColor != null){
+                                context.shadowOffsetX = 0;
+                                context.shadowOffsetY = 0;
+                                context.shadowBlur = 10;
+                                context.shadowColor = glowColor;
+                            }
+                            context.moveTo(positionX - (width / 2), positionY)
+                            context.lineTo(alphaPercentage, positionY)
+                            context.globalCompositeOperation = 'xor';
+                            context.stroke();
+                            context.restore();
+                            
+                            
+                            
                             
                             
                         }
@@ -553,6 +616,9 @@
                     }
                     if (options.preloaderType == 'circular') {
                         _that.draw_CircularPreloader(currPercentage);
+                    }
+                    if (options.preloaderType == 'big') {
+                        _that.draw_BigCounterPreloader(currPercentage);
                     }
 
                 } else {
