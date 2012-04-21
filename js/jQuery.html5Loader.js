@@ -1,6 +1,6 @@
 /**
  *
- * Version:     1.2
+ * Version:     1.3
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -88,6 +88,7 @@
                                           startAngle: 1.5 * PI,
                                           endAngle: 0
                                       },
+                $window             = $(window),
                 CanvasID            = $(container).attr('id') == undefined ? $(container).attr('class') : $(container).attr('id'),
                 _lastPercentage     = 0,
                 _bytesTotal         = 0,
@@ -95,7 +96,7 @@
                 _firstInit          = false,
                 _elementsArray      = [],
                 _sizeArray          = [],
-                _sourceArray        = [],
+                _urlsArray          = [],
                 _typeArray          = [],
                 _videoArray         = [],
                 _audioArray         = [],
@@ -108,15 +109,15 @@
                 _mediaI             = 0,
                 _progressLS         = [],
                 _canplaythroughLS   = [],
-                //_that point to the global object
-                _that               = this;
+                //_this point to the global object
+                _this               = this;
                         
             /* 
 
             Utils Objects
 
             */
-            _that.fileExtension = function (fname) {
+            _this.fileExtension = function (fname) {
                 var pos = fname.lastIndexOf(".");
                 var strlen = fname.length;
                 if (pos != -1 && strlen != pos + 1) {
@@ -129,12 +130,12 @@
                 return extension;
             };
             
-            _that.setFullscreen = function () {
+            _this.setFullscreen = function () {
                 debugMode == true ? console.log('Setting Full screen') : '';
                 container.css({
                     position: 'fixed',
-                    height: $(window).height(),
-                    width: $(window).width(),
+                    height: $window.height(),
+                    width: $window.width(),
                     'z-index': 98,
                     top: 0
                 })
@@ -147,21 +148,21 @@
                 //create background
                 $(canvas).css({
                     position: 'fixed',
-                    top: ($(window).height() / 2) - ($(canvas).height() / 2),
-                    left: ($(window).width() / 2) - ($(canvas).width() / 2),
+                    top: ($window.height() / 2) - ($(canvas).height() / 2),
+                    left: ($window.width() / 2) - ($(canvas).width() / 2),
                     'z-index': 99
                 })
 
-                $(window).bind('resize.CenterCanvas', function () {
+                $window.bind('resize.CenterCanvas', function () {
                     $(canvas).css({
-                        top: ($(window).height() / 2) - ($(canvas).height() / 2),
-                        left: ($(window).width() / 2) - ($(canvas).width() / 2)
+                        top: ($window.height() / 2) - ($(canvas).height() / 2),
+                        left: ($window.width() / 2) - ($(canvas).width() / 2)
 
                     })
                     container.css({
                         position: 'fixed',
-                        height: $(window).height(),
-                        width: $(window).width(),
+                        height: $window.height(),
+                        width: $window.width(),
                         'z-index': 98
                     })
 
@@ -179,7 +180,7 @@
 
             */
 
-            _that.fillFilesArray = function (currEle, currSize, currSource, currType) {
+            _this.fillFilesArray = function (currEle, currSize, currSource, currType) {
 
                 _bytesTotal += currSize;
 
@@ -187,43 +188,51 @@
 
                 _elementsArray.push(currEle);
                 _sizeArray.push(currSize);
-                _sourceArray.push(currSource);
+                _urlsArray.push(currSource);
                 _typeArray.push(currType);
 
             };
             
-            _that.startLoadElements = function () {
+            _this.startLoadElements = function () {
 
                 $(_elementsArray).each(function (index, element) {
+
+                    var forcedecache = '?' + Math.random();
+
+                    _urlsArray[index] += forcedecache;
+
                     if(_sizeArray[index] > 0){
                         if (_typeArray[index] == 'IMAGE') {
                             
+                            var currImg = new Image ();
 
+                            currImg.src = _urlsArray[index];
 
-                            $(_elementsArray[index]).load(function () {
+                            $(currImg).on( 'load', function () {
 
                                 if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],element);
+                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],element);
                                 }
                                 _bytesLoaded += _sizeArray[index];
-                                _that.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+                                _this.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
                             });
-                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+
+                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
                         }
 
                         if (_typeArray[index] == 'SCRIPT') {
 
-                            $.getScript(_elementsArray[index],function () {
+                            $.getScript(_urlsArray[index],function () {
 
                                 if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],element);
+                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],element);
                                 }
                                 _bytesLoaded += _sizeArray[index];
-                                _that.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+                                _this.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
                             });
-                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
                         }
 
                         if (_typeArray[index] == 'VIDEO' || _typeArray[index] == 'AUDIO') {
@@ -232,9 +241,8 @@
 
                             _media[i] = document.getElementById(_elementsArray[index]);
 
-                            
+                            _media[i].src = _urlsArray[index];
                             // on video loading
-                           
                            
                             var alphaLoading     = _sizeArray[index],
                                 tmpLoaded        = 0,
@@ -257,12 +265,12 @@
 
                                    
 
-                                    _that.updatePercentage(_bytesLoaded);
+                                    _this.updatePercentage(_bytesLoaded);
 
                                     
 
                                     realLoaded = tmpLoaded;
-                                    debugMode == true ? console.log('File Loading in progress:' + _sourceArray[index]) : '';
+                                    debugMode == true ? console.log('File Loading in progress:' + _urlsArray[index]) : '';
                                 }
                                 
                             }, true);
@@ -270,7 +278,7 @@
                             // on video loaded
                             _media[i].addEventListener('canplaythrough',  _canplaythroughLS[i] = function (event) {
                                 if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_sourceArray[index],_media[i]);
+                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],_media[i]);
                                 }
                                 _media[i].removeEventListener('progress',_progressLS[i],true);
                                 _media[i].removeEventListener('canplaythrough',_canplaythroughLS[i],true);
@@ -279,14 +287,14 @@
 
                                 
 
-                                _that.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _sourceArray[index]) : '';
+                                _this.updatePercentage(_bytesLoaded);
+                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
                                
                             }, true);
                             
                             _mediaI ++;
 
-                            debugMode == true ? console.log('Loading file:' + _sourceArray[index]) : '';
+                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
                             
                         }
                         
@@ -294,7 +302,7 @@
                 });
             };
 
-            _that.updatePercentage = function (_bytesLoaded) {
+            _this.updatePercentage = function (_bytesLoaded) {
 
                 
 
@@ -302,20 +310,19 @@
 
                 debugMode == true ? console.log('Percentage: ' + ~~ (currPercentage) + '%') : '';
 
-           
 
                 if (options.preloaderType == 'line' && Modernizr.canvas) {
-                    _that.drawLinePreloader(currPercentage);
+                    _this.drawLinePreloader(currPercentage);
                 }
                 if ((options.preloaderType == 'circular' && Modernizr.canvas)) {
-                    _that.draw_CircularPreloader(currPercentage);
+                    _this.draw_CircularPreloader(currPercentage);
                 }
                 if ((options.preloaderType == 'big-counter' && Modernizr.canvas)) {
-                    _that.draw_BigCounterPreloader(currPercentage);
+                    _this.draw_BigCounterPreloader(currPercentage);
                 }
 
             };
-            _that.onComplete = function(){
+            _this.onComplete = function(){
 
                 if (_lastPercentage >= 100) {
                     if (onComplete != null) {
@@ -323,7 +330,7 @@
                     }
                     //remove canvas from the stage
                     container.delay(1000).fadeOut(function () {
-                            $(window).unbind('CenterCanvas');
+                            $window.unbind('CenterCanvas');
                             $(this).remove()
                     });
                 }
@@ -334,7 +341,7 @@
             */
 
             // 'line' preloader
-            _that.drawLinePreloader = function (to) {
+            _this.drawLinePreloader = function (to) {
                 debugMode == true ? console.log('Drawing line') : '';
                 $({
                     perc: _lastPercentage
@@ -378,13 +385,13 @@
                             
                         }
                     },
-                    complete: _that.onComplete 
+                    complete: _this.onComplete 
                 });
 
             };
 
             //'circular' preloader
-            _that.draw_CircularPreloader = function (to) {
+            _this.draw_CircularPreloader = function (to) {
                 debugMode == true ? console.log('Drawing circle') : '';
                 debugMode == true ? console.log(to) : '';
                 $({
@@ -432,13 +439,13 @@
                             
                         }
                     },
-                    complete: _that.onComplete
+                    complete: _this.onComplete
                        
                 });
 
             };
             //'big-counter' preloader
-            _that.draw_BigCounterPreloader = function (to) {
+            _this.draw_BigCounterPreloader = function (to) {
                 debugMode == true ? console.log('Drawing circle') : '';
                 debugMode == true ? console.log(to) : '';
                 $({
@@ -491,7 +498,7 @@
                             
                         }
                     },
-                    complete: _that.onComplete
+                    complete: _this.onComplete
                        
                 });
 
@@ -499,7 +506,7 @@
 
             //lest's start this party
 
-            _that.init = function (options) {
+            _this.init = function (options) {
 
                 debugMode == true ? console.log('Start application!') : '';
                 if(!getFilesToLoadJSON && currPercentage == 0){
@@ -581,12 +588,12 @@
         
                             }
                             
-                            _that.fillFilesArray(_elm, _size,_source,_type)
+                            _this.fillFilesArray(_elm, _size,_source,_type)
                             
                             var is_last_item = (key == (ElementsArr.length - 1));
 
                             if (is_last_item == true) {
-                                _that.startLoadElements();
+                                _this.startLoadElements();
                             }
                         });
                     })
@@ -598,7 +605,7 @@
                     // checking if the preloader should be full screen or not
                     if (fullScreen == true) {
                         //setting fullscreen
-                        _that.setFullscreen();
+                        _this.setFullscreen();
                     } else {
                         $(container).html('<canvas id="html5Canvas' + CanvasID + '" width="' + $(container).width() + 'px "height="' + $(container).height() + 'px"></canvas>');
                         canvas = document.getElementById('html5Canvas' + CanvasID);
@@ -606,19 +613,19 @@
                     
         
                     if(getFilesToLoadJSON){
-                        _that.updatePercentage(0);
+                        _this.updatePercentage(0);
                     }
 
                     
 
                     if (options.preloaderType == 'line') {
-                        _that.drawLinePreloader(currPercentage);
+                        _this.drawLinePreloader(currPercentage);
                     }
                     if (options.preloaderType == 'circular') {
-                        _that.draw_CircularPreloader(currPercentage);
+                        _this.draw_CircularPreloader(currPercentage);
                     }
                     if (options.preloaderType == 'big') {
-                        _that.draw_BigCounterPreloader(currPercentage);
+                        _this.draw_BigCounterPreloader(currPercentage);
                     }
 
                 } else {
@@ -632,29 +639,29 @@
 
                         fallbackImg.css({
                             position: 'fixed',
-                            top: ($(window).height() / 2) - (fallbackImg.height() / 2),
-                            left: ($(window).width() / 2) - (fallbackImg.width() / 2),
+                            top: ($window.height() / 2) - (fallbackImg.height() / 2),
+                            left: ($window.width() / 2) - (fallbackImg.width() / 2),
                             'z-index': 99
                         });
 
                         container.css({
                             position: 'fixed',
-                            height: $(window).height(),
-                            width: $(window).width(),
+                            height: $window.height(),
+                            width: $window.width(),
                             'z-index': 98
                         })
-                        $(window).bind('resize.CenterCanvas', function () {
+                        $window.bind('resize.CenterCanvas', function () {
                             var fallbackImg = container.find('img').attr('src', pathToFallbackGif);
                             fallbackImg.css({
-                                top: ($(window).height() / 2) - (fallbackImg.height() / 2),
-                                left: ($(window).width() / 2) - (fallbackImg.width() / 2)
+                                top: ($window.height() / 2) - (fallbackImg.height() / 2),
+                                left: ($window.width() / 2) - (fallbackImg.width() / 2)
 
                             })
 
                             container.css({
                                 position: 'fixed',
-                                height: $(window).height(),
-                                width: $(window).width()
+                                height: $window.height(),
+                                width: $window.width()
 
                             })
                         });
@@ -670,7 +677,7 @@
                         });
                     }
 
-                    $(window).ready(function () {
+                    $window.ready(function () {
                         fallbackCanvas.delay(1000).fadeOut(function () {
                             $(this).remove();
                         });
@@ -678,7 +685,7 @@
                 }
             };
 
-            return _that.init(options);
+            return _this.init(options);
         }
 
     });
