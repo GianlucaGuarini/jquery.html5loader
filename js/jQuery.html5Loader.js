@@ -30,7 +30,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **/
 (function ($) {
-
+    'use strict';
     $.fn.extend({
         html5Loader: function (options) {
             var container =         this;
@@ -44,12 +44,13 @@
                 color:              "#ffffff",                  /* set preloader color */
                 font:               "normal 11px Arial",        /* set preloader font (you can embed a font by css and use it here) */
                 fullScreen:         true,                       /* chose if you want to overlay the page or just use the preloader in a box */
-                onComplete:         function () {},             /* set onComplete Callback */
-                onItemLoaded:       function (src,elm) {},      /* this Callback fire everytime an object is loaded */
-                pathToFallbackGif:  '../preloaderFallback.gif',    /* set the fallback gif for browsers that suck */
+                pathToFallbackGif:  '../preloaderFallback.gif', /* set the fallback gif for browsers that suck */
                 radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
                 glowColor:          null,                       /* set shadow color */
-                debugMode:          false                       /* debugger */
+                debugMode:          true,                       /* debugger */
+                onComplete:         function () {},             /* set onComplete Callback */
+                onElementLoaded:    function (src,elm) { },     /* this Callback fires everytime an object is loaded */
+                onUpdate:           function ( percentage ) {}  /* this function returns alway the current percentage */
             };
 
             var options = $.extend(defaults, options);
@@ -68,13 +69,14 @@
                 color               = options.color,
                 font                = options.font,
                 getFilesToLoadJSON  = options.getFilesToLoadJSON,
-                onComplete          = options.onComplete,
-                onItemLoaded        = options.onItemLoaded,
                 pathToFallbackGif   = options.pathToFallbackGif,
                 radius              = options.radius,
                 fullScreen          = options.fullScreen,
-                glowColor           = options.glowColor;
-                debugMode           = options.debugMode;
+                glowColor           = options.glowColor,
+                debugMode           = options.debugMode,
+                onComplete          = options.onComplete,
+                onElementLoaded     = options.onElementLoaded,
+                onUpdate            = options.onUpdate;
 
             /*
             
@@ -112,33 +114,22 @@
                 //_this point to the global object
                 _this               = this;
                         
-            /* 
+            /*
 
             Utils Objects
 
             */
-            _this.fileExtension = function (fname) {
-                var pos = fname.lastIndexOf(".");
-                var strlen = fname.length;
-                if (pos != -1 && strlen != pos + 1) {
-                    var ext = fname.split(".");
-                    var len = ext.length;
-                    var extension = ext[len - 1].toLowerCase();
-                } else {
-                    extension = "No extension found";
-                }
-                return extension;
-            };
+        
             
             _this.setFullscreen = function () {
-                debugMode == true ? console.log('Setting Full screen') : '';
+                _this.logger('Setting Full screen');
                 container.css({
                     position: 'fixed',
                     height: $window.height(),
                     width: $window.width(),
                     'z-index': 98,
                     top: 0
-                })
+                });
                 positionX = container.width() / 2;
                 positionY = container.height() / 2;
                 
@@ -151,30 +142,35 @@
                     top: ($window.height() / 2) - ($(canvas).height() / 2),
                     left: ($window.width() / 2) - ($(canvas).width() / 2),
                     'z-index': 99
-                })
+                });
 
                 $window.bind('resize.CenterCanvas', function () {
                     $(canvas).css({
                         top: ($window.height() / 2) - ($(canvas).height() / 2),
                         left: ($window.width() / 2) - ($(canvas).width() / 2)
 
-                    })
+                    });
                     container.css({
                         position: 'fixed',
                         height: $window.height(),
                         width: $window.width(),
                         'z-index': 98
-                    })
+                    });
 
-                })
-            }
-            /* 
+                });
+            };
+            _this.logger = function ( msg ) {
+                if (debugMode) {
+                    console.log( msg );
+                }
+            };
+            /*
             
             END Utils Objects
 
             */
 
-            /* 
+            /*
             
             CORE FUNCTIONS
 
@@ -184,7 +180,7 @@
 
                 _bytesTotal += currSize;
 
-                debugMode == true ? console.log('Getting file:' + currSource + ' Size: ' + currSize) : '';
+                _this.logger('Getting file:' + currSource + ' Size: ' + currSize);
 
                 _elementsArray.push(currEle);
                 _sizeArray.push(currSize);
@@ -192,9 +188,13 @@
                 _typeArray.push(currType);
 
             };
-            
+            _this.onElementLoaded = function ( elmUrl, elm) {
+                if (typeof onElementLoaded === 'function') {
+                    onElementLoaded ( elmUrl, elm );
+                }
+            };
             _this.startLoadElements = function () {
-
+                
                 $(_elementsArray).each(function (index, element) {
 
                     var forcedecache = '?' + Math.random();
@@ -210,29 +210,31 @@
 
                             $(currImg).on( 'load', function () {
 
-                                if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],element);
-                                }
+                                _this.onElementLoaded(_urlsArray[index],element);
+                                
                                 _bytesLoaded += _sizeArray[index];
+
                                 _this.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
+                                _this.logger('File Loaded:' + _urlsArray[index]);
+                                // preventing the memory leak
+                                currImg = null;
                             });
 
-                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
+                            _this.logger('Loading file:' + _urlsArray[index]);
                         }
 
                         if (_typeArray[index] == 'SCRIPT') {
 
                             $.getScript(_urlsArray[index],function () {
 
-                                if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],element);
-                                }
+                                
+                                _this.onElementLoaded(_urlsArray[index],element);
+                                
                                 _bytesLoaded += _sizeArray[index];
                                 _this.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
+                                _this.logger('File Loaded:' + _urlsArray[index]);
                             });
-                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
+                            _this.logger('Loading file:' + _urlsArray[index]);
                         }
 
                         if (_typeArray[index] == 'VIDEO' || _typeArray[index] == 'AUDIO') {
@@ -250,51 +252,45 @@
                                     
                             _media[i].addEventListener('progress', _progressLS[i] = function (event) {
 
-                               if (_media[i].buffered != undefined) {// Firefox 3.6 doesn't suppport
+                               if (typeof _media[i].buffered !== 'undefined' ) {// Firefox 3.6 doesn't suppport
                                     
 
                                     if (_media[i].buffered.length > 0) {
-                                        tmpLoaded = (alphaLoading / _media[i].duration) * _media[i].buffered.end(0)
+                                        tmpLoaded = (alphaLoading / _media[i].duration) * _media[i].buffered.end(0);
                                     }
                                     
-                                    realLoaded = tmpLoaded - realLoaded;
+                                    realLoaded = parseInt(tmpLoaded - realLoaded);
 
                                     _sizeArray[index] -= realLoaded;
 
                                     _bytesLoaded += realLoaded;
 
-                                   
-
                                     _this.updatePercentage(_bytesLoaded);
 
-                                    
-
                                     realLoaded = tmpLoaded;
-                                    debugMode == true ? console.log('File Loading in progress:' + _urlsArray[index]) : '';
+                                    _this.logger('File Loading in progress:' + _urlsArray[index]);
                                 }
                                 
                             }, true);
                             
                             // on video loaded
                             _media[i].addEventListener('canplaythrough',  _canplaythroughLS[i] = function (event) {
-                                if ($(_elementsArray[index])) {
-                                    var _onItemLoaded = new onItemLoaded(_urlsArray[index],_media[i]);
-                                }
+                                
                                 _media[i].removeEventListener('progress',_progressLS[i],true);
                                 _media[i].removeEventListener('canplaythrough',_canplaythroughLS[i],true);
 
                                 _bytesLoaded += _sizeArray[index];
 
-                                
+                                _this.onElementLoaded(_urlsArray[index],_media[i]);
 
                                 _this.updatePercentage(_bytesLoaded);
-                                debugMode == true ? console.log('File Loaded:' + _urlsArray[index]) : '';
+                                _this.logger('File Loaded:' + _urlsArray[index]);
                                
                             }, true);
                             
                             _mediaI ++;
 
-                            debugMode == true ? console.log('Loading file:' + _urlsArray[index]) : '';
+                            _this.logger('Loading file:' + _urlsArray[index]);
                             
                         }
                         
@@ -304,20 +300,28 @@
 
             _this.updatePercentage = function (_bytesLoaded) {
 
-                
+                _this.logger('_bytesLoaded: ' + _bytesLoaded + ' _bytesTotal'+ _bytesTotal);
+                if(_bytesLoaded !== _bytesTotal) {
+                    currPercentage = Math.floor((_bytesLoaded / _bytesTotal) * 100);
+                }
+                if (!currPercentage) {
+                    currPercentage = 0;
+                } else if (_bytesLoaded === _bytesTotal) {
+                    currPercentage = 100;
+                }
+                _this.logger('Percentage: ' + currPercentage + '%');
 
-                currPercentage = ~~ (((_bytesLoaded / _bytesTotal) * 100) | 0) + 1; /* +1 force math round to get full 100% percentage*/
+                if (typeof onUpdate === 'function') {
+                    onUpdate (currPercentage);
+                }
 
-                debugMode == true ? console.log('Percentage: ' + ~~ (currPercentage) + '%') : '';
-
-
-                if (options.preloaderType == 'line' && Modernizr.canvas) {
+                if (options.preloaderType === 'line' && Modernizr.canvas) {
                     _this.drawLinePreloader(currPercentage);
                 }
-                if ((options.preloaderType == 'circular' && Modernizr.canvas)) {
+                if ((options.preloaderType === 'circular' && Modernizr.canvas)) {
                     _this.draw_CircularPreloader(currPercentage);
                 }
-                if ((options.preloaderType == 'big-counter' && Modernizr.canvas)) {
+                if ((options.preloaderType === 'big-counter' && Modernizr.canvas)) {
                     _this.draw_BigCounterPreloader(currPercentage);
                 }
 
@@ -325,24 +329,25 @@
             _this.onComplete = function(){
 
                 if (_lastPercentage >= 100) {
-                    if (onComplete != null) {
-                        var _onComplete = new onComplete;
-                    }
+                    
                     //remove canvas from the stage
                     container.delay(1000).fadeOut(function () {
                             $window.unbind('CenterCanvas');
-                            $(this).remove()
+                            $(this).remove();
+                            if (typeof onComplete === 'function') {
+                                onComplete();
+                            }
                     });
                 }
-            }
-            /* 
+            };
+            /*
             preloader TYPE
             you can delete some of this function if you dont use it
             */
 
             // 'line' preloader
             _this.drawLinePreloader = function (to) {
-                debugMode == true ? console.log('Drawing line') : '';
+                _this.logger('Drawing line');
                 $({
                     perc: _lastPercentage
                 }).animate({
@@ -377,23 +382,23 @@
                                 context.shadowBlur = 10;
                                 context.shadowColor = glowColor;
                             }
-                            context.moveTo(positionX - (width / 2), positionY)
-                            context.lineTo(alphaPercentage, positionY)
+                            context.moveTo(positionX - (width / 2), positionY);
+                            context.lineTo(alphaPercentage, positionY);
                             context.stroke();
                             
                             context.save();
                             
                         }
                     },
-                    complete: _this.onComplete 
+                    complete: _this.onComplete
                 });
 
             };
 
             //'circular' preloader
             _this.draw_CircularPreloader = function (to) {
-                debugMode == true ? console.log('Drawing circle') : '';
-                debugMode == true ? console.log(to) : '';
+                _this.logger('Drawing circle');
+                _this.logger(to);
                 $({
                     perc: _lastPercentage
                 }).animate({
@@ -446,8 +451,8 @@
             };
             //'big-counter' preloader
             _this.draw_BigCounterPreloader = function (to) {
-                debugMode == true ? console.log('Drawing circle') : '';
-                debugMode == true ? console.log(to) : '';
+                _this.logger('Drawing circle');
+                _this.logger(to);
                 $({
                     perc: _lastPercentage
                 }).animate({
@@ -486,8 +491,8 @@
                                 context.shadowBlur = 10;
                                 context.shadowColor = glowColor;
                             }
-                            context.moveTo(positionX - (width / 2), positionY)
-                            context.lineTo(alphaPercentage, positionY)
+                            context.moveTo(positionX - (width / 2), positionY);
+                            context.lineTo(alphaPercentage, positionY);
                             context.globalCompositeOperation = 'xor';
                             context.stroke();
                             context.restore();
@@ -508,9 +513,9 @@
 
             _this.init = function (options) {
 
-                debugMode == true ? console.log('Start application!') : '';
-                if(!getFilesToLoadJSON && currPercentage == 0){
-                    alert('plese insert a path to json file');
+                _this.logger('Start application!');
+                if(!getFilesToLoadJSON && currPercentage === 0){
+                    alert('plese insert a path to the json file');
                 }
                 //parsing json getting every sources to load
                 if (getFilesToLoadJSON && (Modernizr.audio && Modernizr.video)) {
@@ -520,90 +525,90 @@
 
                         $.each(data.files, function (key, val) {
 
-                            var _type   = null,
-                                _source = null,
-                                _size   = null,
-                                _elm    = null;
+                            var tmpType   = null,
+                                tmpSource = null,
+                                tmpSize   = null,
+                                tmpElm    = null;
                             
-                            _type = val.type;
+                            tmpType = val.type;
                             //fix image caching
                             var randomString = String((new Date()).getTime()).replace(/\D/gi, '');
-                            switch (_type) {
+                            switch (tmpType) {
                                 case 'IMAGE':
-                                var _source = val.source,
-                                    _size   = val.size,
-                                    _elm    = $('img[src="'+ _source +'"]');
+                                    tmpSource = val.source,
+                                    tmpSize   = val.size,
+                                    tmpElm    = $('img[src="'+ tmpSource +'"]');
 
                                     
-                                    $(_elm).attr('src',_source+'?'+randomString)
+                                    $(tmpElm).attr('src',tmpSource+'?'+randomString);
                                     
                                 break;
                                 
                                 case 'VIDEO':
-                                    var videoId = val.videoId,
-                                        _elm    = videoId;
+                                    var videoId     = val.videoId;
+                                        tmpElm      = videoId;
                                         //force preload
-                                        $('#'+_elm).attr('preload','auto');
+                                        $('#'+videoId).attr('preload','auto');
 
                                     if (_videoSupportMp4){
-                                        _source = val.mp4.source;
-                                        _size   = val.mp4.size;
+                                        tmpSource = val.mp4.source;
+                                        tmpSize   = val.mp4.size;
                                         
                                     } if (_videoSupportOgg) {
-                                        _source = val.ogg.source;
-                                        _size   = val.ogg.size;
+                                        tmpSource = val.ogg.source;
+                                        tmpSize   = val.ogg.size;
 
                                     } if (_videoSupportWebm) {
-                                        _source = val.webm.source;
-                                        _size   = val.webm.size;
+                                        tmpSource = val.webm.source;
+                                        tmpSize   = val.webm.size;
                                     }
                                 break;
                                 case 'AUDIO':
-                                    var audioId = val.audioId,
-                                        _elm    = audioId;
+                                    var audioId     = val.audioId;
+                                        tmpElm      = audioId;
                                         //force preload
-                                        $('#'+_elm).attr('preload','auto');
-                                    if (Modernizr.audio.mp3 != '' && Modernizr.audio.mp3 != false ){
-                                        _source = val.mp3.source;
-                                        _size   = val.mp3.size;
+                                        $('#'+audioId).attr('preload','auto');
+                                    if (Modernizr.audio.mp3  && Modernizr.audio.mp3 ){
+                                        tmpSource = val.mp3.source;
+                                        tmpSize   = val.mp3.size;
                                         
                                         
-                                    } if (Modernizr.audio.ogg != '' && Modernizr.audio.ogg != false ) {
-                                        _source = val.ogg.source;
-                                        _size   = val.ogg.size; 
+                                    } if (Modernizr.audio.ogg && Modernizr.audio.ogg ) {
+                                        tmpSource = val.ogg.source;
+                                        tmpSize   = val.ogg.size;
                                
                                     } else {
-                                        _source = 'we can\'t detect preferred browser audio format';
-                                        _size   = 0; 
+                                        tmpSource = 'we can\'t detect preferred browser audio format';
+                                        tmpSize   = 0;
                                     }
                                 break;
                                 case 'SCRIPT':
-                                var _source = val.source,
-                                    _size   = val.size,
-                                    _elm    = _source;
+                                    tmpSource = val.source;
+                                    tmpSize   = val.size;
+                                    tmpElm    = tmpSource;
                                 break;
                                 default:
-                                console.log('something was wrong during json loading!');
+                                    throw 'something went wrong loading the JSON file!';
                                 break;
         
                             }
                             
-                            _this.fillFilesArray(_elm, _size,_source,_type)
+                            _this.fillFilesArray(tmpElm, tmpSize ,tmpSource,tmpType);
                             
                             var is_last_item = (key == (ElementsArr.length - 1));
 
-                            if (is_last_item == true) {
+                            if (is_last_item) {
                                 _this.startLoadElements();
                             }
                         });
-                    })
+                    });
                 }
-                //checking if browser support canvas element 
+                //checking if browser support canvas element
                 if (Modernizr.canvas) {
                     
 
                     // checking if the preloader should be full screen or not
-                    if (fullScreen == true) {
+                    if (fullScreen) {
                         //setting fullscreen
                         _this.setFullscreen();
                     } else {
@@ -630,11 +635,11 @@
 
                 } else {
 
-                    debugMode == true ? console.log('Fallback') : '';
-                   
-                    if (fullScreen == true) {
+                    _this.logger('Fallback');
+                    var fallbackCanvas;
+                    if (fullScreen) {
 
-                        var fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
+                        fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
                         var fallbackImg = container.find('img').attr('src', pathToFallbackGif);
 
                         fallbackImg.css({
@@ -649,25 +654,24 @@
                             height: $window.height(),
                             width: $window.width(),
                             'z-index': 98
-                        })
+                        });
                         $window.bind('resize.CenterCanvas', function () {
                             var fallbackImg = container.find('img').attr('src', pathToFallbackGif);
                             fallbackImg.css({
                                 top: ($window.height() / 2) - (fallbackImg.height() / 2),
                                 left: ($window.width() / 2) - (fallbackImg.width() / 2)
-
-                            })
+                            });
 
                             container.css({
                                 position: 'fixed',
                                 height: $window.height(),
                                 width: $window.width()
 
-                            })
+                            });
                         });
 
                     } else {
-                        var fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
+                        fallbackCanvas = container.append('<img src="' + pathToFallbackGif + '" alt="loading page..." /> ');
 
                         fallbackCanvas.css({
                             'float': 'left',
