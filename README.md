@@ -145,12 +145,12 @@ expand the canvas loader on the entire window
 you can add an event to the end of loading
 
 **onItemLoaded** ( __function (src,elm) {}__ default)
-you can do something when every object is loaded;
+this is fired anytime an object is loaded;
 @src is the path of the object loaded.
 @elm is the tag loaded.
  
 **pathToFallbackGif** ( __preloaderFallback.gif'__ default)
-set the path for the fallback gif for the browsers that not support the canvas API
+set the path for the fallback gif for all the browsers that do not support the canvas API
                 
 **debugMode** ( __true__ default)
 you can follow the plug in events on the javascript console
