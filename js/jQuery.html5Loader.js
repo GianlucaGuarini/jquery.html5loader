@@ -39,7 +39,7 @@
             getFilesToLoadJSON: null,                       /* set the path of JSON */
             debugMode:          true,                       /* debugger */
             onBeforeLoad:       function () {},             /* this functions fires before the preloader starts loading the sources */
-            onComplete:         function () {},             /* set the onComplete fires when everything is loaded  */
+            onComplete:         function () {alert("complete")},             /* set the onComplete fires when everything is loaded  */
             onElementLoaded:    function ( src, $elm) { },     /* this Callback fires anytime an object is loaded */
             onUpdate:           function ( percentage ) {}  /* this function returns alway the current percentage */
         },
@@ -182,6 +182,10 @@
             log('Percentage: ' + currPercentage + '%');
 
             onUpdate (currPercentage);
+           
+            if (!_files.length) {
+                onComplete();
+            }
             
         };
 
@@ -236,8 +240,6 @@
                 
                 _bytesLoaded += size;
 
-                updatePercentage();
-
                 onElementLoaded(file.source, $image);
 
                 // preventing the memory leak
@@ -245,6 +247,7 @@
                 $image = null;
                 // removing the file from the array
                 _files.splice(0,1);
+                updatePercentage();
                 defer.resolve();
               
             });
@@ -277,7 +280,7 @@
                     if (this.buffered.length > 0) {
                         bytesTmpLoaded = (size / this.duration) * this.buffered.end(0);
                         size -= bytesTmpLoaded;
-
+                        _bytesLoaded += bytesTmpLoaded;
                         updatePercentage();
                     }
 
@@ -291,8 +294,8 @@
                 log('File Loaded:' + file.source);
                 
                 _bytesLoaded += size;
-                log(size);
-                updatePercentage();
+                
+                
 
                 onElementLoaded(file.source, $media);
 
@@ -300,6 +303,7 @@
 
                 $media.off();
                 $media = null;
+                updatePercentage();
                 defer.resolve();
             });
 
@@ -329,12 +333,13 @@
 
                 _bytesLoaded += size;
 
-                updatePercentage();
+                
 
                 onElementLoaded(file.source, file);
 
                 // removing the file from the array
                 _files.splice(0,1);
+                updatePercentage();
                 defer.resolve();
             });
         
@@ -362,11 +367,12 @@
         */
 
         var loadingLoop = function () {
-            log("preloading files");
+            
             
             // if there are still files to load we keep looping
 
             if (_files.length) {
+                log("preloading files");
                 var file = _files[0];
                 log("file to preload:"+ file.source);
 
