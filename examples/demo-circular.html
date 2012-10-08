@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Gianluca Guarini- html5 loader jQuery plug-in -  circular COOL</title> 
+	<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+
+	<style type="text/css">
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color:#999;
+}
+.html5Loader{
+	top:0;
+	left:0;
+	background-color:black;
+	background-color:rgba(0,0,0,0.95);
+	position:fixed;
+	z-index:99;
+}
+.html5Loader .fallback {
+	top:50%;
+	position:absolute;
+	text-align:center;
+	width:100%;
+	color:white;
+	vertical-align: middle;
+	display: block;
+	font-style: normal;
+}
+div#wrapper > * {
+	width:400px;
+}
+</style>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="../js/animations/jQuery.html5Loader.circular.js"></script>
+	<script src="../js/jQuery.html5Loader.js"></script>
+
+</head>
+<body>
+	<div class="html5Loader"></div>
+	<h1>Remember to load this page on a server!</h1>
+	<div id="wrapper">
+		<video width="960" height="400" id="myVideo" controls="controls" >
+			<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+			<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm; codecs="vp8, vorbis"' />
+			<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg; codecs="theora, vorbis"' />
+		</video>
+		<video width="560" height="400" id="myVideo2" controls="controls" >
+			<source src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'  />
+			<source src="http://clips.vorwaerts-gmbh.de/VfE.webm"      type='video/webm; codecs="vp8, vorbis"' />
+			<source src="http://clips.vorwaerts-gmbh.de/VfE.ogv"       type='video/ogg; codecs="theora, vorbis"'  />
+		</video>
+		<audio id="myAudio" controls="controls">
+			<source src="../files/creep.mp3" />
+			<source src="../files/creep.ogg" />
+		</audio>
+		<img src="../files/Hydrangeas.jpg">
+		<img src="../files/Koala.jpg">
+		<img src="../files/Lighthouse.jpg">
+		<img src="../files/Penguins.jpg">
+		<img src="../files/Tulips.jpg">
+		<img src="../files/Chrysanthemum.jpg">
+		<img src="../files/Desert.jpg"></div>
+	<script type="text/javascript">
+//init
+var loaderAnimation = $(".html5Loader").LoaderAnimation();
+$.html5Loader({
+		getFilesToLoadJSON:'../js/files.json',
+		onUpdate: loaderAnimation.update
+});	
+</script>
+</body>
+
+</html>

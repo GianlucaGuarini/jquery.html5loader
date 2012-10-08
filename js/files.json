@@ -41,6 +41,11 @@
 				"size":620
 			},
 			{
+				"source":"../files/text.txt",
+				"type":"TEXT",
+				"size":45.056
+			},
+			{
 				"type":"VIDEO",
 				"sources": {
 					"webm":{
