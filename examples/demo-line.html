@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8" />
-	<title>Gianluca Guarini- html5 loader jQuery plug-in -  circular COOL</title> 
-	<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
-
-	<style type="text/css">
+<meta charset="UTF-8" /><title>Gianluca Guarini- html5 loader jQuery plug-in - line preloader</title>
+<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+<link href='http://fonts.googleapis.com/css?family=Varela+Round|Lobster+Two' rel='stylesheet' type='text/css'>
+<style type="text/css">
 body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color:#999;
+  color:#333;
 }
 #html5Loader{
 	top:0;
 	left:0;
-	background-color:black;
-	background-color:rgba(0,0,0,0.95);
+	background-color:white;
+	background-color:rgba(255,255,255,0.95);
+	margin:0;
 	position:fixed;
-	z-index:99;
 }
 #html5Loader .fallback {
 	top:50%;
@@ -29,13 +27,15 @@ body {
 	vertical-align: middle;
 	display: block;
 	font-style: normal;
+	font-family "Lobster Two";
+	font-size:23px;
 }
 div#wrapper > * {
 	width:400px;
 }
 </style>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="../js/animations/jQuery.html5Loader.circular.js"></script>
+	<script src="../js/animations/jQuery.html5Loader.line.js"></script>
 	<script src="../js/jQuery.html5Loader.js"></script>
 
 </head>
@@ -64,13 +64,12 @@ div#wrapper > * {
 		<img src="../files/Chrysanthemum.jpg">
 		<img src="../files/Desert.jpg"></div>
 	<script type="text/javascript">
-//init
-var loaderAnimation = $("#html5Loader").LoaderAnimation();
-$.html5Loader({
-		getFilesToLoadJSON:'../js/files.json',
-		onUpdate: loaderAnimation.update
-});	
-</script>
-</body>
-
+	//init
+	var loaderAnimation = $("#html5Loader").LoaderAnimation();
+	$.html5Loader({
+			getFilesToLoadJSON:'../js/files.json',
+			onUpdate: loaderAnimation.update
+	});	
+	</script>
+	</body>
 </html>

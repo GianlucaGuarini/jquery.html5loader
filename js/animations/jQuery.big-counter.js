@@ -1,14 +1,14 @@
 /*global document window*/
 ;(function ($) {
-    'use strict';
-    $.fn.extend({
+	'use strict';
+	$.fn.extend({
 		LoaderAnimation: function (customOptions) {
 		var defaults = {
 				lineWidth:          20,                         /* set preloader's line width */
 				color:              "#ffffff",                  /* set preloader color */
-				glowColor:          "#00aeff",                       /* set shadow color */
+				glowColor:          null,						/* set shadow color */
 				radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
-				font:               "normal 14px Arial"         /* set preloader font (you can embed a font by css and use it here) */
+				font:               "normal 100px Lobster Two"   /* set preloader font (you can embed a font by css and use it here) */
 			},
 			$container = $(this),
 			// merging the custom options with the default ones
@@ -35,9 +35,6 @@
 			*
 			*/
 			var $window			= $(window),
-				PI				= Math.PI,
-				startAngle		= 1.5 * PI,
-				endAngle		= 0,
 				supportsCanvas	= !!document.createElement('canvas').getContext,
 				canvasWidth		= $(window).width(),
 				canvasHeight	= $(window).height(),
@@ -81,39 +78,40 @@
 			*/
 
 			var draw = function () {
-				var alphaPercentage = (2 / 100) * self.currentPercentage,
+				var width = canvasWidth,
+					height= canvasHeight,
 					positionX = canvasWidth / 2,
-					positionY = canvasHeight / 2;
-
-				// calculating end angle of preloader
-				endAngle = (alphaPercentage * PI) + startAngle;
+					positionY = canvasHeight / 2,
+					alphaPercentage = (width / 100) * self.currentPercentage;
 
 
 				clear();
-				ctx.restore();
+				//clearing canvas from everithing
+				ctx.clearRect(0, 0, width, height);
 				//let's start drawning
+				ctx.restore();
 				ctx.beginPath();
 				//draw percentage text
 				ctx.font = font;
 				ctx.fillStyle = color;
 				ctx.textAlign = "center";
 				ctx.textBaseline="middle";
-				ctx.fillText((self.currentPercentage | 0) + "%", positionX, positionY);
-
+				ctx.fillText((self.currentPercentage| 0) + "%", positionX - 8, positionY - 15);
 				//width of the preloader line
-				ctx.lineWidth = lineWidth;
+				ctx.lineWidth = height;
 				//color of preloader line
 				ctx.strokeStyle = color;
 				if(glowColor){
 					ctx.shadowOffsetX = 0;
 					ctx.shadowOffsetY = 0;
-					ctx.shadowBlur = 20;
+					ctx.shadowBlur = 10;
 					ctx.shadowColor = glowColor;
 				}
-				ctx.arc(positionX, positionY, radius, startAngle, endAngle, false);
-
+				ctx.moveTo(positionX - (width / 2), positionY);
+				ctx.lineTo(alphaPercentage, positionY);
+				ctx.globalCompositeOperation = 'xor';
 				ctx.stroke();
-				ctx.save();
+				ctx.restore();
 			};
 
 			/*
@@ -191,5 +189,5 @@
 
 			return this;
 		}
-    });
+	});
 })(jQuery);
