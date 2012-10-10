@@ -45,7 +45,9 @@ div#wrapper > * {
 	<div id="wrapper"></div>
 	<script type="text/javascript">
 	//init
-	var loaderAnimation = $("#html5Loader").LoaderAnimation();
+	var loaderAnimation = $("#html5Loader").LoaderAnimation({
+		font: "normal 800px Lobster Two" 
+	});
 	$.html5Loader({
 			getFilesToLoadJSON:'../js/files.json',
 			onUpdate: loaderAnimation.update,
