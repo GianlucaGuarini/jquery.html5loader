@@ -1,160 +1,97 @@
-Now you can preload your HTML 5 page with this nice plug in, passing data via JSON. You can customize it changing colors and style. It can preload video, audio, images and js
+# Introduction
+jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>script</b> and <b>text</b> files.
+This plugin needs a <b>JSON</b> file to get the files that it has to preload, and it provides an easy API to communicate the state of loading.
 
+## Features
+* <b>smart</b>: it loads just the sources that are supported by the client that runs the script.
+* <b>flexible</b>: it returns the current percentage the object loaded, so you could be free to show this info as you like
+* <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
 
-http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index.html
+## Demo
+http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index
 
-USAGE
-----------
+# USAGE
 
-#1 You need to create a JSON file like this containing all the files you need to preload:
+## 1 Create a JSON file like this, containing all the files you need to preload containing their size in <b>bytes</b>, the server path and the file type:
 
 <pre><code>
 {
 		"files": [
 			{
-				"source":"../path/to/your/script.js",
 				"type":"SCRIPT",
+				"source":"../path/to/your/script.js",
 				"size":4.096
 			},
 			{
-				"source":"../path/to/your/image.jpg",
 				"type":"IMAGE",
+				"source":"../path/to/your/image.jpg",
 				"size":620
 			},
 			{
+				"type":"TEXT",
+				"source":"../path/to/your/text.txt",
+				"size":44
+			},
+			{
 				"type":"VIDEO",
-				"videoId":"idOfYourVideoTag",
-				"webm":{
-					"source":"../path/to/your/video.webm",
-					"size":5054.976
-				},
-				"ogg":{
-					"source":"../path/to/your/video.ogg",
-					"size":2932.736
-				},
-				"mp4":{
-					"source":"../path/to/your/video.mp4",
-					"size":9285.632
+				"sources": {
+					"webm":{
+						"source":"../path/to/your/video.webm",
+						"size":5054.976
+					},
+					"ogg":{
+						"source":"../path/to/your/video.ogg",
+						"size":2932.736
+					},
+					"mp4":{
+						"source":"../path/to/your/video.mp4",
+						"size":9285.632
+					}
 				}
 			},
 			{
 				"type":"AUDIO",
-				"audioId":"idOfYourAudioTag",
-				"mp3":{
-					"source":"../path/to/your/audio.mp3",
-					"size":9285.632
-				},
-				"ogg":{
-					"source":"../path/to/your/audio.ogg",
-					"size":2089.688
+				"sources": {
+					"mp3":{
+						"source":"../path/to/your/audio.mp3",
+						"size":9285.632
+					},
+					"ogg":{
+						"source":"../path/to/your/audio.ogg",
+						"size":2089.688
+					}
 				}
 			}
 		]
 	}
 </code></pre>
 
-#2 Add the scripts inside the __head__ of your document:
-
-
+## 2 Add the plugin to the head tag of your page:
 <pre><code>
-
-js/jquery.min.js
-js/modernizr.js
-js/jQuery.html5Loader.js
+&lt;script src=&quot;http://code.jquery.com/jquery-latest.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;../js/jQuery.html5Loader.js&quot;&gt;&lt;/script&gt;
 
 </code></pre>
 
-#3 and then Initialize the plug in before the end of __body__ using JSON file 
+## 3 Initialize the plugin at the end of the body tag:
 
 <pre><code>
-
-$('#html5Loader').html5Loader({
-		getFilesToLoadJSON:'path to /files.json'
-})	
+$.html5Loader({
+			getFilesToLoadJSON:'../js/files.json',
+			onBeforeLoad:       function () {},
+			onComplete:         function () {},
+			onElementLoaded:    function ( obj, elm) { },
+			onUpdate:           function ( percentage ) {}		
+});	
 
 </code></pre>
 
-#4 customize plugin via css:
-
-<pre><code>
-
-#html5Loader {
-	width:400px;
-	height:400px;
-	background-color:rgba(0,0,0,0.7);
-	margin:0;
-	position:absolute;
-}
-
-</code></pre>
-
-#5 append html5Loader div container to the __body__
-
-<pre><code>
-body
-div id="html5Loader" 
-
-[.........]
-/body
-</code></pre>
-
-===========================================
-
-Preloader options
-
-**You can set the plug in options in this way**:
-
-----------
-<pre><code>
-
-$('#html5Loader').html5Loader({
-	option Name: 'setting'
-})	
-
-</code></pre>
-
-**preloaderType** ( __'circular'__ default)
-
-* 'line'
-* 'circular'
-* 'big-counter'
-soon i will add some other kinds of preloader type
-
-**getFilesToLoadJSON** ( __null__ default)
-
-**lineWidth** ( __5__ default)
-you can set the line width
-
-**color** ( __"#ffffff"__ default)
-you can set the color
-
-**glowColor** ( __null__ default)
-you can add a golow color to everything
-
-**radius** ( __40__ default)
-set radius of the circular preloader
-
-**preloadPage** ( __true__ default) REMOVED!
-automatically detect every img on the page and load the src paths 
-
-**fullScreen** ( __true__ default)
-expand the canvas loader on the entire window
-
-**onComplete** ( __function () {}__ default)
-you can add an event to the end of loading
-
-**onItemLoaded** ( __function (src,elm) {}__ default)
-you can do something when every object is loaded;
-@src is the path of the object loaded.
-@elm is the tag loaded.
- 
-**pathToFallbackGif** ( __preloaderFallback.gif'__ default)
-set the path for the fallback gif for the browsers that not support the canvas API
-                
-**debugMode** ( __true__ default)
-you can follow the plug in events on the javascript console
-				
-
-===========================================
-
-if you need help report the issue "here":https://github.com/GianlucaGuarini/jQuery.html5loader/issues?sort=comments&direction=desc&state=closed
+# API 
+## Methods
+- <code>onBeforeLoad</code> It fires before the loading process starts
+- <code>onComplete</code> It is launched when the plugin finishes to load all the sources
+- <code>onElementLoaded</code> It fires anytime a new element of the json array is loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+	- <code>obj</code> the object node
+	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
+- <code>onUpdate</code> function that anytime the new bytes are loaded
+	- <code>percentage</code> the current loaded percentage
