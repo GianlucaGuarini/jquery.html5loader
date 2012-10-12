@@ -8,11 +8,11 @@ This plugin needs a <b>JSON</b> file to get the files that it has to preload, an
 * <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
 
 ## Demo
-http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index
+http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 
 # USAGE
 
-## 1 Create a JSON file like this, containing all the files you need to preload containing their size in <b>bytes</b>, the server path and the file type:
+### 1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):
 
 <pre><code>
 {
@@ -66,14 +66,14 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/index
 	}
 </code></pre>
 
-## 2 Add the plugin to the head tag of your page:
+### 2 Import the plugin into your page:
 <pre><code>
 &lt;script src=&quot;http://code.jquery.com/jquery-latest.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;../js/jQuery.html5Loader.js&quot;&gt;&lt;/script&gt;
 
 </code></pre>
 
-## 3 Initialize the plugin at the end of the body tag:
+### 3 Initialize the plugin setting the callback functions:
 
 <pre><code>
 $.html5Loader({
@@ -94,4 +94,7 @@ $.html5Loader({
 	- <code>obj</code> the object node
 	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
 - <code>onUpdate</code> function that anytime the new bytes are loaded
-	- <code>percentage</code> the current loaded percentage
+	- <code>percentage</code> the percentage currently loaded
+
+# TODO LIST
+- create a nodejs script that is able to read files in a folder exporting the JSON file needed to preload them

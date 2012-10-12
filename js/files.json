@@ -6,39 +6,59 @@
 				"size":4.096
 			},
 			{
-				"source":"../files/Chrysanthemum.jpg",
+				"source":"../files/image1.jpg",
 				"type":"IMAGE",
-				"size":858
+				"size":270.336
 			},
 			{
-				"source":"../files/Desert.jpg",
+				"source":"../files/image2.jpg",
 				"type":"IMAGE",
-				"size":845
+				"size":491.520
 			},
 			{
-				"source":"../files/Hydrangeas.jpg",
+				"source":"../files/image3.jpg",
 				"type":"IMAGE",
-				"size":595
+				"size":421.888
 			},
 			{
-				"source":"../files/Koala.jpg",
+				"source":"../files/image4.jpg",
 				"type":"IMAGE",
-				"size":780
+				"size":249.856
 			},
 			{
-				"source":"../files/Lighthouse.jpg",
+				"source":"../files/image5.jpg",
 				"type":"IMAGE",
-				"size":561
+				"size":167.936
 			},
 			{
-				"source":"../files/Penguins.jpg",
+				"source":"../files/image6.jpg",
 				"type":"IMAGE",
-				"size":777
+				"size":331.776
 			},
 			{
-				"source":"../files/Tulips.jpg",
+				"source":"../files/image7.jpg",
 				"type":"IMAGE",
-				"size":620
+				"size":421.888 
+			},
+			{
+				"source":"../files/image8.jpg",
+				"type":"IMAGE",
+				"size":573.440
+			},
+			{
+				"source":"../files/image9.jpg",
+				"type":"IMAGE",
+				"size":270.336
+			},
+			{
+				"source":"../files/image10.jpg",
+				"type":"IMAGE",
+				"size":294.912
+			},
+			{
+				"source":"../files/image11.jpg",
+				"type":"IMAGE",
+				"size":413.696
 			},
 			{
 				"source":"../files/text.txt",
