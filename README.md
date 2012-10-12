@@ -5,7 +5,7 @@ This plugin needs a <b>JSON</b> file to get the files that it has to preload, an
 
 ## Features
 * <b>smart</b>: it loads just the sources that are supported by the client that runs the script.
-* <b>flexible</b>: it returns the current percentage the object loaded, so you could be free to show this info as you like
+* <b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like
 * <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
 
 
