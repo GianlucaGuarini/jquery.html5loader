@@ -2,10 +2,14 @@
 jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>script</b> and <b>text</b> files.
 This plugin needs a <b>JSON</b> file to get the files that it has to preload, and it provides an easy API to communicate the state of loading.
 
+
 ## Features
 * <b>smart</b>: it loads just the sources that are supported by the client that runs the script.
 * <b>flexible</b>: it returns the current percentage the object loaded, so you could be free to show this info as you like
 * <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
+
+
+
 
 ## Demo
 http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
@@ -86,6 +90,7 @@ $.html5Loader({
 
 </code></pre>
 
+
 # API 
 ## Methods
 - <code>onBeforeLoad</code> It fires before the loading process starts
@@ -98,3 +103,4 @@ $.html5Loader({
 
 # TODO LIST
 - create a nodejs script that is able to read files in a folder exporting the JSON file needed to preload them
+
