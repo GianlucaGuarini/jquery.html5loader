@@ -98,7 +98,7 @@ $.html5Loader({
 - <code>onElementLoaded</code> It fires anytime a new element of the json array is loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
 	- <code>obj</code> the object node
 	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
-- <code>onUpdate</code> it fires that anytime new bytes are loaded
+- <code>onUpdate</code> it fires anytime new bytes are loaded
 	- <code>percentage</code> the percentage currently loaded
 
 # TODO LIST
