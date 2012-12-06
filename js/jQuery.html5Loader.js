@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.5
+ * Version:     1.6
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -102,44 +102,43 @@
 		_support['video'] = function() {
 			var elem = document.createElement('video'),
 				bool = false;
+			
+				// IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
+				try {
+					if ( bool = !!elem.canPlayType ) {
+						bool = new Boolean(bool);
+						bool.ogg = elem.canPlayType('video/ogg; codecs="theora"');
 
-			// IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
-			try {
-				if ( bool = !!elem.canPlayType ) {
-					bool = new Boolean(bool);
-					bool.ogg = elem.canPlayType('video/ogg; codecs="theora"') .replace(/^no$/,'');
+						bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"');
 
-					// Without QuickTime, this value will be `undefined`. github.com/Modernizr/Modernizr/issues/546
-					bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"') .replace(/^no$/,'');
-
-					bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/,'');
-				}
-
-			} catch(e) { }
-
-			return bool;
+						bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"');
+					}
+					
+				} catch(e) { }
+				
+				
+				return bool;
 		}();
 
 		_support['audio'] = function() {
 			var elem = document.createElement('audio'),
-				bool = false;
+			bool = false;
 
-			try {
-				if ( bool = !!elem.canPlayType ) {
-					bool = new Boolean(bool);
-					bool.ogg = elem.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/,'');
-					bool.mp3 = elem.canPlayType('audio/mpeg;') .replace(/^no$/,'');
+		try {
+			if ( bool = !!elem.canPlayType ) {
+				bool = new Boolean(bool);
+				bool.ogg = elem.canPlayType('audio/ogg; codecs="vorbis"');
+				bool.mp3 = elem.canPlayType('audio/mpeg;');
 
-					// Mimetypes accepted:
-					// developer.mozilla.org/En/Media_formats_supported_by_the_audio_and_video_elements
-					// bit.ly/iphoneoscodecs
-					bool.wav = elem.canPlayType('audio/wav; codecs="1"') .replace(/^no$/,'');
-					bool.m4a = ( elem.canPlayType('audio/x-m4a;') ||
-								  elem.canPlayType('audio/aac;')) .replace(/^no$/,'');
-				}
-			} catch(e) { }
-
-			return bool;
+				// Mimetypes accepted:
+				// developer.mozilla.org/En/Media_formats_supported_by_the_audio_and_video_elements
+				// bit.ly/iphoneoscodecs
+				bool.wav = elem.canPlayType('audio/wav; codecs="1"');
+				bool.m4a = elem.canPlayType('audio/x-m4a;') || elem.canPlayType('audio/aac;');
+			}
+		} catch(e) { }
+		
+		return bool;
 		}();
 
 
@@ -153,13 +152,16 @@
 		var findSupportedSource = function ( file ) {
 			var type = file.type.toLowerCase(),
 				sources = file.sources;
-
+				
 			$.each(sources,function(tmpSource){
-				if (_support[type][tmpSource]) {
+
+				if (_support[type][tmpSource] || _support[type][tmpSource] !== "") {
 					file = file.sources[tmpSource];
 					file.type = type.toUpperCase();
 					return false;
 				}
+
+
 			});
 			if (file.source) {
 				return file;
@@ -207,6 +209,7 @@
 			if (file.type === "VIDEO" || file.type === "AUDIO") {
 				file = findSupportedSource( file );
 			}
+
 			if (file){
 				_bytesTotal += file.size;
 				_files.push(file);
@@ -282,6 +285,7 @@
 
 					$media.off();
 					$media = null;
+
 					updatePercentage();
 					defer.resolve();
 				};
@@ -383,31 +387,31 @@
 			
 			// if there are still files to load we keep looping
 
-			if (_files.length) {
+			$.each(_files,function(i,file){
+				
 				log("preloading files");
-				var file = _files[0];
+				
 				log("file to preload:"+ file.source);
 
 				switch (file.type) {
 					case "IMAGE":
-						loadImage(file).then(loadingLoop);
+						loadImage(file);
 					break;
 					case "VIDEO":
 					case "AUDIO":
-						loadMedia(file).then(loadingLoop);
+						loadMedia(file);
 					break;
 					case "SCRIPT":
-						loadScript(file).then(loadingLoop);
+						loadScript(file);
 					break;
 					case "TEXT":
-						loadText(file).then(loadingLoop);
+						loadText(file);
 					break;
 					default:
 						return false;
 				}
-			} else {
-				return false;
-			}
+
+			});
 			
 		};
 
