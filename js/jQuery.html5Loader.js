@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6
+ * Version:     1.6.1
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -155,7 +155,7 @@
 				
 			$.each(sources,function(tmpSource){
 
-				if (_support[type][tmpSource] || _support[type][tmpSource] !== "") {
+				if (_support[type][tmpSource] || _support[type][tmpSource] === "") {
 					file = file.sources[tmpSource];
 					file.type = type.toUpperCase();
 					return false;
@@ -384,10 +384,10 @@
 
 		var loadingLoop = function () {
 			
-			
+			var filesArray = _files.slice();
 			// if there are still files to load we keep looping
 
-			$.each(_files,function(i,file){
+			$.each(filesArray,function(i,file){
 				
 				log("preloading files");
 				
