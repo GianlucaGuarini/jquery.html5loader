@@ -100,6 +100,7 @@ $.html5Loader({
 	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
 - <code>onUpdate</code> it fires anytime new bytes are loaded
 	- <code>percentage</code> the percentage currently loaded
+	
 # KNOWN ISSUES
 - Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( http://modernizr.com/docs/#audio ). For these browsers we don't preload any HTML5 media format
 - on mobile devices and on the iPad the preload of any video or audio element is skipped because those devices can't preload those elements since a user interacts with them  
