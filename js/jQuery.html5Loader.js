@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6.1
+ * Version:     1.6.2
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -155,7 +155,7 @@
 				
 			$.each(sources,function(tmpSource){
 
-				if (_support[type][tmpSource] || _support[type][tmpSource] === "") {
+				if (_support[type][tmpSource]) {
 					file = file.sources[tmpSource];
 					file.type = type.toUpperCase();
 					return false;
@@ -187,7 +187,7 @@
 			log('Percentage: ' + currPercentage + '%');
 
 			onUpdate (currPercentage);
-
+			
 			if (!_files.length) {
 				onComplete();
 			}
