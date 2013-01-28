@@ -41,7 +41,8 @@
 			onBeforeLoad:       function () {},								/* this functions fires before the preloader starts loading the sources */
 			onComplete:         function () {},								/* set the onComplete fires when everything is loaded */
 			onElementLoaded:    function ( obj, elm) { },					/* this Callback fires anytime an object is loaded */
-			onUpdate:           function ( percentage ) {}					/* this function returns alway the current percentage */
+			onUpdate:           function ( percentage ) {},					/* this function returns alway the current percentage */
+			onMediaError:      function(object){}                /*  This function is invoked in case of any error occurred during the media element fetch*/
 		},
 		// merging the custom options with the default ones
 		options = $.extend(defaults, customOptions);
@@ -57,7 +58,8 @@
 			onBeforeLoad        = options.onBeforeLoad,
 			onComplete          = options.onComplete,
 			onElementLoaded     = options.onElementLoaded,
-			onUpdate            = options.onUpdate;
+			onUpdate            = options.onUpdate,
+			onMediaError        = options.onMediaError;
 
 		/*
 		*
@@ -289,6 +291,17 @@
 					updatePercentage();
 					defer.resolve();
 				};
+			
+			$media.bind("loadstart",function(){   
+                
+                if(this.networkState == 3){
+                    onMediaError({
+                        type:"network error - network no data",
+                        object: file,
+                        node : this
+                    });
+                }
+            });
 			
 			// if it is a mobile or an iPad we avoid the media preloading
 			if (!_isMobile && !_isiPad) {
