@@ -18,7 +18,7 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 
 ### 1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):
 
-
+### It's better to add Audio/ Video objects to top of the json.
 
 <pre><code>
 {
