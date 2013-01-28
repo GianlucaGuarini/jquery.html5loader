@@ -18,25 +18,12 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 
 ### 1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):
 
+
+
 <pre><code>
 {
 		"files": [
-			{
-				"type":"SCRIPT",
-				"source":"../path/to/your/script.js",
-				"size":4.096
-			},
-			{
-				"type":"IMAGE",
-				"source":"../path/to/your/image.jpg",
-				"size":620
-			},
-			{
-				"type":"TEXT",
-				"source":"../path/to/your/text.txt",
-				"size":44
-			},
-			{
+		{
 				"type":"VIDEO",
 				"sources": {
 					"webm":{
@@ -65,7 +52,22 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 						"size":2089.688
 					}
 				}
-			}
+			},
+			{
+				"type":"SCRIPT",
+				"source":"../path/to/your/script.js",
+				"size":4.096
+			},
+			{
+				"type":"IMAGE",
+				"source":"../path/to/your/image.jpg",
+				"size":620
+			},
+			{
+				"type":"TEXT",
+				"source":"../path/to/your/text.txt",
+				"size":44
+			}			
 		]
 	}
 </code></pre>
@@ -100,7 +102,8 @@ $.html5Loader({
 	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
 - <code>onUpdate</code> it fires anytime new bytes are loaded
 	- <code>percentage</code> the percentage currently loaded
-
+- <code>onMediaError</code> it fires when audio/video media element source file fetching get failed. 
+	- <code>object</code> error type, object , node 
 # TODO LIST
 - create a nodejs script that is able to read files in a folder exporting the JSON file needed to preload them
 
