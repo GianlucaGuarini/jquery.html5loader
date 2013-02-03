@@ -49,7 +49,7 @@ div#wrapper > * {
 		font: "normal 800px Lobster Two" 
 	});
 	$.html5Loader({
-			getFilesToLoadJSON:'../js/files.json',
+			filesToLoad:'../js/files.json',
 			onUpdate: loaderAnimation.update,
 			onElementLoaded: function ( obj, elm ){
 				if(obj.type !== "TEXT" && obj.type !== "SCRIPT") {

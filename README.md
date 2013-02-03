@@ -1,10 +1,10 @@
 # Introduction
 jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>script</b> and <b>text</b> files.
-This plugin needs a <b>JSON</b> file to get the files that it has to preload, and it provides an easy API to communicate the state of loading.
+This plugin needs a <b>JSON</b> file to get the files that it has to preload (or at least you can use also a javascript object), and it provides an easy API to communicate the state of loading.
 
 
 ## Features
-* <b>smart</b>: it loads just the sources that are supported by the client that runs the script.
+* <b>smart</b>: it loads just the sources supported by the client running the script.
 * <b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like
 * <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
 
@@ -81,7 +81,7 @@ http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 
 <pre><code>
 $.html5Loader({
-			getFilesToLoadJSON:'../js/files.json',
+			filesToLoad:		'../js/files.json', // this could be a JSON or simply a javascript object
 			onBeforeLoad:       function () {},
 			onComplete:         function () {},
 			onElementLoaded:    function ( obj, elm) { },
@@ -93,12 +93,15 @@ $.html5Loader({
 
 # API 
 ## Methods
-- <code>onBeforeLoad</code> It fires before the loading process starts
-- <code>onComplete</code> It is launched when the plugin finishes to load all the sources
-- <code>onElementLoaded</code> It fires anytime a new element of the json array is loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
-	- <code>obj</code> the object node
-	- <code>elm</code> the html with right preloaded source  (for type "SCRIPT" and "TEXT" this value is a string)
-- <code>onUpdate</code> it fires anytime new bytes are loaded
+- <code>onBeforeLoad</code> It is triggered before the loading process starts
+- <code>onComplete</code> It is triggered when the plugin finishes to load all the sources
+- <code>onMediaError</code> This function is invoked in case of any error occurred during the media element fetch
+ 	- <code>obj</code> original object passed to the plugin
+	- <code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)
+- <code>onElementLoaded</code> It is triggered anytime a new element of the json array is loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+ 	- <code>obj</code> original object passed to the plugin
+	- <code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)
+- <code>onUpdate</code> it is triggered anytime new bytes are loaded
 	- <code>percentage</code> the percentage currently loaded
 	
 # KNOWN ISSUES
