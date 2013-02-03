@@ -297,13 +297,13 @@
 
 				$media.on("loadstart",function(){
 					if(this.networkState == 3){
-						onMediaError({ type:"network error - network no data", object: file, node :this});
+						onMediaError( file, this);
 						onMediaLoaded();
 					}
 				});
 
 				$media.on("error",function(){
-					onMediaError({ type:"An error has occurred loading: " + file.source, object: file, node :this});
+					onMediaError( file, this );
 					onMediaLoaded();
 				});
 
