@@ -36,13 +36,13 @@
 
 	$.html5Loader = function (customOptions) {
 		var defaults = {
-			filesToLoad:		null,										/* set the path of JSON */
+			filesToLoad:		null,										/* set the path to the JSON or pass an object containing the files to preload */
 			debugMode:          false,										/* debugger */
-			onBeforeLoad:       function () {},								/* this functions fires before the preloader starts loading the sources */
-			onComplete:         function () {},								/* set the onComplete fires when everything is loaded */
-			onElementLoaded:    function ( obj, elm) { },					/* this Callback fires anytime an object is loaded */
+			onBeforeLoad:       function () {},								/* this functions is triggered before the preloader starts loading the sources */
+			onComplete:         function () {},								/* set the onComplete is triggered when everything is loaded */
+			onElementLoaded:    function ( obj, elm) { },					/* this Callback is triggered anytime an object is loaded */
 			onUpdate:           function ( percentage ) {},					/* this function returns alway the current percentage */
-			onMediaError:		function ( obj, elm){}						/*  This function is invoked in case of any error occurred during the media element fetch*/
+			onMediaError:		function ( obj, elm){}						/* This function is invoked in case of any error occurred during the media element fetch*/
 		},
 		// merging the custom options with the default ones
 		options = $.extend(defaults, customOptions);
