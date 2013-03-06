@@ -74,9 +74,16 @@ div#wrapper > * {
 	</div>
 	<script type="text/javascript">
 	//init
-	var loaderAnimation = $("#html5Loader").LoaderAnimation();
+	var loaderAnimation = $("#html5Loader").LoaderAnimation({
+		onComplete:function(){
+			console.log("preloader animation completed!")
+		}
+	});
 	$.html5Loader({
 			filesToLoad:'../js/files.json',
+			onComplete: function () {
+				console.log("All the assets are loaded!")
+			},
 			onUpdate: loaderAnimation.update
 	});	
 	</script>

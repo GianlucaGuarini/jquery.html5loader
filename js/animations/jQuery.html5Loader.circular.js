@@ -1,14 +1,15 @@
 /*global document window*/
 ;(function ($) {
-    'use strict';
-    $.fn.extend({
+	'use strict';
+	$.fn.extend({
 		LoaderAnimation: function (customOptions) {
 		var defaults = {
 				lineWidth:          20,                         /* set preloader's line width */
 				color:              "#ffffff",                  /* set preloader color */
-				glowColor:          "#00aeff",                       /* set shadow color */
+				glowColor:          "#00aeff",                  /* set shadow color */
 				radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
-				font:               "normal 14px Arial"         /* set preloader font (you can embed a font by css and use it here) */
+				font:               "normal 14px Arial",        /* set preloader font (you can embed a font by css and use it here) */
+				onComplete:         null                        /* on Animation completed */
 			},
 			$container = $(this),
 			// merging the custom options with the default ones
@@ -21,26 +22,26 @@
 			* Configuration
 			*
 			*/
-			var lineWidth				= options.lineWidth,
-				color					= options.color,
-				glowColor				= options.glowColor,
-				radius					= options.radius,
-				font					= options.font;
+			var lineWidth               = options.lineWidth,
+				color                   = options.color,
+				glowColor               = options.glowColor,
+				radius                  = options.radius,
+				font                    = options.font;
 
-			this.currentPercentage	= 0;
+			this.currentPercentage  = 0;
 
 			/*
 			*
 			* PRIVATE VAR
 			*
 			*/
-			var $window			= $(window),
-				PI				= Math.PI,
-				startAngle		= 1.5 * PI,
-				endAngle		= 0,
-				supportsCanvas	= !!document.createElement('canvas').getContext,
-				canvasWidth		= $(window).width(),
-				canvasHeight	= $(window).height(),
+			var $window         = $(window),
+				PI              = Math.PI,
+				startAngle      = 1.5 * PI,
+				endAngle        = 0,
+				supportsCanvas  = !!document.createElement('canvas').getContext,
+				canvasWidth     = $(window).width(),
+				canvasHeight    = $(window).height(),
 				$canvas, $fallbackHtml,ctx;
 
 			/*
@@ -127,6 +128,8 @@
 				if(self.currentPercentage === 100) {
 					$container.delay(1000).fadeOut(function(){
 						$container.remove();
+						if (typeof options.onComplete === "function")
+							options.onComplete();
 					});
 					$window.off("resize.preloader");
 				}
@@ -140,8 +143,8 @@
 			*/
 
 			var centerLoader = function () {
-				canvasWidth		= $(window).width();
-				canvasHeight	= $(window).height();
+				canvasWidth     = $(window).width();
+				canvasHeight    = $(window).height();
 				if(supportsCanvas) {
 					$canvas[0].width = canvasWidth;
 					$canvas[0].height = canvasHeight;
@@ -191,5 +194,5 @@
 
 			return this;
 		}
-    });
+	});
 })(jQuery);

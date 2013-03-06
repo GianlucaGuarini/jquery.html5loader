@@ -46,11 +46,17 @@ div#wrapper > * {
 	<script type="text/javascript">
 	//init
 	var loaderAnimation = $("#html5Loader").LoaderAnimation({
-		font: "normal 800px Lobster Two" 
+		font: "normal 800px Lobster Two",
+		onComplete:function(){
+			console.log("preloader animation completed!")
+		}
 	});
 	$.html5Loader({
 			filesToLoad:'../js/files.json',
 			onUpdate: loaderAnimation.update,
+			onComplete: function () {
+				console.log("All the assets are loaded!")
+			},
 			onElementLoaded: function ( obj, elm ){
 				if(obj.type !== "TEXT" && obj.type !== "SCRIPT") {
 					$("#wrapper").append(elm);

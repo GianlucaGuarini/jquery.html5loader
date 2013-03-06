@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6.3
+ * Version:     1.6.4
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -104,7 +104,7 @@
 		_support['video'] = function() {
 			var elem = document.createElement('video'),
 				bool = false;
-			
+
 				// IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
 				try {
 					if ( bool = !!elem.canPlayType ) {
@@ -115,10 +115,9 @@
 
 						bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"');
 					}
-					
+
 				} catch(e) { }
-				
-				
+
 				return bool;
 		}();
 
@@ -139,7 +138,7 @@
 				bool.m4a = elem.canPlayType('audio/x-m4a;') || elem.canPlayType('audio/aac;');
 			}
 		} catch(e) { }
-		
+
 		return bool;
 		}();
 
@@ -154,7 +153,7 @@
 		var findSupportedSource = function ( file ) {
 			var type = file.type.toLowerCase(),
 				sources = file.sources;
-				
+
 			$.each(sources,function(tmpSource){
 
 				if (_support[type][tmpSource]) {
@@ -170,7 +169,7 @@
 			} else {
 				return false;
 			}
-				
+
 		};
 
 		/*
@@ -184,16 +183,15 @@
 			log("_bytesTotal = " + _bytesTotal);
 			log("_bytesLoaded = " + _bytesLoaded);
 			currPercentage = Math.round((_bytesLoaded / _bytesTotal) * 100);
-			
-			
+
 			log('Percentage: ' + currPercentage + '%');
 
 			onUpdate (currPercentage);
-			
+
 			if (!_files.length) {
 				onComplete();
 			}
-			
+
 		};
 
 		/*
@@ -207,7 +205,7 @@
 		var arrangeData = function ( index, obj ) {
 
 			var file = obj;
-		
+
 			if (file.type === "VIDEO" || file.type === "AUDIO") {
 				file = findSupportedSource( file );
 			}
@@ -216,7 +214,7 @@
 				_bytesTotal += file.size;
 				_files.push(file);
 			}
-			
+
 		};
 
 		/*
@@ -242,15 +240,14 @@
 			var defer = new $.Deferred(),
 				size  = file.size,
 				$image = $("<img>");
-			
+
 			$($image).on( 'load', function (e) {
 				log('File Loaded:' + file.source);
-				
+
 				_bytesLoaded += size;
 
 				onElementLoaded( file, $image[0]);
 
-				
 				// preventing a memory leak
 				$image = null;
 				// removing the file from the array
@@ -278,9 +275,9 @@
 				$media = file.type === "VIDEO" ? $("<video></video>") : $("<audio></audio>"),
 				onMediaLoaded = function (){
 					log('File Loaded:' + file.source);
-					
+
 					_bytesLoaded += size;
-					
+
 					onElementLoaded( file, $media[0]);
 
 					_files.splice(0,1);
@@ -291,7 +288,7 @@
 					updatePercentage();
 					defer.resolve();
 				};
-			
+
 			// if it is a mobile or an iPad we avoid the media preloading
 			if (!_isMobile && !_isiPad) {
 
@@ -302,7 +299,7 @@
 					}
 				});
 
-				$media.on("error",function(){
+				$media.on("error stalled",function(){
 					onMediaError( file, this );
 					onMediaLoaded();
 				});
@@ -320,15 +317,15 @@
 						}
 					});
 				});
-				
+
 				// on Media Loaded
 				$media.on("canplaythrough load",onMediaLoaded);
-			
+
 			} else {
 				//  that means that media is loaded by default
 				onMediaLoaded();
 			}
-			
+
 			$media.attr({
 				preload:'auto',
 				src: file.source,
@@ -350,7 +347,7 @@
 			$.getScript(file.source, function(data){
 
 				log('File Loaded:' + file.source);
-				
+
 				_bytesLoaded += size;
 
 				onElementLoaded( file, data);
@@ -360,7 +357,7 @@
 				updatePercentage();
 				defer.resolve();
 			});
-		
+
 			return defer.promise();
 		};
 
@@ -378,7 +375,7 @@
 				dataType: "text",
 				success : function (data) {
 					log('File Loaded:' + file.source);
-					
+
 					onElementLoaded( file, data);
 					_bytesLoaded += file.size;
 					_files.splice(0,1);
@@ -386,7 +383,7 @@
 					defer.resolve(data);
 				}
 			});
-			
+
 			return defer.promise();
 		};
 
@@ -397,14 +394,14 @@
 		*/
 
 		var loadingLoop = function () {
-			
+
 			var filesArray = _files.slice();
 			// if there are still files to load we keep looping
 
 			$.each(filesArray,function(i,file){
-				
+
 				log("preloading files");
-				
+
 				log("file to preload:"+ file.source);
 
 				switch (file.type) {
@@ -426,7 +423,7 @@
 				}
 
 			});
-			
+
 		};
 
 		/*
@@ -460,14 +457,14 @@
 			// ready to preload all the files
 			promise.then($.proxy(updatePercentage,this));
 			promise.then($.proxy(loadingLoop,this));
-			
+
 		};
 
 		this.init();
 
 		// make the public methos accessible from the extern
 		return this;
-		
+
 	};
 
 })(jQuery);

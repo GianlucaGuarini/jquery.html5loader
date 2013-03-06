@@ -8,7 +8,8 @@
 				color:              "#ffffff",                  /* set preloader color */
 				glowColor:          null,						/* set shadow color */
 				radius:             40,                         /* set the preloader radius (JUST FOR CIRCULAR PRELOADER) */
-				font:               "normal 100px Lobster Two"   /* set preloader font (you can embed a font by css and use it here) */
+				font:               "normal 100px Lobster Two", /* set preloader font (you can embed a font by css and use it here) */
+				onComplete:			null						/* on Animation completed */
 			},
 			$container = $(this),
 			// merging the custom options with the default ones
@@ -125,6 +126,8 @@
 				if(self.currentPercentage === 100) {
 					$container.delay(1000).fadeOut(function(){
 						$container.remove();
+						if (typeof options.onComplete === "function")
+							options.onComplete();
 					});
 					$window.off("resize.preloader");
 				}
@@ -154,7 +157,7 @@
 			* PUBLIC METHODS
 			*
 			*/
-			
+
 			self.init = function () {
 
 				if(supportsCanvas) {
