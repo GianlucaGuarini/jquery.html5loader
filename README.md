@@ -14,6 +14,10 @@ This plugin needs a <b>JSON</b> file to get the files that it has to preload (or
 ## Demo
 http://www.gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/
 
+## jQuery.html5loader in production
+- http://www.mobi-myhome.ch
+- http://lindberghallee.ch
+
 # USAGE
 
 ### 1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):
