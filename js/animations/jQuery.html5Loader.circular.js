@@ -181,6 +181,7 @@
 				},{
 					duration: 3000
 				})
+				.stop(true,false)
 				.progress( function () {
 					if (supportsCanvas)
 					draw ();
