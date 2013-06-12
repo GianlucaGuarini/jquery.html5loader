@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>jQuery.html5Loader - Gianluca Guarini</title>
+        <meta name="Description" content="jQuery.html5Loader can preload images, html5 video and audio sources, script and text files.
+This plugin needs a JSON file to get the files that it has to preload, and it provides an easy API to communicate the state of loading." />
+        <meta name="Keywords"  content="JavaScript,HTML5,CSS" />
+        <meta name="viewport" content="width=device-width">
+        <!--[if lt IE 9]>
+        <script src="https://raw.github.com/aFarkas/html5shiv/4525162dd10e6fff7b83d06b28b562586e9fb058/src/html5shiv.js"></script>
+        <![endif]-->
+        <meta property="og:title" content="jQuery.html5Loader"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/"/>
+        <meta property="og:image" content="http://gianlucaguarini.com/canvas-experiments/jQuery-html5Loader/css/img/jQuery.html5Loader-logo-bg.png"/>
+        <meta property="og:description"
+              content="jQuery.html5Loader can preload images, html5 video and audio sources, script and text files.
+This plugin needs a JSON file to get the files that it has to preload, and it provides an easy API to communicate the state of loading."/>
+
+        <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/dark.css">
+        <link href='http://fonts.googleapis.com/css?family=Quicksand:400,300' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script>
+          hljs.tabReplace = '    ';
+          hljs.initHighlightingOnLoad();
+        </script>
+    </head>
+    <body>
+   <!--[if lt IE 7]>
+    <p class="chromeframe">
+        You are using an outdated browser.
+        <a href="http://browsehappy.com/">Upgrade your browser today</a>
+        or
+        <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a>
+        to better experience this site.
+    </p>
+    <![endif]-->
+    <div class="container">
+        <a href="https://github.com/GianlucaGuarini/jQuery.html5loader"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+        <h1 class="title">
+            <img src="css/img/jQuery.html5Loader-logo.png" />
+            jQuery.html5Loader
+        </h1>
+
+        <h1 id="introduction">Description</h1>
+
+       <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="mini-icon mini-icon-link"></span></a>Introduction</h1>
+
+<p>jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>script</b> and <b>text</b> files.
+This plugin needs a <b>JSON</b> file to get the files that it has to preload (or at least you can use also a javascript object), and it provides an easy API to communicate the state of loading.</p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="mini-icon mini-icon-link"></span></a>Features</h2>
+
+<ul>
+<li>
+<b>smart</b>: it loads just the sources supported by the client running the script.</li>
+<li>
+<b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like</li>
+<li>
+<b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use</li>
+</ul><h2>
+<a name="demo" class="anchor" href="#demo"><span class="mini-icon mini-icon-link"></span></a>Demos</h2>
+
+<ul>
+    <li><a href="examples/demo-circular.html">Circular</a></li>
+    <li><a href="examples/demo-big-counter.html">Big counter</a></li>
+    <li><a href="examples/demo-append-sources.html">Append sources on the fly</a></li>
+    <li><a href="examples/demo-line.html">Line</a></li>
+</ul>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="mini-icon mini-icon-link"></span></a>USAGE</h1>
+
+<h3>
+<a name="1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-" class="anchor" href="#1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-"><span class="mini-icon mini-icon-link"></span></a>1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):</h3>
+
+<pre><code>
+{
+        "files": [
+            {
+                "type":"SCRIPT",
+                "source":"../path/to/your/script.js",
+                "size":4.096
+            },
+            {
+                "type":"IMAGE",
+                "source":"../path/to/your/image.jpg",
+                "size":620
+            },
+            {
+                "type":"TEXT",
+                "source":"../path/to/your/text.txt",
+                "size":44
+            },
+            {
+                "type":"VIDEO",
+                "sources": {
+                    "webm":{
+                        "source":"../path/to/your/video.webm",
+                        "size":5054.976
+                    },
+                    "ogg":{
+                        "source":"../path/to/your/video.ogg",
+                        "size":2932.736
+                    },
+                    "mp4":{
+                        "source":"../path/to/your/video.mp4",
+                        "size":9285.632
+                    }
+                }
+            },
+            {
+                "type":"AUDIO",
+                "sources": {
+                    "mp3":{
+                        "source":"../path/to/your/audio.mp3",
+                        "size":9285.632
+                    },
+                    "ogg":{
+                        "source":"../path/to/your/audio.ogg",
+                        "size":2089.688
+                    }
+                }
+            }
+        ]
+    }
+</code></pre>
+
+<h3>
+<a name="2-import-the-plugin-into-your-page" class="anchor" href="#2-import-the-plugin-into-your-page"><span class="mini-icon mini-icon-link"></span></a>2 Import the plugin into your page:</h3>
+
+<pre><code>
+&lt;script src="http://code.jquery.com/jquery-latest.min.js"&gt;&lt;/script&gt;
+&lt;script src="../js/jQuery.html5Loader.js"&gt;&lt;/script&gt;
+
+</code></pre>
+
+<h3>
+<a name="3-initialize-the-plugin-setting-the-callback-functions" class="anchor" href="#3-initialize-the-plugin-setting-the-callback-functions"><span class="mini-icon mini-icon-link"></span></a>3 Initialize the plugin setting the callback functions:</h3>
+
+<pre><code>
+$.html5Loader({
+            filesToLoad:        '../js/files.json', // this could be a JSON or simply a javascript object
+            onBeforeLoad:       function () {},
+            onComplete:         function () {},
+            onElementLoaded:    function ( obj, elm) { },
+            onUpdate:           function ( percentage ) {}      
+}); 
+
+</code></pre>
+
+<h1>
+<a name="api" class="anchor" href="#api"><span class="mini-icon mini-icon-link"></span></a>API</h1>
+
+<h2>
+<a name="methods" class="anchor" href="#methods"><span class="mini-icon mini-icon-link"></span></a>Methods</h2>
+
+<ul>
+<li>
+<code>onBeforeLoad</code> It is triggered before the loading process starts</li>
+<li>
+<code>onComplete</code> It is triggered when the plugin finishes to load all the sources</li>
+<li>
+<code>onMediaError</code> This function is invoked in case of any error occurred during the media element fetch
+
+<ul>
+<li>
+<code>obj</code> original object passed to the plugin</li>
+<li>
+<code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)</li>
+</ul>
+</li>
+<li>
+<code>onElementLoaded</code> It is triggered anytime a new element of the json array is loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+
+<ul>
+<li>
+<code>obj</code> original object passed to the plugin</li>
+<li>
+<code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)</li>
+</ul>
+</li>
+<li>
+<code>onUpdate</code> it is triggered anytime new bytes are loaded
+
+<ul>
+<li>
+<code>percentage</code> the percentage currently loaded</li>
+</ul>
+</li>
+</ul><h1>
+<a name="known-issues" class="anchor" href="#known-issues"><span class="mini-icon mini-icon-link"></span></a>KNOWN ISSUES</h1>
+
+<ul>
+<li>Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( <a href="http://modernizr.com/docs/#audio">http://modernizr.com/docs/#audio</a> ). For these browsers we don't preload any HTML5 media format</li>
+<li>on mobile devices and on the iPad the preloading of any video or audio element is skipped because those devices can't preload those elements since a user interacts with them<br>
+</li>
+</ul><h1>
+<a name="todo-list" class="anchor" href="#todo-list"><span class="mini-icon mini-icon-link"></span></a>TODO LIST</h1>
+
+<ul>
+<li>create a nodejs script that is able to read files in a folder exporting the JSON file needed to preload them</li>
+</ul>
+        <h2 id="methods">Download</h2>
+        <a href="https://github.com/GianlucaGuarini/jQuery.html5loader">jQuery.html5Loader</a>
+
+        <aside class="addthis_toolbox addthis_default_style ">
+            <h2 class="visuallyhidden">Share links</h2>
+            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+            <a class="addthis_button_tweet"></a>
+            <a class="addthis_button_google_plusone" g:plusone:size="medium"></a> 
+            <a class="addthis_button_pinterest_pinit"></a>
+            <a class="addthis_counter addthis_pill_style"></a>
+        </aside>
+        <a href="http://www.gianlucaguarini.com" target="_blank">Gianluca Guarini 2012</a>
+    </div>
+
+    <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-507887fc43c4ab03"></script>
+
+    <script type="text/javascript">
+         var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-8059670-3']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+</body>
+</html>
