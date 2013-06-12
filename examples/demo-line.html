@@ -35,8 +35,8 @@ div#wrapper > * {
 }
 </style>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="../src/animations/jquery.html5Loader.line.js"></script>
-	<script src="../src/jquery.html5Loader.js"></script>
+	<script src="../js/animations/jQuery.html5Loader.line.js"></script>
+	<script src="../js/jQuery.html5Loader.js"></script>
 
 </head>
 <body>
@@ -70,19 +70,19 @@ div#wrapper > * {
 		
 	</div>
 	<script type="text/javascript">
-	//init
-	var loaderAnimation = $("#html5Loader").LoaderAnimation({
-		onComplete:function(){
-			console.log("preloader animation completed!")
-		}
-	});
-	$.html5Loader({
-			filesToLoad:'../js/files.json',
-			onComplete: function () {
-				console.log("All the assets are loaded!")
-			},
-			onUpdate: loaderAnimation.update
-	});	
+		//init
+		var loaderAnimation = $("#html5Loader").LoaderAnimation({
+			onComplete:function(){
+				console.log("preloader animation completed!")
+			}
+		});
+		$.html5Loader({
+				filesToLoad:'../js/files.json',
+				onComplete: function () {
+					console.log("All the assets are loaded!")
+				},
+				onUpdate: loaderAnimation.update
+		});
 	</script>
 
 	</body>
