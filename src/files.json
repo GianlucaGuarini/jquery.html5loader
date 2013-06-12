@@ -1,0 +1,112 @@
+{
+    "files": [
+        {
+            "source": "../files/test.js",
+            "type": "SCRIPT",
+            "size": 4.096
+        },
+        {
+            "source": "../files/image1.jpg",
+            "type": "IMAGE",
+            "size": 270.336
+        },
+        {
+            "source": "../files/image2.jpg",
+            "type": "IMAGE",
+            "size": 491.52
+        },
+        {
+            "source": "../files/image3.jpg",
+            "type": "IMAGE",
+            "size": 421.888
+        },
+        {
+            "source": "../files/image4.jpg",
+            "type": "IMAGE",
+            "size": 249.856
+        },
+        {
+            "source": "../files/image5.jpg",
+            "type": "IMAGE",
+            "size": 167.936
+        },
+        {
+            "source": "../files/image6.jpg",
+            "type": "IMAGE",
+            "size": 331.776
+        },
+        {
+            "source": "../files/image7.jpg",
+            "type": "IMAGE",
+            "size": 421.888
+        },
+        {
+            "source": "../files/image8.jpg",
+            "type": "IMAGE",
+            "size": 573.44
+        },
+        {
+            "source": "../files/image9.jpg",
+            "type": "IMAGE",
+            "size": 270.336
+        },
+        {
+            "source": "../files/image10.jpg",
+            "type": "IMAGE",
+            "size": 294.912
+        },
+        
+        {
+            "source": "../files/text.txt",
+            "type": "TEXT",
+            "size": 45.056
+        },
+        {
+            "type": "VIDEO",
+            "sources": {
+                "webm": {
+                    "source": "http://video-js.zencoder.com/oceans-clip.webm",
+                    "size": 14625011
+                },
+                "ogg": {
+                    "source": "http://video-js.zencoder.com/oceans-clip.ogv",
+                    "size": 13235468
+                },
+                "mp4": {
+                    "source": "http://video-js.zencoder.com/oceans-clip.mp4",
+                    "size": 19448241
+                }
+            }
+        },
+        {
+            "type": "VIDEO",
+            "sources": {
+                "webm": {
+                    "source": "http://clips.vorwaerts-gmbh.de/VfE.webm",
+                    "size": 7901210
+                },
+                "ogg": {
+                    "source": "http://clips.vorwaerts-gmbh.de/VfE.ogv",
+                    "size": 4964107
+                },
+                "mp4": {
+                    "source": "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4",
+                    "size": 5251725
+                }
+            }
+        },
+        {
+            "type": "AUDIO",
+            "sources": {
+                "mp3": {
+                    "source": "../files/creep.mp3",
+                    "size": 9285.632
+                },
+                "ogg": {
+                    "source": "../files/creep.ogg",
+                    "size": 2089.688
+                }
+            }
+        }
+    ]
+}
