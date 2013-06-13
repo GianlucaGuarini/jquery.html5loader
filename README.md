@@ -12,7 +12,7 @@ This plugin needs a <b>JSON</b> file to get the files that it has to preload (or
 
 
 ## Demo
-https://gianlucaguarini.github.io/jquery.html5loader/
+https://gianlucaguarini.github.com/jquery.html5loader/
 
 ## jQuery.html5loader in production
 - http://www.mobi-myhome.ch
