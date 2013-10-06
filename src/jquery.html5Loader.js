@@ -362,7 +362,7 @@
 		};
 		
 		/*
-		* @description Load CSS style
+		* @description Load CSS style and apply it to current page
 		* @param file: object
 		*
 		*/
@@ -380,6 +380,9 @@
 					_bytesLoaded += file.size;
 					_files.splice(0,1);
 					updatePercentage();
+					
+					//apply style to page
+					$("<style type='text/css' media='all'></style>").appendTo("head").html(data);
 					
 					defer.resolve(data);
 				}
