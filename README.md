@@ -1,7 +1,8 @@
 # Introduction
-jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>script</b> and <b>text</b> files.
+jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>scripts</b> and <b>text</b> files.
 This plugin needs a <b>JSON</b> file to get the files that must be preloaded (you can use also use a javascript object as well), and it provides an easy API to give you the the amount of file loaded in percentage.
-All the javascript and css files will be automatically loaded and injected into the DOM for all the rest
+
+All the javascript and css files will be automatically loaded and injected into the DOM
 
 
 ## Features
