@@ -1,3 +1,6 @@
+body {
+  border:15px solid black;
+}
 .btn-default,
 .btn-primary,
 .btn-success,

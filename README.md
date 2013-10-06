@@ -22,7 +22,7 @@ https://gianlucaguarini.github.com/jquery.html5loader/
 
 ### 1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):
 
-<pre><code>
+<pre lang="json">
 {
 		"files": [
 			{
@@ -72,18 +72,18 @@ https://gianlucaguarini.github.com/jquery.html5loader/
 			}
 		]
 	}
-</code></pre>
+</pre>
 
 ### 2 Import the plugin into your page:
-<pre><code>
+<pre lang="html">
 &lt;script src=&quot;http://code.jquery.com/jquery-latest.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;../js/jQuery.html5Loader.js&quot;&gt;&lt;/script&gt;
 
-</code></pre>
+</pre>
 
 ### 3 Initialize the plugin setting the callback functions:
 
-<pre><code>
+<pre lang="javascript">
 $.html5Loader({
 			filesToLoad:		'../js/files.json', // this could be a JSON or simply a javascript object
 			onBeforeLoad:       function () {},
@@ -92,7 +92,7 @@ $.html5Loader({
 			onUpdate:           function ( percentage ) {}		
 });	
 
-</code></pre>
+</pre>
 
 
 # API 

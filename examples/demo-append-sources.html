@@ -58,9 +58,8 @@ div#wrapper > * {
 				console.log("All the assets are loaded!")
 			},
 			onElementLoaded: function ( obj, elm ){
-				if(obj.type !== "TEXT" && obj.type !== "SCRIPT") {
+				if(!~$.inArray(obj.type,["TEXT","SCRIPT","CSS"])) {
 					$("#wrapper").append(elm);
-			
 				}
 			}
 	});	
