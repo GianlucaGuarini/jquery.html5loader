@@ -55,11 +55,15 @@
             "type": "IMAGE",
             "size": 294.912
         },
-        
         {
             "source": "../files/text.txt",
             "type": "TEXT",
             "size": 45.056
+        },
+        {
+            "source": "../files/test.css",
+            "type": "CSS",
+            "size": 15.056
         },
         {
             "type": "VIDEO",
