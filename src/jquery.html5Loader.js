@@ -37,11 +37,11 @@
 	$.html5Loader = function (customOptions) {
 		var defaults = {
 			filesToLoad:		null,										/* set the path to the JSON or pass an object containing the files to preload */
-			debugMode:          false,										/* debugger */
-			onBeforeLoad:       function () {},								/* this functions is triggered before the preloader starts loading the sources */
-			onComplete:         function () {},								/* set the onComplete is triggered when everything is loaded */
-			onElementLoaded:    function ( obj, elm) { },					/* this Callback is triggered anytime an object is loaded */
-			onUpdate:           function ( percentage ) {},					/* this function returns alway the current percentage */
+			debugMode:          	false,										/* debugger */
+			onBeforeLoad:       	function () {},								/* this functions is triggered before the preloader starts loading the sources */
+			onComplete:     	function () {},								/* set the onComplete is triggered when everything is loaded */
+			onElementLoaded:    	function ( obj, elm) { },					/* this Callback is triggered anytime an object is loaded */
+			onUpdate:       	function ( percentage ) {},					/* this function returns alway the current percentage */
 			onMediaError:		function ( obj, elm){}						/* This function is invoked in case of any error occurred during the media element fetch*/
 		},
 		// merging the custom options with the default ones
@@ -360,6 +360,36 @@
 
 			return defer.promise();
 		};
+		
+		/*
+		* @description Load CSS style and apply it to current page
+		* @param file: object
+		*
+		*/
+		
+		var loadCSS = function( file ) {
+			var defer = new $.Deferred();
+			
+			$.ajax({
+				url : file.source,
+				dataType: "text",
+				success : function (data) {
+					log('File Loaded:' + file.source);
+
+					onElementLoaded( file, data);
+					_bytesLoaded += file.size;
+					_files.splice(0,1);
+					updatePercentage();
+					
+					//apply style to page
+					$("<style type='text/css' media='all'></style>").appendTo("head").html(data);
+					
+					defer.resolve(data);
+				}
+			});
+
+			return defer.promise();
+		};
 
 		/*
 		*
@@ -417,6 +447,9 @@
 					break;
 					case "TEXT":
 						loadText(file);
+					break;
+					case "CSS":
+						loadCSS(file);
 					break;
 					default:
 						return false;
