@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Jquery.html5loader by GianlucaGuarini</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Jquery.html5loader</h1>
+        <h2>jQuery.html5Loader can preload images, html5 video and audio sources, scripts, css, and text files.</h2>
+        <a href="https://github.com/GianlucaGuarini/jquery.html5loader" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>scripts</b> and <b>text</b> files.
+This plugin needs a <b>JSON</b> file to get the files that must be preloaded (you can use also use a javascript object as well), and it provides an easy API to give you the the amount of file loaded in percentage.</p>
+
+<p>All the javascript and css files will be automatically loaded and injected into the DOM</p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>
+<b>smart</b>: it loads just the sources supported by the client running the script.</li>
+<li>
+<b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like</li>
+<li>
+<b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use</li>
+</ul><h2>
+<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h2>
+
+<ul>
+<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-append-sources.html">Append the files loaded on the fly</a></li>
+<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-big-counter.html">Big counter animation</a></li>
+<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-circular.html">Circular preloader</a></li>
+<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-line.html">Line preloader</a></li>
+</ul><h2>
+<a name="production-websites-using-jqueryhtml5loader" class="anchor" href="#production-websites-using-jqueryhtml5loader"><span class="octicon octicon-link"></span></a>Production websites using jQuery.html5loader</h2>
+
+<ul>
+<li><a href="http://www.mobi-myhome.ch">http://www.mobi-myhome.ch</a></li>
+<li><a href="http://lindberghallee.ch">http://lindberghallee.ch</a></li>
+</ul><h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>USAGE</h1>
+
+<h3>
+<a name="1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-" class="anchor" href="#1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-"><span class="octicon octicon-link"></span></a>1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):</h3>
+
+<div class="highlight highlight-json"><pre>
+<span class="p">{</span>
+    <span class="nt">"files"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"SCRIPT"</span><span class="p">,</span>
+        <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/script.js"</span><span class="p">,</span>
+        <span class="nt">"size"</span><span class="p">:</span><span class="mf">4.096</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"IMAGE"</span><span class="p">,</span>
+        <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/image.jpg"</span><span class="p">,</span>
+        <span class="nt">"size"</span><span class="p">:</span><span class="mi">620</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"CSS"</span><span class="p">,</span>
+        <span class="nt">"source"</span><span class="p">:</span> <span class="s2">"../files/test.css"</span><span class="p">,</span>
+        <span class="nt">"size"</span><span class="p">:</span> <span class="mf">16.819</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"TEXT"</span><span class="p">,</span>
+        <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/text.txt"</span><span class="p">,</span>
+        <span class="nt">"size"</span><span class="p">:</span><span class="mi">44</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"VIDEO"</span><span class="p">,</span>
+        <span class="nt">"sources"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">"webm"</span><span class="p">:{</span>
+            <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.webm"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">5054.976</span>
+          <span class="p">},</span>
+          <span class="nt">"ogg"</span><span class="p">:{</span>
+            <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.ogg"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">2932.736</span>
+          <span class="p">},</span>
+          <span class="nt">"mp4"</span><span class="p">:{</span>
+            <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.mp4"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">9285.632</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"AUDIO"</span><span class="p">,</span>
+        <span class="nt">"sources"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">"mp3"</span><span class="p">:{</span>
+            <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/audio.mp3"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">9285.632</span>
+          <span class="p">},</span>
+          <span class="nt">"ogg"</span><span class="p">:{</span>
+            <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/audio.ogg"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">2089.688</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="2-import-the-plugin-into-your-page" class="anchor" href="#2-import-the-plugin-into-your-page"><span class="octicon octicon-link"></span></a>2 Import the plugin into your page:</h3>
+
+<div class="highlight highlight-html"><pre>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://code.jquery.com/jquery-latest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../js/jQuery.html5Loader.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<h3>
+<a name="3-initialize-the-plugin-setting-the-callback-functions" class="anchor" href="#3-initialize-the-plugin-setting-the-callback-functions"><span class="octicon octicon-link"></span></a>3 Initialize the plugin setting the callback functions:</h3>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="nx">$</span><span class="p">.</span><span class="nx">html5Loader</span><span class="p">({</span>
+      <span class="nx">filesToLoad</span><span class="o">:</span>    <span class="s1">'../js/files.json'</span><span class="p">,</span> <span class="c1">// this could be a JSON or simply a javascript object</span>
+      <span class="nx">onBeforeLoad</span><span class="o">:</span>       <span class="kd">function</span> <span class="p">()</span> <span class="p">{},</span>
+      <span class="nx">onComplete</span><span class="o">:</span>         <span class="kd">function</span> <span class="p">()</span> <span class="p">{},</span>
+      <span class="nx">onElementLoaded</span><span class="o">:</span>    <span class="kd">function</span> <span class="p">(</span> <span class="nx">obj</span><span class="p">,</span> <span class="nx">elm</span><span class="p">)</span> <span class="p">{</span> <span class="p">},</span>
+      <span class="nx">onUpdate</span><span class="o">:</span>           <span class="kd">function</span> <span class="p">(</span> <span class="nx">percentage</span> <span class="p">)</span> <span class="p">{}</span>    
+<span class="p">});</span> 
+</pre></div>
+
+<h1>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
+
+<h2>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<ul>
+<li>
+<code>onBeforeLoad</code> It is triggered right before the plugin starts loading all the files</li>
+<li>
+<code>onComplete</code> It is triggered when the plugin finishes to load all the sources</li>
+<li>
+<code>onMediaError</code> This function is called in case there's an error during the preloading
+
+<ul>
+<li>
+<code>obj</code> original object passed to the plugin</li>
+<li>
+<code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)</li>
+</ul>
+</li>
+<li>
+<code>onElementLoaded</code> It is triggered anytime a new element of your files list gets loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+
+<ul>
+<li>
+<code>obj</code> original object passed to the plugin</li>
+<li>
+<code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)</li>
+</ul>
+</li>
+<li>
+<code>onUpdate</code> it is triggered anytime new bytes are loaded
+
+<ul>
+<li>
+<code>percentage</code> the percentage currently loaded</li>
+</ul>
+</li>
+</ul><h1>
+<a name="known-issues" class="anchor" href="#known-issues"><span class="octicon octicon-link"></span></a>KNOWN ISSUES</h1>
+
+<ul>
+<li>Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( <a href="http://modernizr.com/docs/#audio">http://modernizr.com/docs/#audio</a> ). For these browsers we don't preload any HTML5 media format</li>
+<li>on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/GianlucaGuarini/jquery.html5loader/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/GianlucaGuarini/jquery.html5loader/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/GianlucaGuarini/jquery.html5loader"></a> is maintained by <a href="https://github.com/GianlucaGuarini">GianlucaGuarini</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-8059670-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
