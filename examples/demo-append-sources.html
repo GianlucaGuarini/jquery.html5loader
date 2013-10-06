@@ -36,8 +36,8 @@ div#wrapper > * {
 }
 </style>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="../js/animations/jQuery.big-counter.js"></script>
-	<script src="../js/jQuery.html5Loader.js"></script>
+	<script src="../src/animations/jquery.big-counter.js"></script>
+	<script src="../src/jquery.html5Loader.js"></script>
 
 </head>
 <body>
@@ -47,7 +47,7 @@ div#wrapper > * {
 	//init
 	var loaderAnimation = $("#html5Loader").LoaderAnimation({
 		font: "normal 800px Lobster Two",
-		onComplete: function() {
+		onComplete:function(){
 			console.log("preloader animation completed!")
 		}
 	});
@@ -62,8 +62,7 @@ div#wrapper > * {
 					$("#wrapper").append(elm);
 				}
 			}
-		}
-	});
+	});	
 	</script>
 
 	</body>
