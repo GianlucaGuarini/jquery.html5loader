@@ -30,8 +30,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **/
 /*global console*/
-;
-(function($) {
+;(function($) {
 
   "use strict";
 
