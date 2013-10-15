@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6.5
+ * Version:     1.6.6
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -120,8 +120,8 @@
         if (bool = !! elem.canPlayType) {
           bool = new Boolean(bool);
           bool.ogg = elem.canPlayType('video/ogg; codecs="theora"');
-
-          bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"');
+          
+          bool.mp4 = bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"');
 
           bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"');
         }
