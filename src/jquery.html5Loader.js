@@ -40,6 +40,8 @@
       /* set the path to the JSON or pass an object containing the files to preload */
       debugMode: false,
       /* debugger */
+      stopExecution: false,
+      /* script files won't execute when loaded */
       onBeforeLoad: function() {},
       /* this functions is triggered before the preloader starts loading the sources */
       onComplete: function() {},
@@ -61,6 +63,7 @@
      */
     var filesToLoad = options.filesToLoad,
       debugMode = options.debugMode,
+      stopExecution = options.stopExecution,
       onBeforeLoad = options.onBeforeLoad,
       onComplete = options.onComplete,
       onElementLoaded = options.onElementLoaded,
@@ -347,8 +350,15 @@
 
     var loadScript = function(file) {
       var defer = new $.Deferred(),
-        size = file.size;
-      $.getScript(file.source).done(function(data) {
+        size = file.size,
+        args = {url: file.source, dataType: "script"};
+		
+      // Disables script execution when loaded upon users request.
+      if(stopExecution){ 
+        args.converters = { 'text script': function(text) { return text;} }
+      }
+	  
+      $.ajax(args).done(function(data) {
 
         log('File Loaded:' + file.source);
 
