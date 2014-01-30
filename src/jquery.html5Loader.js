@@ -348,7 +348,7 @@
     var loadScript = function(file) {
       var defer = new $.Deferred(),
         size = file.size;
-      $.getScript(file.source, function(data) {
+      $.getScript(file.source).done(function(data) {
 
         log('File Loaded:' + file.source);
 
@@ -360,6 +360,10 @@
         _files.splice(0, 1);
         updatePercentage();
         defer.resolve();
+      })
+      .fail(function(jqxhr, settings, exception) {
+        log('\n File Failed: ' + file.source + 
+            '\n Message:     ' + exception.message + '\n');
       });
 
       return defer.promise();
