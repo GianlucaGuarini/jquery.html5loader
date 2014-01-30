@@ -362,7 +362,8 @@
         defer.resolve();
       })
       .fail(function(jqxhr, settings, exception) {
-        log('File Failed:' + file.source, exception);
+        log('\n File Failed: ' + file.source + 
+            '\n Message:     ' + exception.message + '\n');
       });
 
       return defer.promise();
