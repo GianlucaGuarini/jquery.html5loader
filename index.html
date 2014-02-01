@@ -50,10 +50,13 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h2>
 
 <ul>
-<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-append-sources.html">Append the files loaded on the fly</a></li>
-<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-big-counter.html">Big counter animation</a></li>
-<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-circular.html">Circular preloader</a></li>
-<li><a href="https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-line.html">Line preloader</a></li>
+<li>
+<a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-nprogress.html">nprogress preloader</a> by <a href="https://github.com/rstacruz/nprogress">Rico Sta. Cruz</a>
+</li>
+<li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-append-sources.html">Append the files loaded on the fly</a></li>
+<li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-big-counter.html">Big counter animation</a></li>
+<li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-circular.html">Circular preloader</a></li>
+<li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-line.html">Line preloader</a></li>
 </ul><h2>
 <a name="production-websites-using-jqueryhtml5loader" class="anchor" href="#production-websites-using-jqueryhtml5loader"><span class="octicon octicon-link"></span></a>Production websites using jQuery.html5loader</h2>
 
@@ -72,7 +75,14 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
       <span class="p">{</span>
         <span class="nt">"type"</span><span class="p">:</span><span class="s2">"SCRIPT"</span><span class="p">,</span>
         <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/script.js"</span><span class="p">,</span>
-        <span class="nt">"size"</span><span class="p">:</span><span class="mf">4.096</span>
+        <span class="nt">"size"</span><span class="p">:</span><span class="mf">4.096</span><span class="p">,</span>
+        <span class="nt">"stopExecution"</span><span class="p">:</span><span class="kc">true</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"SCRIPT"</span><span class="p">,</span>
+        <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/script.js"</span><span class="p">,</span>
+        <span class="nt">"size"</span><span class="p">:</span><span class="mf">4.096</span><span class="p">,</span>
+        <span class="nt">"stopExecution"</span><span class="p">:</span><span class="kc">false</span>
       <span class="p">},</span>
       <span class="p">{</span>
         <span class="nt">"type"</span><span class="p">:</span><span class="s2">"IMAGE"</span><span class="p">,</span>
@@ -100,12 +110,17 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
             <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.ogg"</span><span class="p">,</span>
             <span class="nt">"size"</span><span class="p">:</span><span class="mf">2932.736</span>
           <span class="p">},</span>
-          <span class="nt">"mp4"</span><span class="p">:{</span>
+          <span class="nt">"h264"</span><span class="p">:{</span>
             <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.mp4"</span><span class="p">,</span>
             <span class="nt">"size"</span><span class="p">:</span><span class="mf">9285.632</span>
+          <span class="p">},</span>
+          <span class="nt">"vp9"</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/video.webm"</span><span class="p">,</span>
+              <span class="nt">"size"</span><span class="p">:</span><span class="mf">9285.632</span>
+            <span class="p">}</span>
           <span class="p">}</span>
         <span class="p">}</span>
-      <span class="p">},</span>
+      <span class="err">}</span><span class="p">,</span>
       <span class="p">{</span>
         <span class="nt">"type"</span><span class="p">:</span><span class="s2">"AUDIO"</span><span class="p">,</span>
         <span class="nt">"sources"</span><span class="p">:</span> <span class="p">{</span>
@@ -116,6 +131,18 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
           <span class="nt">"ogg"</span><span class="p">:{</span>
             <span class="nt">"source"</span><span class="p">:</span><span class="s2">"../path/to/your/audio.ogg"</span><span class="p">,</span>
             <span class="nt">"size"</span><span class="p">:</span><span class="mf">2089.688</span>
+          <span class="p">},</span>
+          <span class="nt">"opus"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"source"</span><span class="p">:</span> <span class="s2">"../path/to/your/audio.opus"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">2000.20</span>
+          <span class="p">},</span>
+          <span class="nt">"wav"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"source"</span><span class="p">:</span> <span class="s2">"../path/to/your/audio.wav"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">2000.20</span>
+          <span class="p">},</span>
+          <span class="nt">"m4a"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"source"</span><span class="p">:</span> <span class="s2">"../path/to/your/audio.m4a"</span><span class="p">,</span>
+            <span class="nt">"size"</span><span class="p">:</span><span class="mf">2000.20</span>
           <span class="p">}</span>
         <span class="p">}</span>
       <span class="p">}</span>
@@ -140,8 +167,8 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
       <span class="nx">onBeforeLoad</span><span class="o">:</span>       <span class="kd">function</span> <span class="p">()</span> <span class="p">{},</span>
       <span class="nx">onComplete</span><span class="o">:</span>         <span class="kd">function</span> <span class="p">()</span> <span class="p">{},</span>
       <span class="nx">onElementLoaded</span><span class="o">:</span>    <span class="kd">function</span> <span class="p">(</span> <span class="nx">obj</span><span class="p">,</span> <span class="nx">elm</span><span class="p">)</span> <span class="p">{</span> <span class="p">},</span>
-      <span class="nx">onUpdate</span><span class="o">:</span>           <span class="kd">function</span> <span class="p">(</span> <span class="nx">percentage</span> <span class="p">)</span> <span class="p">{}</span>    
-<span class="p">});</span> 
+      <span class="nx">onUpdate</span><span class="o">:</span>           <span class="kd">function</span> <span class="p">(</span> <span class="nx">percentage</span> <span class="p">)</span> <span class="p">{}</span>
+<span class="p">});</span>
 </pre></div>
 
 <h1>
@@ -166,7 +193,9 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 </ul>
 </li>
 <li>
-<code>onElementLoaded</code> It is triggered anytime a new element of your files list gets loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+<code>stopExecution</code> (false by default) : default behavior for all the script files, they won't execute when loaded. This behavior can be changed by each script object passed to the plugin</li>
+<li>
+<code>onElementLoaded</code> It is triggered anytime a new element of your files list gets loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION).
 
 <ul>
 <li>
@@ -189,6 +218,24 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <ul>
 <li>Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( <a href="http://modernizr.com/docs/#audio">http://modernizr.com/docs/#audio</a> ). For these browsers we don't preload any HTML5 media format</li>
 <li>on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them</li>
+</ul><h1>
+<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>CHANGELOG</h1>
+
+<h2>
+<a name="v168" class="anchor" href="#v168"><span class="octicon octicon-link"></span></a>v1.6.8</h2>
+
+<ul>
+<li>small refactor</li>
+<li>added: new media file codecs tests
+
+<ul>
+<li>video: vp9</li>
+<li>audio: opus, wav, m4a</li>
+</ul>
+</li>
+<li>added: stopExecution option</li>
+<li>added: stopExecution option via json</li>
+<li>added: nprogress demo</li>
 </ul>
         </section>
 
@@ -204,7 +251,7 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 
           <p class="repo-owner"><a href="https://github.com/GianlucaGuarini/jquery.html5loader"></a> is maintained by <a href="https://github.com/GianlucaGuarini">GianlucaGuarini</a>.</p>
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
