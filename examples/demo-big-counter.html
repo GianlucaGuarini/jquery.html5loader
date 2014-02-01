@@ -69,23 +69,23 @@ div#wrapper > * {
 		<img src="../files/image8.jpg">
 		<img src="../files/image9.jpg">
 		<img src="../files/image10.jpg">
-	
-		
+
+
 	</div>
 	<script type="text/javascript">
 	//init
 	var loaderAnimation = $("#html5Loader").LoaderAnimation({
 		onComplete:function(){
-			console.log("preloader animation completed!")
+			console.log("preloader animation completed!");
 		}
 	});
 	$.html5Loader({
 			filesToLoad:'../src/files.json',
 			onComplete: function () {
-				console.log("All the assets are loaded!")
+				console.log("All the assets are loaded!");
 			},
 			onUpdate: loaderAnimation.update
-	});	
+	});
 	</script>
 
 	</body>
