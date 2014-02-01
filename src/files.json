@@ -2,7 +2,13 @@
   "files": [{
     "source": "../files/test.js",
     "type": "SCRIPT",
-    "size": 4.096
+    "size": 4.096,
+    "stopExecution":false
+  },{
+    "source": "../files/test2.js",
+    "type": "SCRIPT",
+    "size": 4.096,
+    "stopExecution":true
   }, {
     "source": "../files/image1.jpg",
     "type": "IMAGE",
@@ -62,7 +68,7 @@
         "source": "http://video-js.zencoder.com/oceans-clip.ogv",
         "size": 13235468
       },
-      "mp4": {
+      "h264": {
         "source": "http://video-js.zencoder.com/oceans-clip.mp4",
         "size": 19448241
       }
@@ -78,7 +84,7 @@
         "source": "http://clips.vorwaerts-gmbh.de/VfE.ogv",
         "size": 4964107
       },
-      "mp4": {
+      "h264": {
         "source": "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4",
         "size": 5251725
       }

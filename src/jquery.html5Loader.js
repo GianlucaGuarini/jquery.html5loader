@@ -1,12 +1,12 @@
 /*!
  *
- * Version:     1.6.5
+ * Version:     1.6.8
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
  * Twitter:     @gianlucaguarini
  *
- * Copyright (c) 2013 Gianluca Guarini
+ * Copyright (c) Gianluca Guarini
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -30,7 +30,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **/
 /*global console*/
-;(function($) {
+(function($) {
 
   "use strict";
 
@@ -40,6 +40,8 @@
       /* set the path to the JSON or pass an object containing the files to preload */
       debugMode: false,
       /* debugger */
+      stopExecution: false,
+      /* script files won't execute when loaded */
       onBeforeLoad: function() {},
       /* this functions is triggered before the preloader starts loading the sources */
       onComplete: function() {},
@@ -61,6 +63,7 @@
      */
     var filesToLoad = options.filesToLoad,
       debugMode = options.debugMode,
+      stopExecution = options.stopExecution,
       onBeforeLoad = options.onBeforeLoad,
       onComplete = options.onComplete,
       onElementLoaded = options.onElementLoaded,
@@ -69,7 +72,7 @@
 
     /*
      *
-     * PRIVATE VAR
+     * PRIVATE VARS
      *
      */
     var $window = $(window),
@@ -81,7 +84,7 @@
       _isiPad = navigator.userAgent.match(/iPad/i),
       _isMobile = (function(a) {
         if (/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|meego.+mobile|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) return true;
-        else return false
+        else return false;
       })(navigator.userAgent || navigator.vendor || window.opera),
       _support = {};
     /*
@@ -111,41 +114,48 @@
      *
      */
 
-    _support['video'] = function() {
+    _support.video = function() {
+      /* jshint -W053 */
       var elem = document.createElement('video'),
         bool = false;
 
       // IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
       try {
-        if (bool = !! elem.canPlayType) {
-          bool = new Boolean(bool);
-          bool.ogg = elem.canPlayType('video/ogg; codecs="theora"');
-
-          bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"');
-
-          bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"');
+        if ( !! elem.canPlayType) {
+          bool = {
+            ogg: elem.canPlayType('video/ogg; codecs="theora"').replace(/^no$/, ''),
+            // Without QuickTime, this value will be `undefined`. github.com/Modernizr/Modernizr/issues/546
+            h264: elem.canPlayType('video/mp4; codecs="avc1.42E01E"').replace(/^no$/, ''),
+            webm: elem.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/, ''),
+            vp9: elem.canPlayType('video/webm; codecs="vp9"').replace(/^no$/, '')
+          };
+          // backward compatibility
+          bool.mp4 = bool.h264;
         }
-
       } catch (e) {}
 
       return bool;
     }();
 
-    _support['audio'] = function() {
-      var elem = document.createElement('audio'),
-        bool = false;
+    _support.audio = function() {
+      /* jshint -W053 */
+      var elem = document.createElement('audio');
+      var bool = false;
 
       try {
-        if (bool = !! elem.canPlayType) {
-          bool = new Boolean(bool);
-          bool.ogg = elem.canPlayType('audio/ogg; codecs="vorbis"');
-          bool.mp3 = elem.canPlayType('audio/mpeg;');
+        if ( !! elem.canPlayType) {
+          bool = {
+            ogg: elem.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
+            mp3: elem.canPlayType('audio/mpeg;').replace(/^no$/, ''),
+            opus: elem.canPlayType('audio/ogg; codecs="opus"').replace(/^no$/, ''),
+            // Mimetypes accepted:
+            // developer.mozilla.org/En/Media_formats_supported_by_the_audio_and_video_elements
+            // bit.ly/iphoneoscodecs
+            wav: elem.canPlayType('audio/wav; codecs="1"').replace(/^no$/, ''),
+            m4a: (elem.canPlayType('audio/x-m4a;') ||
+              elem.canPlayType('audio/aac;')).replace(/^no$/, '')
+          };
 
-          // Mimetypes accepted:
-          // developer.mozilla.org/En/Media_formats_supported_by_the_audio_and_video_elements
-          // bit.ly/iphoneoscodecs
-          bool.wav = elem.canPlayType('audio/wav; codecs="1"');
-          bool.m4a = elem.canPlayType('audio/x-m4a;') || elem.canPlayType('audio/aac;');
         }
       } catch (e) {}
 
@@ -165,7 +175,6 @@
         sources = file.sources;
 
       $.each(sources, function(tmpSource) {
-
         if (_support[type][tmpSource]) {
           file = file.sources[tmpSource];
           file.type = type.toUpperCase();
@@ -245,15 +254,10 @@
         size = file.size,
         $image = $("<img>");
 
-      $($image).on('load', function(e) {
+      $image.on('load', function() {
         log('File Loaded:' + file.source);
-
         _bytesLoaded += size;
-
-        onElementLoaded(file, $image[0]);
-
-        // preventing a memory leak
-        $image = null;
+        onElementLoaded(file, this);
         // removing the file from the array
         _files.splice(0, 1);
         updatePercentage();
@@ -261,6 +265,9 @@
       });
 
       $image.attr("src", file.source);
+
+      // preventing a memory leak
+      $image = null;
 
       return defer.promise();
     };
@@ -347,8 +354,22 @@
 
     var loadScript = function(file) {
       var defer = new $.Deferred(),
-        size = file.size;
-      $.getScript(file.source, function(data) {
+        size = file.size,
+        args = {
+          url: file.source,
+          dataType: "script"
+        };
+
+      // Disables script execution when loaded upon users request.
+      if ((typeof file.stopExecution === 'undefined' && stopExecution) || file.stopExecution === true)
+        args.converters = {
+          'text script': function(text) {
+            return text;
+          }
+        };
+
+
+      $.ajax(args).done(function(data) {
 
         log('File Loaded:' + file.source);
 
@@ -360,14 +381,18 @@
         _files.splice(0, 1);
         updatePercentage();
         defer.resolve();
-      });
+      })
+        .fail(function(jqxhr, settings, exception) {
+          log('\n File Failed: ' + file.source +
+            '\n Message:     ' + exception.message + '\n');
+        });
 
       return defer.promise();
     };
 
     /*
      *
-     * @description Load any text files or CSS and applying it to current page
+     * @description Load any text file or CSS and applying it to current page
      * @param file: object
      * @param { Boolean } isCss: if it's true i will append the css into the head tag of the page
      *
@@ -387,17 +412,18 @@
           // IE8/7 fix
           // http://stackoverflow.com/questions/805384/how-to-apply-inline-and-or-external-css-loaded-dynamically-with-jquery
           if (isCss)
-            if(document.createStyleSheet) {
-                try { document.createStyleSheet(file.source); } catch (e) { }
-            }
-            else {
-                var css;
-                css         = document.createElement('link');
-                css.rel     = 'stylesheet';
-                css.type    = 'text/css';
-                css.media   = "all";
-                css.href    = file.source;
-                $head[0].appendChild(css);
+            if (document.createStyleSheet) {
+              try {
+                document.createStyleSheet(file.source);
+              } catch (e) {}
+            } else {
+              var css;
+              css = document.createElement('link');
+              css.rel = 'stylesheet';
+              css.type = 'text/css';
+              css.media = "all";
+              css.href = file.source;
+              $head[0].appendChild(css);
             }
 
           defer.resolve(data);
@@ -413,10 +439,9 @@
      *
      */
 
-    var loadingLoop = function() {
+    var startLoading = function() {
 
       var filesArray = _files.slice();
-      // if there are still files to load we keep looping
 
       $.each(filesArray, function(i, file) {
 
@@ -454,7 +479,7 @@
 
     /*
      *
-     * @description Start preloading the page
+     * Start preloading the page
      *
      */
 
@@ -470,19 +495,18 @@
         defer.resolve(filesToLoad);
       } else {
         $.getJSON(filesToLoad, defer.resolve);
-        // once the json is loaded before start loading we arrange all data received
+        // once the json has been loaded parse all data received
         defer.pipe($.proxy(onJsonLoaded, this));
       }
 
       // ready to preload all the files
       promise.then($.proxy(updatePercentage, this));
-      promise.then($.proxy(loadingLoop, this));
+      promise.then($.proxy(startLoading, this));
 
     };
 
     this.init();
 
-    // make the public method accessible from the extern
     return this;
 
   };

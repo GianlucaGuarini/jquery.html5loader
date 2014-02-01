@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<title>Gianluca Guarini- html5 loader jQuery plug-in -  circular COOL</title> 
+	<title>Gianluca Guarini- html5 loader jQuery plug-in -  circular COOL</title>
 	<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
 
 	<style type="text/css">
@@ -66,23 +66,23 @@ div#wrapper > * {
 		<img src="../files/image8.jpg">
 		<img src="../files/image9.jpg">
 		<img src="../files/image10.jpg">
-		
-		
+
+
 	</div>
 	<script type="text/javascript">
 //init
 var loaderAnimation = $("#html5Loader").LoaderAnimation({
 	onComplete:function(){
-		console.log("preloader animation completed!")
+		console.log("preloader animation completed!");
 	}
 });
 $.html5Loader({
 		filesToLoad:'../src/files.json',
 		onComplete: function () {
-			console.log("All the assets are loaded!")
+			console.log("All the assets are loaded!");
 		},
 		onUpdate: loaderAnimation.update
-});	
+});
 </script>
 
 </body>

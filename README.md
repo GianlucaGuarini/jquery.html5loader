@@ -14,12 +14,13 @@ All the javascript and css files will be automatically loaded and injected into 
 
 
 ## Demos
- - [Append the files loaded on the fly](https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-append-sources.html)
- - [Big counter animation](https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-big-counter.html)
- - [Circular preloader](https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-circular.html)
- - [Line preloader](https://gianlucaguarini.github.com/jquery.html5loader/examples/demo-line.html)
+ - [nprogress preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-nprogress.html) by [Rico Sta. Cruz](https://github.com/rstacruz/nprogress)
+ - [Append the files loaded on the fly](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-append-sources.html)
+ - [Big counter animation](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-big-counter.html)
+ - [Circular preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-circular.html)
+ - [Line preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-line.html)
 
-## Production websites using jQuery.html5loader 
+## Production websites using jQuery.html5loader
  - http://www.mobi-myhome.ch
  - http://lindberghallee.ch
 
@@ -33,7 +34,14 @@ All the javascript and css files will be automatically loaded and injected into 
       {
         "type":"SCRIPT",
         "source":"../path/to/your/script.js",
-        "size":4.096
+        "size":4.096,
+        "stopExecution":true
+      },
+      {
+        "type":"SCRIPT",
+        "source":"../path/to/your/script.js",
+        "size":4.096,
+        "stopExecution":false
       },
       {
         "type":"IMAGE",
@@ -61,9 +69,14 @@ All the javascript and css files will be automatically loaded and injected into 
             "source":"../path/to/your/video.ogg",
             "size":2932.736
           },
-          "mp4":{
+          "h264":{
             "source":"../path/to/your/video.mp4",
             "size":9285.632
+          },
+          "vp9": {
+              "source":"../path/to/your/video.webm",
+              "size":9285.632
+            }
           }
         }
       },
@@ -77,6 +90,18 @@ All the javascript and css files will be automatically loaded and injected into 
           "ogg":{
             "source":"../path/to/your/audio.ogg",
             "size":2089.688
+          },
+          "opus": {
+            "source": "../path/to/your/audio.opus",
+            "size":2000.20
+          },
+          "wav": {
+            "source": "../path/to/your/audio.wav",
+            "size":2000.20
+          },
+          "m4a": {
+            "source": "../path/to/your/audio.m4a",
+            "size":2000.20
           }
         }
       }
@@ -99,25 +124,37 @@ $.html5Loader({
       onBeforeLoad:       function () {},
       onComplete:         function () {},
       onElementLoaded:    function ( obj, elm) { },
-      onUpdate:           function ( percentage ) {}    
-}); 
+      onUpdate:           function ( percentage ) {}
+});
 </pre>
 
-
-# API 
+# API
 ## Methods
 - <code>onBeforeLoad</code> It is triggered right before the plugin starts loading all the files
 - <code>onComplete</code> It is triggered when the plugin finishes to load all the sources
 - <code>onMediaError</code> This function is called in case there's an error during the preloading
   - <code>obj</code> original object passed to the plugin
   - <code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)
-- <code>onElementLoaded</code> It is triggered anytime a new element of your files list gets loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION). 
+- <code>stopExecution</code> (false by default) : default behavior for all the script files, they won't execute when loaded. This behavior can be changed by each script object passed to the plugin
+- <code>onElementLoaded</code> It is triggered anytime a new element of your files list gets loaded, (ATTENTION IF AN ELEMENT IS NOT SUPPORTED IT WILL NEVER PASS TROUGH THIS FUNCTION).
   - <code>obj</code> original object passed to the plugin
   - <code>elm</code> html output (for type "SCRIPT" and "TEXT" this value is just a string)
 - <code>onUpdate</code> it is triggered anytime new bytes are loaded
   - <code>percentage</code> the percentage currently loaded
-  
+
 # KNOWN ISSUES
 - Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( http://modernizr.com/docs/#audio ). For these browsers we don't preload any HTML5 media format
 - on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them
+
+# CHANGELOG
+
+## v1.6.8
+
+- small refactor
+- added: new media file codecs tests
+ - video: vp9
+ - audio: opus, wav, m4a
+- added: stopExecution option
+- added: stopExecution option via json
+- added: nprogress demo
 

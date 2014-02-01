@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" /><title>Gianluca Guarini- html5 loader jQuery plug-in - nprogress preloader</title>
+<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+<link rel="stylesheet" href="../lib/nprogress.css" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="../lib/nprogress.js"></script>
+	<script src="../src/animations/jquery.big-counter.js"></script>
+	<script src="../src/jquery.html5Loader.js"></script>
+</head>
+<body>
+	<div id="html5Loader"></div>
+	<div id="wrapper"></div>
+	<script type="text/javascript">
+	NProgress.start();
+	$.html5Loader({
+			filesToLoad:'../src/files.json',
+			onUpdate: function(perc){
+				NProgress.set(perc/100);
+			},
+			stopExecution:true,
+			onComplete: function () {
+				console.log("All the assets are loaded!");
+				NProgress.done(true);
+			},
+			onElementLoaded: function ( obj, elm ){
+				if(!~$.inArray(obj.type,["TEXT","SCRIPT","CSS"])) {
+					$("#wrapper").append(elm);
+				}
+			}
+	});
+	</script>
+
+	</body>
+</html>
