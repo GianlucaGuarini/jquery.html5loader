@@ -14,7 +14,7 @@ All the javascript and css files will be automatically loaded and injected into 
 
 
 ## Demos
- - [nprogress preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-append-sources.html) by [Rico Sta. Cruz](https://github.com/rstacruz/nprogress)
+ - [nprogress preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-nprogress.html) by [Rico Sta. Cruz](https://github.com/rstacruz/nprogress)
  - [Append the files loaded on the fly](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-append-sources.html)
  - [Big counter animation](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-big-counter.html)
  - [Circular preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-circular.html)
@@ -127,7 +127,6 @@ $.html5Loader({
       onUpdate:           function ( percentage ) {}
 });
 </pre>
-
 
 # API
 ## Methods
