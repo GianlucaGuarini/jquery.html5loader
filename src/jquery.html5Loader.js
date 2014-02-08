@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6.8
+ * Version:     1.6.9
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -39,8 +39,22 @@
       filesToLoad: null,
       /* set the path to the JSON or pass an object containing the files to preload */
       debugMode: false,
-      /* debugger */
+      /**
+       * do not execute the javascript files when they'll be preloaded
+       * this option could be overridden into the json per each javascript file
+       * @type {Boolean}
+       */
       stopExecution: false,
+      /**
+       * decide the the buffer size before considering the media preloaded
+       * by default it's the 20% of the entire size of the media file
+       * Pay attention, many browsers cannot preload the entire media files, they just buffer luckily the half (or less) of them
+       * more info: http://www.stevesouders.com/blog/2013/04/12/html5-video-preload/
+       * @type {Float}
+       */
+      mediaBufferSizeToPreload: 0.2,
+      /* let the browser decide when the media file has been buffered enough to be played by listening the canplaythrough event */
+      forceMediaPreload: true,
       /* script files won't execute when loaded */
       onBeforeLoad: function() {},
       /* this functions is triggered before the preloader starts loading the sources */
@@ -63,6 +77,8 @@
      */
     var filesToLoad = options.filesToLoad,
       debugMode = options.debugMode,
+      mediaBufferSizeToPreload = options.mediaBufferSizeToPreload,
+      forceMediaPreload = options.forceMediaPreload,
       stopExecution = options.stopExecution,
       onBeforeLoad = options.onBeforeLoad,
       onComplete = options.onComplete,
@@ -325,12 +341,17 @@
               size -= bytesTmpLoaded;
               _bytesLoaded += bytesTmpLoaded;
               updatePercentage();
+              // Check if the video has been buffered enough to be considered preloaded
+              if (1 / size * bytesTmpLoaded > mediaBufferSizeToPreload && !forceMediaPreload)
+                onMediaLoaded();
             }
           });
         });
 
-        // on Media Loaded
-        $media.on("canplaythrough load", onMediaLoaded);
+        // let the browser decide when the media file has been buffered enough
+        // to be played
+        if (forceMediaPreload)
+          $media.on("canplaythrough", onMediaLoaded);
 
       } else {
         //  that means that media is loaded by default
