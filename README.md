@@ -130,6 +130,10 @@ $.html5Loader({
 
 # API
 ## Methods
+
+- <code>stopExecution</code>: default false,  do not execute the javascript files when they'll be preloaded, this option could be overridden into the json per each javascript file
+- <code>mediaBufferSizeToPreload</code>: default 0.2, decide the the buffer size before considering the media preloaded
+- <code>forceMediaPreload</code>: default true, let the browser decide when the media file has been buffered enough to be played by listening the canplaythrough event
 - <code>onBeforeLoad</code> It is triggered right before the plugin starts loading all the files
 - <code>onComplete</code> It is triggered when the plugin finishes to load all the sources
 - <code>onMediaError</code> This function is called in case there's an error during the preloading
@@ -147,6 +151,11 @@ $.html5Loader({
 - on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them
 
 # CHANGELOG
+
+## v1.6.9
+
+- added: mediaBufferSizeToPreload option
+- added: forceMediaPreload option
 
 ## v1.6.8
 
