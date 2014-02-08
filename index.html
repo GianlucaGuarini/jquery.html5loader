@@ -179,6 +179,12 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 
 <ul>
 <li>
+<code>stopExecution</code>: default false,  do not execute the javascript files when they'll be preloaded, this option could be overridden into the json per each javascript file</li>
+<li>
+<code>mediaBufferSizeToPreload</code>: default 0.2, decide the the buffer size before considering the media preloaded</li>
+<li>
+<code>forceMediaPreload</code>: default true, let the browser decide when the media file has been buffered enough to be played by listening the canplaythrough event</li>
+<li>
 <code>onBeforeLoad</code> It is triggered right before the plugin starts loading all the files</li>
 <li>
 <code>onComplete</code> It is triggered when the plugin finishes to load all the sources</li>
@@ -222,6 +228,12 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>CHANGELOG</h1>
 
 <h2>
+<a name="v169" class="anchor" href="#v169"><span class="octicon octicon-link"></span></a>v1.6.9</h2>
+
+<ul>
+<li>added: mediaBufferSizeToPreload option</li>
+<li>added: forceMediaPreload option</li>
+</ul><h2>
 <a name="v168" class="anchor" href="#v168"><span class="octicon octicon-link"></span></a>v1.6.8</h2>
 
 <ul>
