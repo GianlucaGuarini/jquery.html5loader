@@ -4,6 +4,14 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 
 All the javascript and css files will be automatically loaded and injected into the DOM
 
+### Installation
+
+```bash
+
+$ bower install jquery.html5loader
+
+```
+
 ### Features
 * <b>smart</b>: it loads just the sources supported by the client running the script.
 * <b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like
