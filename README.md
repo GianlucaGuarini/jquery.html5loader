@@ -154,6 +154,10 @@ $.html5Loader({
 
 ### CHANGELOG
 
+#### v1.7.1
+
+- nothing important just removed the node_modules folder
+
 #### v1.7.0
 
 - added: better tablet detection tests
