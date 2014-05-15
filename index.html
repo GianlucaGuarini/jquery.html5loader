@@ -1,43 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Jquery.html5loader by GianlucaGuarini</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Jquery.html5loader by GianlucaGuarini</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>Jquery.html5loader</h1>
-        <h2>jQuery.html5Loader can preload images, html5 video and audio sources, scripts, css, and text files.</h2>
-        <a href="https://github.com/GianlucaGuarini/jquery.html5loader" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+        <p>jQuery.html5Loader can preload images, html5 video and audio sources, scripts, css, and text files.</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+        <p class="view"><a href="https://github.com/GianlucaGuarini/jquery.html5loader">View the Project on GitHub <small>GianlucaGuarini/jquery.html5loader</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/GianlucaGuarini/jquery.html5loader/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/GianlucaGuarini/jquery.html5loader/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/GianlucaGuarini/jquery.html5loader">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
 <p>jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>scripts</b> and <b>text</b> files.
 This plugin needs a <b>JSON</b> file to get the files that must be preloaded (you can use also use a javascript object as well), and it provides an easy API to give you the the amount of file loaded in percentage.</p>
 
 <p>All the javascript and css files will be automatically loaded and injected into the DOM</p>
 
-<h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+<h3>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<div class="highlight highlight-bash"><pre>
+<span class="nv">$ </span>bower install jquery.html5loader
+
+</pre></div>
+
+<h3>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h3>
 
 <ul>
 <li>
@@ -46,8 +54,8 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like</li>
 <li>
 <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use</li>
-</ul><h2>
-<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h2>
+</ul><h3>
+<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h3>
 
 <ul>
 <li>
@@ -57,17 +65,17 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-big-counter.html">Big counter animation</a></li>
 <li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-circular.html">Circular preloader</a></li>
 <li><a href="http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-line.html">Line preloader</a></li>
-</ul><h2>
-<a name="production-websites-using-jqueryhtml5loader" class="anchor" href="#production-websites-using-jqueryhtml5loader"><span class="octicon octicon-link"></span></a>Production websites using jQuery.html5loader</h2>
+</ul><h4>
+<a name="production-websites-using-jqueryhtml5loader" class="anchor" href="#production-websites-using-jqueryhtml5loader"><span class="octicon octicon-link"></span></a>Production websites using jQuery.html5loader</h4>
 
 <ul>
 <li><a href="http://www.mobi-myhome.ch">http://www.mobi-myhome.ch</a></li>
 <li><a href="http://lindberghallee.ch">http://lindberghallee.ch</a></li>
-</ul><h1>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>USAGE</h1>
+</ul><h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>USAGE</h3>
 
-<h3>
-<a name="1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-" class="anchor" href="#1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-"><span class="octicon octicon-link"></span></a>1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):</h3>
+<h4>
+<a name="1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-" class="anchor" href="#1-create-a-json-file-like-this-containing-all-the-files-you-need-to-preload--size-in-bytes-"><span class="octicon octicon-link"></span></a>1 Create a JSON file like this, containing all the files you need to preload ( size in bytes ):</h4>
 
 <div class="highlight highlight-json"><pre>
 <span class="p">{</span>
@@ -150,16 +158,16 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
   <span class="p">}</span>
 </pre></div>
 
-<h3>
-<a name="2-import-the-plugin-into-your-page" class="anchor" href="#2-import-the-plugin-into-your-page"><span class="octicon octicon-link"></span></a>2 Import the plugin into your page:</h3>
+<h4>
+<a name="2-import-the-plugin-into-your-page" class="anchor" href="#2-import-the-plugin-into-your-page"><span class="octicon octicon-link"></span></a>2 Import the plugin into your page:</h4>
 
 <div class="highlight highlight-html"><pre>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://code.jquery.com/jquery-latest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../js/jQuery.html5Loader.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </pre></div>
 
-<h3>
-<a name="3-initialize-the-plugin-setting-the-callback-functions" class="anchor" href="#3-initialize-the-plugin-setting-the-callback-functions"><span class="octicon octicon-link"></span></a>3 Initialize the plugin setting the callback functions:</h3>
+<h4>
+<a name="3-initialize-the-plugin-setting-the-callback-functions" class="anchor" href="#3-initialize-the-plugin-setting-the-callback-functions"><span class="octicon octicon-link"></span></a>3 Initialize the plugin setting the callback functions:</h4>
 
 <div class="highlight highlight-javascript"><pre>
 <span class="nx">$</span><span class="p">.</span><span class="nx">html5Loader</span><span class="p">({</span>
@@ -171,11 +179,11 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <span class="p">});</span>
 </pre></div>
 
-<h1>
-<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
+<h3>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h3>
 
-<h2>
-<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+<h4>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h4>
 
 <ul>
 <li>
@@ -218,23 +226,35 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <code>percentage</code> the percentage currently loaded</li>
 </ul>
 </li>
-</ul><h1>
-<a name="known-issues" class="anchor" href="#known-issues"><span class="octicon octicon-link"></span></a>KNOWN ISSUES</h1>
+</ul><h3>
+<a name="known-issues" class="anchor" href="#known-issues"><span class="octicon octicon-link"></span></a>KNOWN ISSUES</h3>
 
 <ul>
 <li>Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( <a href="http://modernizr.com/docs/#audio">http://modernizr.com/docs/#audio</a> ). For these browsers we don't preload any HTML5 media format</li>
 <li>on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them</li>
-</ul><h1>
-<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>CHANGELOG</h1>
+</ul><h3>
+<a name="todo-list" class="anchor" href="#todo-list"><span class="octicon octicon-link"></span></a>TODO List</h3>
 
-<h2>
-<a name="v169" class="anchor" href="#v169"><span class="octicon octicon-link"></span></a>v1.6.9</h2>
+<ul>
+<li>Write down all the tests</li>
+</ul><h3>
+<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>CHANGELOG</h3>
+
+<h4>
+<a name="v170" class="anchor" href="#v170"><span class="octicon octicon-link"></span></a>v1.7.0</h4>
+
+<ul>
+<li>added: better tablet detection tests</li>
+<li>added: grunt</li>
+<li>bugfix: skip media elements loading on mobile/tablet devices</li>
+</ul><h4>
+<a name="v169" class="anchor" href="#v169"><span class="octicon octicon-link"></span></a>v1.6.9</h4>
 
 <ul>
 <li>added: mediaBufferSizeToPreload option</li>
 <li>added: forceMediaPreload option</li>
-</ul><h2>
-<a name="v168" class="anchor" href="#v168"><span class="octicon octicon-link"></span></a>v1.6.8</h2>
+</ul><h4>
+<a name="v168" class="anchor" href="#v168"><span class="octicon octicon-link"></span></a>v1.6.8</h4>
 
 <ul>
 <li>small refactor</li>
@@ -249,26 +269,14 @@ This plugin needs a <b>JSON</b> file to get the files that must be preloaded (yo
 <li>added: stopExecution option via json</li>
 <li>added: nprogress demo</li>
 </ul>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/GianlucaGuarini/jquery.html5loader/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/GianlucaGuarini/jquery.html5loader/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/GianlucaGuarini/jquery.html5loader"></a> is maintained by <a href="https://github.com/GianlucaGuarini">GianlucaGuarini</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/GianlucaGuarini">GianlucaGuarini</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-            <script type="text/javascript">
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
