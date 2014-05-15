@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.7.1
+ * Version:     1.7.0
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/

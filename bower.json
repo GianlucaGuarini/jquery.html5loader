@@ -1,6 +1,6 @@
 {
   "name": "jquery.html5loader",
-  "version": "1.7.1",
+  "version": "1.7.0",
   "main": "src/jquery.html5Loader.js",
   "ignore": [
     "**/.*",
