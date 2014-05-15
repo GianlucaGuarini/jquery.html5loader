@@ -8,7 +8,7 @@
     "components",
     "files",
     "examples",
-    "lib"
+    "lib",
     "test"
   ]
 }
