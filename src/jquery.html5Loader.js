@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.6.9
+ * Version:     1.7.0
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -32,40 +32,40 @@
 /*global console*/
 (function($) {
 
-  "use strict";
+  'use strict';
 
   $.html5Loader = function(customOptions) {
     var defaults = {
-      filesToLoad: null,
-      /* set the path to the JSON or pass an object containing the files to preload */
-      debugMode: false,
-      /**
-       * do not execute the javascript files when they'll be preloaded
-       * this option could be overridden into the json per each javascript file
-       * @type {Boolean}
-       */
-      stopExecution: false,
-      /**
-       * decide the the buffer size before considering the media preloaded
-       * by default it's the 20% of the entire size of the media file
-       * Pay attention, many browsers cannot preload the entire media files, they just buffer luckily the half (or less) of them
-       * more info: http://www.stevesouders.com/blog/2013/04/12/html5-video-preload/
-       * @type {Float}
-       */
-      mediaBufferSizeToPreload: 0.2,
-      /* let the browser decide when the media file has been buffered enough to be played by listening the canplaythrough event */
-      forceMediaPreload: true,
-      /* script files won't execute when loaded */
-      onBeforeLoad: function() {},
-      /* this functions is triggered before the preloader starts loading the sources */
-      onComplete: function() {},
-      /* set the onComplete is triggered when everything is loaded */
-      onElementLoaded: function(obj, elm) {},
-      /* this Callback is triggered anytime an object is loaded */
-      onUpdate: function(percentage) {},
-      /* this function returns alway the current percentage */
-      onMediaError: function(obj, elm) {} /* This function is invoked in case of any error occurred during the media element fetch*/
-    },
+        filesToLoad: null,
+        /* set the path to the JSON or pass an object containing the files to preload */
+        debugMode: false,
+        /**
+         * do not execute the javascript files when they'll be preloaded
+         * this option could be overridden into the json per each javascript file
+         * @type {Boolean}
+         */
+        stopExecution: false,
+        /**
+         * decide the the buffer size before considering the media preloaded
+         * by default it's the 20% of the entire size of the media file
+         * Pay attention, many browsers cannot preload the entire media files, they just buffer luckily the half (or less) of them
+         * more info: http://www.stevesouders.com/blog/2013/04/12/html5-video-preload/
+         * @type {Float}
+         */
+        mediaBufferSizeToPreload: 0.2,
+        /* let the browser decide when the media file has been buffered enough to be played by listening the canplaythrough event */
+        forceMediaPreload: true,
+        /* script files won't execute when loaded */
+        onBeforeLoad: function() {},
+        /* this functions is triggered before the preloader starts loading the sources */
+        onComplete: function() {},
+        /* set the onComplete is triggered when everything is loaded */
+        onElementLoaded: function(obj, elm) {},
+        /* this Callback is triggered anytime an object is loaded */
+        onUpdate: function(percentage) {},
+        /* this function returns alway the current percentage */
+        onMediaError: function(obj, elm) {} /* This function is invoked in case of any error occurred during the media element fetch*/
+      },
       // merging the custom options with the default ones
       options = $.extend(defaults, customOptions);
 
@@ -91,13 +91,11 @@
      * PRIVATE VARS
      *
      */
-    var $window = $(window),
-      $body = $("body"),
-      $head = $("head"),
+    var $head = $('head'),
       _bytesLoaded = 0,
       _bytesTotal = 0,
       _files = [],
-      _isiPad = navigator.userAgent.match(/iPad/i),
+      _isTablet = navigator.userAgent.match(/iPad|Android|(?=.*\bWindows\b)(?=.*\bARM\b)/i),
       _isMobile = (function(a) {
         if (/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|meego.+mobile|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) return true;
         else return false;
@@ -137,7 +135,7 @@
 
       // IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
       try {
-        if ( !! elem.canPlayType) {
+        if (!!elem.canPlayType) {
           bool = {
             ogg: elem.canPlayType('video/ogg; codecs="theora"').replace(/^no$/, ''),
             // Without QuickTime, this value will be `undefined`. github.com/Modernizr/Modernizr/issues/546
@@ -159,7 +157,7 @@
       var bool = false;
 
       try {
-        if ( !! elem.canPlayType) {
+        if (!!elem.canPlayType) {
           bool = {
             ogg: elem.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
             mp3: elem.canPlayType('audio/mpeg;').replace(/^no$/, ''),
@@ -212,8 +210,8 @@
 
     var updatePercentage = function() {
       var currPercentage = 0;
-      log("_bytesTotal = " + _bytesTotal);
-      log("_bytesLoaded = " + _bytesLoaded);
+      log('_bytesTotal = ' + _bytesTotal);
+      log('_bytesLoaded = ' + _bytesLoaded);
       currPercentage = Math.round((_bytesLoaded / _bytesTotal) * 100);
 
       log('Percentage: ' + currPercentage + '%');
@@ -236,7 +234,7 @@
     var arrangeData = function(index, obj) {
       var file = obj;
 
-      if (file.type === "VIDEO" || file.type === "AUDIO") {
+      if (file.type === 'VIDEO' || file.type === 'AUDIO') {
         file = findSupportedSource(file);
       }
 
@@ -254,7 +252,7 @@
      */
 
     var onJsonLoaded = function(data) {
-      log("json loaded");
+      log('json loaded');
       $(data.files).each(arrangeData);
     };
 
@@ -268,7 +266,7 @@
     var loadImage = function(file) {
       var defer = new $.Deferred(),
         size = file.size,
-        $image = $("<img>");
+        $image = $('<img>');
 
       $image.on('load', function() {
         log('File Loaded:' + file.source);
@@ -280,7 +278,7 @@
         defer.resolve();
       });
 
-      $image.attr("src", file.source);
+      $image.attr('src', file.source);
 
       // preventing a memory leak
       $image = null;
@@ -299,7 +297,7 @@
 
       var defer = new $.Deferred(),
         size = file.size,
-        $media = file.type === "VIDEO" ? $("<video></video>") : $("<audio></audio>"),
+        $media = file.type === 'VIDEO' ? $('<video>') : $('<audio>'),
         onMediaLoaded = function() {
           log('File Loaded:' + file.source);
 
@@ -317,25 +315,25 @@
         };
 
       // if it is a mobile or an iPad we avoid the media preloading
-      if (!_isMobile && !_isiPad) {
+      if (!_isMobile && !_isTablet) {
 
-        $media.on("loadstart", function() {
-          if (this.networkState == 3) {
+        $media.on('loadstart', function() {
+          if (this.networkState === 3) {
             onMediaError(file, this);
             onMediaLoaded();
           }
         });
 
-        $media.on("error stalled", function() {
+        $media.on('error stalled', function() {
           onMediaError(file, this);
           onMediaLoaded();
         });
 
         // on Media Progress
-        $media.on("loadedmetadata", function() {
-          $media.on("progress", function() {
+        $media.on('loadedmetadata', function() {
+          $media.on('progress', function() {
             var bytesTmpLoaded = 0;
-            log("loading in progress file:" + file.source);
+            log('loading in progress file:' + file.source);
             if (this.buffered.length > 0) {
               bytesTmpLoaded = (size / this.duration) * this.buffered.end(0);
               size -= bytesTmpLoaded;
@@ -348,21 +346,23 @@
           });
         });
 
+        $media.attr({
+          preload: 'auto',
+          src: file.source,
+          controls: 'controls'
+        });
+
         // let the browser decide when the media file has been buffered enough
         // to be played
         if (forceMediaPreload)
-          $media.on("canplaythrough", onMediaLoaded);
+          $media.on('canplaythrough', onMediaLoaded);
 
       } else {
         //  that means that media is loaded by default
         onMediaLoaded();
       }
 
-      $media.attr({
-        preload: 'auto',
-        src: file.source,
-        controls: "controls"
-      });
+
       return defer.promise();
     };
 
@@ -378,7 +378,7 @@
         size = file.size,
         args = {
           url: file.source,
-          dataType: "script"
+          dataType: 'script'
         };
 
       // Disables script execution when loaded upon users request.
@@ -423,7 +423,7 @@
       var defer = new $.Deferred();
       $.ajax({
         url: file.source,
-        dataType: "text",
+        dataType: 'text',
         success: function(data) {
           log('File Loaded:' + file.source);
           onElementLoaded(file, data);
@@ -442,7 +442,7 @@
               css = document.createElement('link');
               css.rel = 'stylesheet';
               css.type = 'text/css';
-              css.media = "all";
+              css.media = 'all';
               css.href = file.source;
               $head[0].appendChild(css);
             }
@@ -466,22 +466,22 @@
 
       $.each(filesArray, function(i, file) {
 
-        log("preloading files");
+        log('preloading files');
 
-        log("file to preload:" + file.source);
+        log('file to preload:' + file.source);
         switch (file.type) {
-          case "IMAGE":
+          case 'IMAGE':
             loadImage(file);
             break;
-          case "VIDEO":
-          case "AUDIO":
+          case 'VIDEO':
+          case 'AUDIO':
             loadMedia(file);
             break;
-          case "SCRIPT":
+          case 'SCRIPT':
             loadScript(file);
             break;
-          case "TEXT":
-          case "CSS":
+          case 'TEXT':
+          case 'CSS':
             loadText(file, /CSS/g.test(file.type));
             break;
           default:
@@ -505,13 +505,13 @@
      */
 
     this.init = function() {
-      log("plugin initialized");
+      log('plugin initialized');
 
       var defer = new $.Deferred(),
         promise = defer.promise();
       onBeforeLoad();
 
-      if (typeof filesToLoad === "object") {
+      if (typeof filesToLoad === 'object') {
         $.proxy(onJsonLoaded, this, filesToLoad)();
         defer.resolve(filesToLoad);
       } else {

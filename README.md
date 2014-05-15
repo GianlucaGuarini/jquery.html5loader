@@ -152,6 +152,13 @@ $.html5Loader({
 
 # CHANGELOG
 
+## v1.7.0
+
+- added: better tablet detection tests
+- added: grunt
+- bugfix: skip media elements loading on mobile/tablet devices
+
+
 ## v1.6.9
 
 - added: mediaBufferSizeToPreload option
