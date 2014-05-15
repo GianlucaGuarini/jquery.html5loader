@@ -150,6 +150,10 @@ $.html5Loader({
 - Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( http://modernizr.com/docs/#audio ). For these browsers we don't preload any HTML5 media format
 - on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them
 
+# TODO List
+
+- Write down all the tests
+
 # CHANGELOG
 
 ## v1.7.0
