@@ -92,6 +92,7 @@
      *
      */
     var $head = $('head'),
+      _currentSegment = 0, 
       _bytesLoaded = 0,
       _bytesTotal = 0,
       _files = [],
@@ -218,8 +219,13 @@
 
       onUpdate(currPercentage);
 
-      if (!_files.length) {
-        onComplete();
+      if (!_files[_currentSegment].length) { 
+
+        // Is there another group of files.
+        _currentSegment++;
+
+        if (_files[_currentSegment]) startLoading();
+        else onComplete();
       }
     };
 
@@ -231,7 +237,7 @@
      *
      */
 
-    var arrangeData = function(index, obj) {
+    var arrangeData = function(segmentIndex, index, obj) {
       var file = obj;
 
       if (file.type === 'VIDEO' || file.type === 'AUDIO') {
@@ -240,7 +246,7 @@
 
       if (file) {
         _bytesTotal += file.size;
-        _files.push(file);
+        _files[segmentIndex].push(file);
       }
     };
 
@@ -252,8 +258,21 @@
      */
 
     var onJsonLoaded = function(data) {
+      var segment;
       log('json loaded');
-      $(data.files).each(arrangeData);
+
+      if (!data.files[0].length) {
+        data.files = [data.files];
+      }
+
+      for (var i=0, l=data.files.length; i<l; i++) {
+        _files.push([]);
+        segment = data.files[i];
+
+        for (var m=0, n=segment.length; m<n; m++) {
+          arrangeData(i, m, segment[m]);
+        }
+      }
     };
 
     /*
@@ -273,7 +292,7 @@
         _bytesLoaded += size;
         onElementLoaded(file, this);
         // removing the file from the array
-        _files.splice(0, 1);
+        _files[_currentSegment].splice(0, 1);
         updatePercentage();
         defer.resolve();
       });
@@ -305,7 +324,7 @@
 
           onElementLoaded(file, $media[0]);
 
-          _files.splice(0, 1);
+          _files[_currentSegment].splice(0, 1);
 
           $media.off();
           $media = null;
@@ -399,7 +418,7 @@
         onElementLoaded(file, data);
 
         // removing the file from the array
-        _files.splice(0, 1);
+        _files[_currentSegment].splice(0, 1);
         updatePercentage();
         defer.resolve();
       })
@@ -428,7 +447,7 @@
           log('File Loaded:' + file.source);
           onElementLoaded(file, data);
           _bytesLoaded += file.size;
-          _files.splice(0, 1);
+          _files[_currentSegment].splice(0, 1);
           updatePercentage();
           // IE8/7 fix
           // http://stackoverflow.com/questions/805384/how-to-apply-inline-and-or-external-css-loaded-dynamically-with-jquery
@@ -462,7 +481,7 @@
 
     var startLoading = function() {
 
-      var filesArray = _files.slice();
+      var filesArray = _files[_currentSegment].slice();
 
       $.each(filesArray, function(i, file) {
 
