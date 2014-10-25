@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" /><title>Gianluca Guarini- html5 loader jQuery plug-in - line preloader</title>
+<meta name="Description" content="With this jQuery plug in you can preload your page getting the percentage of bytes loaded just in HTML5" />
+<link href='http://fonts.googleapis.com/css?family=Varela+Round|Lobster+Two' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+body {
+  margin: 0;
+  padding: 0;
+  color:#333;
+}
+#html5Loader{
+	top:0;
+	left:0;
+	margin:0;
+	background:gray;
+	opacity:0.5;
+	position:fixed;
+}
+#html5Loader .fallback {
+	top:50%;
+	position:absolute;
+	text-align:center;
+	width:100%;
+	color:white;
+	vertical-align: middle;
+	display: block;
+	font-style: normal;
+	font-family "Lobster Two";
+	font-size:100px;
+}
+div#wrapper > * {
+	width:400px;
+}
+</style>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="../src/jquery.html5Loader.js"></script>
+
+</head>
+<body>
+	<div id="html5Loader"></div>
+	<div id="wrapper"></div>
+	<script type="text/javascript">
+	var files = [{
+		"source": {
+		  "svg": "../files/yin-yang.svg",
+		  "fallback": "../files/yin-yang.jpg"
+		},
+		"type": "IMAGE",
+		"size": 10000067.936
+	}];
+	$.html5Loader({
+		filesToLoad: {"files": files},
+		stopExecution:true,
+		onComplete: function () {
+			console.log("preloader animation completed!");
+		},
+		onElementLoaded: function ( obj, elm ){
+			if(!~$.inArray(obj.type,["TEXT","SCRIPT","CSS"])) {
+				$("#wrapper").append(elm);
+			}
+		}
+	});
+	</script>
+
+	</body>
+</html>
