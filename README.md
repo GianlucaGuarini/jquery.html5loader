@@ -10,7 +10,12 @@ All the javascript and css files will be automatically loaded and injected into 
 
 $ bower install jquery.html5loader
 
+# or via npm
+
+$ npm install jquery.html5loader
 ```
+
+
 
 ### Features
 * <b>smart</b>: it loads just the sources supported by the client running the script.
