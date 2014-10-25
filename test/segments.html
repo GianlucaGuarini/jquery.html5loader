@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="../src/jquery.html5Loader.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+	var t = (new Date).getTime();
+	var files = [
+		[
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/cytoscape/2.3.3/cytoscape.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			}
+
+		], [
+
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/jquery.tipsy/1.0.2/jquery.tipsy.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/jquery.cycle/3.03/jquery.cycle.all.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			},
+			{
+				"source": "http://cdnjs.cloudflare.com/ajax/libs/c3/0.3.0/c3.js?"+t,
+		    "type": "SCRIPT",
+		    "size": 4.096
+			}
+		]
+	];
+
+
+	$.html5Loader({
+			filesToLoad: {"files": files},
+			stopExecution: true,
+
+			onElementLoaded: function ( obj, elm ) {
+				var source = obj.source.split('/');
+				console.log( source[source.length-1].split('.js')[0] );
+			},
+
+			onComplete: function () {
+				console.log("%c\n All assets loaded! ", "background: #222; color: #bada55");
+			}
+	});
+
+	</script>
+	</body>
+</html>

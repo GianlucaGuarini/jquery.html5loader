@@ -152,6 +152,35 @@ $.html5Loader({
 - <code>onUpdate</code> it is triggered anytime new bytes are loaded
   - <code>percentage</code> the percentage currently loaded
 
+#### Loading In Segments
+Loading groups of files in sequence is made possible by wrapping your files in arrays. This is especially helpful when pre-loading components with dependencies. e.g ```Backbone's``` dependence on ```underscore```.
+
+<pre lang="json">
+{
+    "files": [
+      [
+        {
+          "type":"SCRIPT",
+          "source":"../path/to/underscore.js",
+          "size":13.9
+        }
+      ], 
+      [
+        {
+        "source": "../path/to/backbone.js",
+        "type": "SCRIPT",
+        "size": 37.5
+      },
+      {
+      "source": "../path/to/three.js",
+        "type": "SCRIPT",
+        "size": 150.3
+      }
+      ]
+    ]
+}
+</pre>
+
 ### KNOWN ISSUES
 - Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( http://modernizr.com/docs/#audio ). For these browsers we don't preload any HTML5 media format
 - on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them
