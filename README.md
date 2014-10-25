@@ -1,6 +1,6 @@
 ### Introduction
-jQuery.html5Loader can preload <b>images</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>scripts</b> and <b>text</b> files.
-This plugin needs a <b>JSON</b> file to get the files that must be preloaded (you can use also use a javascript object as well), and it provides an easy API to give you the the amount of file loaded in percentage.
+jQuery.html5Loader can preload <b>images</b>, <b>SVGs</b>, html5 <b>video</b> and <b>audio</b> sources, <b>css</b>, <b>scripts</b> and <b>text</b> files.
+This plugin needs a <b>JSON</b> file to get the files that must be preloaded (you can use also use a javascript object as well), and it provides an easy API to give you the right amount of files loaded in percentage.
 
 All the javascript and css files will be automatically loaded and injected into the DOM
 
@@ -14,7 +14,7 @@ $ bower install jquery.html5loader
 
 ### Features
 * <b>smart</b>: it loads just the sources supported by the client running the script.
-* <b>flexible</b>: it returns the current percentage and the object loaded, so you could be free to show this info as you like
+* <b>flexible</b>: it returns the current percentage and the object/element loaded, so you could be free to show this info as you prefer
 * <b>fun</b>: inside the package you could find some preloading animation examples, customizable and ready to use
 
 
@@ -62,6 +62,14 @@ $ bower install jquery.html5loader
         "type":"TEXT",
         "source":"../path/to/your/text.txt",
         "size":44
+      },
+      {
+        "source": {
+          "svg": "../files/yin-yang.svg",
+          "fallback": "../files/yin-yang.jpg"
+        },
+        "type": "IMAGE",
+        "size": 2338
       },
       {
         "type":"VIDEO",
@@ -152,8 +160,8 @@ $.html5Loader({
 - <code>onUpdate</code> it is triggered anytime new bytes are loaded
   - <code>percentage</code> the percentage currently loaded
 
-#### Loading In Segments
-Loading groups of files in sequence is made possible by wrapping your files in arrays. This is especially helpful when pre-loading components with dependencies. e.g ```Backbone's``` dependence on ```underscore```.
+#### Loading Segments
+It is also possible to load groups of files in sequence by wrapping them in arrays. This could be handy if you need need to preload components with dependencies. e.g ```Backbone's``` dependence on ```underscore```.
 
 <pre lang="json">
 {
@@ -164,7 +172,7 @@ Loading groups of files in sequence is made possible by wrapping your files in a
           "source":"../path/to/underscore.js",
           "size":13.9
         }
-      ], 
+      ],
       [
         {
         "source": "../path/to/backbone.js",
@@ -181,15 +189,37 @@ Loading groups of files in sequence is made possible by wrapping your files in a
 }
 </pre>
 
+#### Loading SVGs
+You can also load SVG files providing a fallback image. jQuery.html5Loader will detect automatically if the device supports the SVGs otherwise it will just preload the fallback image.
+
+<pre lang="json">
+  "files":[
+    {
+      "source": {
+        "svg": "../files/yin-yang.svg",
+        "fallback": "../files/yin-yang.jpg"
+      },
+      "type": "IMAGE",
+      "size": 2338
+    }
+  ]
+</pre>
+
 ### KNOWN ISSUES
 - Internet Explorer 9 and 10 do not return any value using the method <code>canPlayType</code> on a video or audio element ( http://modernizr.com/docs/#audio ). For these browsers we don't preload any HTML5 media format
 - on mobile devices and on the iPad we cannot load any video or audio element because these devices can't preload those kind of elements until the user start dealing with them
 
 ### TODO List
 
-- Write down all the tests
+- Write down a valid crossbrowser unit test
 
 ### CHANGELOG
+
+#### v1.8.0
+
+- added: SVGs preloading support
+- added: segments preloading
+- updated: the nprogress example
 
 #### v1.7.0
 

@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div id="html5Loader"></div>
-	<div id="wrapper"></div>
+	<div id="wrapper" style="opacity:0;filter:alpha(opacity=0)"></div>
 	<script type="text/javascript">
 	NProgress.start();
 	$.html5Loader({
@@ -21,8 +21,13 @@
 			},
 			stopExecution:true,
 			onComplete: function () {
-				console.log("All the assets are loaded!");
 				NProgress.done(true);
+				setTimeout(function(){
+					$("#wrapper").animate({
+						opacity:1
+					},'slow');
+				},2000);
+				console.log("All the assets are loaded!");
 			},
 			onElementLoaded: function ( obj, elm ){
 				if(!~$.inArray(obj.type,["TEXT","SCRIPT","CSS"])) {

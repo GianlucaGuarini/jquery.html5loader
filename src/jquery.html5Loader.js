@@ -1,6 +1,6 @@
 /*!
  *
- * Version:     1.7.0
+ * Version:     1.8.0
  * Author:      Gianluca Guarini
  * Contact:     gianluca.guarini@gmail.com
  * Website:     http://www.gianlucaguarini.com/
@@ -92,7 +92,7 @@
      *
      */
     var $head = $('head'),
-      _currentSegment = 0, 
+      _currentSegment = 0,
       _bytesLoaded = 0,
       _bytesTotal = 0,
       _files = [],
@@ -177,6 +177,15 @@
       return bool;
     }();
 
+    /**
+     *
+     * Check the svg support
+     *
+     */
+
+    _support.svg = function() {
+      return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect;
+    }();
 
     /*
      *
@@ -219,13 +228,16 @@
 
       onUpdate(currPercentage);
 
-      if (!_files[_currentSegment].length) { 
+      if (!_files[_currentSegment].length) {
 
         // Is there another group of files.
         _currentSegment++;
 
-        if (_files[_currentSegment]) startLoading();
-        else onComplete();
+        if (_files[_currentSegment]) {
+          startLoading();
+        } else {
+          onComplete();
+        }
       }
     };
 
@@ -265,11 +277,11 @@
         data.files = [data.files];
       }
 
-      for (var i=0, l=data.files.length; i<l; i++) {
+      for (var i = 0, l = data.files.length; i < l; i++) {
         _files.push([]);
         segment = data.files[i];
 
-        for (var m=0, n=segment.length; m<n; m++) {
+        for (var m = 0, n = segment.length; m < n; m++) {
           arrangeData(i, m, segment[m]);
         }
       }
@@ -285,19 +297,33 @@
     var loadImage = function(file) {
       var defer = new $.Deferred(),
         size = file.size,
-        $image = $('<img>');
+        $image = $('<img>'),
+        onImageLoaded = function() {
 
-      $image.on('load', function() {
-        log('File Loaded:' + file.source);
-        _bytesLoaded += size;
-        onElementLoaded(file, this);
-        // removing the file from the array
-        _files[_currentSegment].splice(0, 1);
-        updatePercentage();
-        defer.resolve();
-      });
+          log('File Loaded:' + src);
+          _bytesLoaded += size;
+          onElementLoaded(file, this);
+          // removing the file from the array
+          _files[_currentSegment].splice(0, 1);
+          updatePercentage();
+          defer.resolve();
 
-      $image.attr('src', file.source);
+        },
+        src;
+
+      // load the svg or the fallback image
+      if (file.source.toString() === '[object Object]') {
+        if (file.source.svg && _support.svg) {
+          src = file.source.svg;
+        } else if (file.source.fallback) {
+          src = file.source.fallback;
+        }
+      } else {
+        src = file.source;
+      }
+
+      $image.on('load', onImageLoaded);
+      $image.attr('src', src);
 
       // preventing a memory leak
       $image = null;

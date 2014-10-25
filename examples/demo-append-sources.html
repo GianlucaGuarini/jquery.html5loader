@@ -55,9 +55,6 @@ div#wrapper > * {
 			filesToLoad:'../src/files.json',
 			onUpdate: loaderAnimation.update,
 			stopExecution:true,
-			onComplete: function () {
-				console.log("All the assets are loaded!");
-			},
 			onElementLoaded: function ( obj, elm ){
 				if(!~$.inArray(obj.type,["TEXT","SCRIPT","CSS"])) {
 					$("#wrapper").append(elm);
