@@ -31,6 +31,7 @@ $ npm install jquery.html5loader
  - [Line preloader](http://gianlucaguarini.github.io/jquery.html5loader/examples/demo-line.html)
 
 #### Production websites using jQuery.html5loader
+ - http://www.lempens-design.com
  - http://www.mobi-myhome.ch
  - http://lindberghallee.ch
 
