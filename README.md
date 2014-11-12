@@ -33,7 +33,6 @@ $ npm install jquery.html5loader
 #### Production websites using jQuery.html5loader
  - http://www.lempens-design.com
  - http://www.mobi-myhome.ch
- - http://lindberghallee.ch
 
 ### USAGE
 
