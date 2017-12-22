@@ -309,6 +309,14 @@
           defer.resolve();
 
         },
+        onImageError = function() {
+          log('File load error : ' + src);
+          _bytesLoaded += size;
+          // removing the file from the array
+          _files[_currentSegment].splice(0, 1);
+          updatePercentage();
+          defer.resolve();
+        },
         src;
 
       // load the svg or the fallback image
@@ -323,6 +331,7 @@
       }
 
       $image.on('load', onImageLoaded);
+      $image.on('error', onImageError);
       $image.attr('src', src);
 
       // preventing a memory leak
